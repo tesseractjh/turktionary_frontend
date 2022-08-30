@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { border, flex } from '@styles/minxin';
+import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
-import LogoIcon from '@assets/images/star-and-crescent-solid.svg';
 import UserIcon from '@assets/images/user-solid.svg';
 import InnerContainer from '@components/common/InnerContainer';
+import Logo from '@components/common/Logo';
 import MenuButton from './MenuButton';
-import { Link } from 'react-router-dom';
 
 const Container = styled.nav`
   height: ${pxToRem(60)};
@@ -16,17 +15,6 @@ const Container = styled.nav`
 const Content = styled.div`
   ${flex('space-between')}
   height: ${pxToRem(60)};
-`;
-
-const Logo = styled(Link)`
-  font-weight: 600;
-  font-size: ${pxToRem(28)};
-
-  & svg {
-    width: ${pxToRem(20)};
-    height: ${pxToRem(20)};
-    margin-right: ${pxToRem(10)};
-  }
 `;
 
 const HeaderMenu = styled.ul`
@@ -39,12 +27,7 @@ function Header() {
     <Container>
       <InnerContainer>
         <Content>
-          <h1>
-            <Logo to="/">
-              <LogoIcon />
-              Turktionary
-            </Logo>
-          </h1>
+          <Logo />
           <HeaderMenu role="menu">
             <MenuButton text={isLoggedIn ? '로그아웃' : '로그인'}>
               <UserIcon />
