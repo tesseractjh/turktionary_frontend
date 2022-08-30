@@ -13,13 +13,15 @@
     "typeRoots": ["./node_modules/@types", "./@types"],
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
       "@assets/*": ["src/assets/*"],
-      "@styles/*": ["src/styles/*"],
+      "@components/*": ["src/components/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"]
+      "@pages/*": ["src/pages/*"],
+      "@recoil/*": ["src/recoil/*"],
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"],
+
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
