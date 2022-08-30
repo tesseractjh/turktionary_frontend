@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 
-interface DictContentProps {
+interface DictionaryProps {
   type: DictionaryType;
 }
 
@@ -53,7 +53,7 @@ const contents = {
   }
 };
 
-function DictContent({ type }: DictContentProps) {
+function Dictionary({ type }: DictionaryProps) {
   return (
     <>
       <SearchBarContainer>
@@ -68,4 +68,4 @@ function DictContent({ type }: DictContentProps) {
   );
 }
 
-export default DictContent;
+export default Dictionary;
