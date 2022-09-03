@@ -40,7 +40,8 @@ const resetStyle = css`
     cursor: pointer;
   }
 
-  input {
+  input,
+  textarea {
     border: none;
 
     &:focus {
