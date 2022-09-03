@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import useToken from '@hooks/useToken';
 import Login from '@pages/Login';
 import Join from '@pages/Join';
 import Main from '@pages/Main';
@@ -7,6 +8,8 @@ import JoinForm from '@pages/Join/JoinForm';
 import JoinSuccess from '@pages/Join/JoinSuccess';
 
 function App() {
+  useToken();
+
   return (
     <Routes>
       <Route element={<Main />}>
