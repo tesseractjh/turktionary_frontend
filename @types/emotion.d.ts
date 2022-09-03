@@ -1,18 +1,10 @@
 import '@emotion/react';
+import { lightColor } from '@styles/theme';
 
 declare module '@emotion/react' {
-  type Color =
-    | 'BLACK'
-    | 'WHITE'
-    | 'BORDER'
-    | 'TEAL'
-    | 'BEIGE'
-    | 'BROWN'
-    | 'RED'
-    | 'TEAL_DARK'
-    | 'BROWN_DARK';
+  type Color = typeof lightColor;
 
   interface Theme {
-    color: Record<Color, string>;
+    color: Color;
   }
 }
