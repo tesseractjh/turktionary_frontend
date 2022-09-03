@@ -3,18 +3,18 @@ import { color } from '@styles/theme';
 import { Theme } from '@emotion/react';
 
 declare global {
-  interface Props {
-    children?: React.ReactNode | React.ReactNode[];
-  }
-
   type ThemeName = 'LIGHT' | 'DARK';
+  type DictionaryType = 'ALL' | 'TR' | 'AZ' | 'UZ' | 'KZ' | 'TM' | 'KG';
+  type ButtonSize = 'small' | 'medium' | 'big';
 
   interface ThemeGroup {
     LIGHT: Theme;
     DARK: Theme;
   }
 
-  type DictionaryType = 'ALL' | 'TR' | 'AZ' | 'UZ' | 'KZ' | 'TM' | 'KG';
+  interface Props {
+    children?: React.ReactNode | React.ReactNode[];
+  }
 }
 
 export {};
