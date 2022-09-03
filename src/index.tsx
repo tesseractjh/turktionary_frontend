@@ -1,5 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
+import GlobalStyle from '@styles/GlobalStyle';
+import ThemeProvider from '@contexts/ThemeProvider';
 import App from './App';
 
 const rootNode = document.getElementById('root');
@@ -9,7 +12,14 @@ if (!rootNode) {
 }
 
 ReactDOM.createRoot(rootNode).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <>
+    <GlobalStyle />
+    <RecoilRoot>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </RecoilRoot>
+  </>
 );
