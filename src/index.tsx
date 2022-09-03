@@ -1,9 +1,13 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import axios from 'axios';
 import GlobalStyle from '@styles/GlobalStyle';
 import ThemeProvider from '@contexts/ThemeProvider';
 import App from './App';
+
+axios.defaults.baseURL = process.env.API_URL;
+axios.defaults.withCredentials = true;
 
 const rootNode = document.getElementById('root');
 
