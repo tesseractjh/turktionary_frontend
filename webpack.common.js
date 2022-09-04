@@ -33,6 +33,10 @@ module.exports = {
         use: ['@svgr/webpack']
       },
       {
+        test: /\.png$/i,
+        use: [{ loader: 'file-loader' }]
+      },
+      {
         test: /\.[jt]sx?$/i,
         use: [
           {
