@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
+import { joinResultState } from '@recoil/join';
 import useToken from '@hooks/useToken';
 import pxToRem from '@utils/pxToRem';
 import Header from '@components/Header';
@@ -11,6 +14,12 @@ const Container = styled.section`
 `;
 
 function Main() {
+  const setJoinResult = useSetRecoilState(joinResultState);
+
+  useEffect(() => {
+    setJoinResult(false);
+  }, []);
+
   useToken();
 
   return (
