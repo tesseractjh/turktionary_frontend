@@ -8,6 +8,10 @@ interface LogoProps {
   className?: string;
 }
 
+const Container = styled.h1`
+  text-align: center;
+`;
+
 const LogoLink = styled(Link)`
   font-weight: 600;
   font-size: ${pxToRem(28)};
@@ -33,22 +37,22 @@ const LogoAnchor = styled.a`
 function Logo({ useHref = false, className }: LogoProps) {
   if (useHref) {
     return (
-      <h1 className={className}>
+      <Container className={className}>
         <LogoLink to="/">
           <LogoIcon />
           Turktionary
         </LogoLink>
-      </h1>
+      </Container>
     );
   }
 
   return (
-    <h1 className={className}>
+    <Container className={className}>
       <LogoAnchor href="/">
         <LogoIcon />
         Turktionary
       </LogoAnchor>
-    </h1>
+    </Container>
   );
 }
 
