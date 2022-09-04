@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { joinResultState } from '@recoil/join';
+import useRedirect from '@hooks/useRedirect';
 import pxToRem from '@utils/pxToRem';
 import InnerContainer from '@components/common/InnerContainer';
 import Button from '@components/common/Button';
@@ -32,13 +30,7 @@ const Paragraph = styled.p`
 
 function JoinSuccess() {
   const result = useRecoilValue(joinResultState);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!result) {
-      navigate('/');
-    }
-  }, [result]);
+  useRedirect(!result);
 
   if (!result) {
     return null;
