@@ -14,6 +14,14 @@ const errorMap: Partial<Record<ErrorCode, string>> = {
   '999': '서버와의 연결이 끊어졌습니다!'
 };
 
+const defaultError = (error: AxiosError) => {
+  const { code } = error;
+  if (code === 'ERR_NETWORK') {
+    return { code: '999', message: errorMap['999'] };
+  }
+  return { code: '000', message: errorMap['000'] };
+};
+
 function useAPI() {
   const setAccessToken = useSetRecoilState(accessTokenState);
   const navigate = useNavigate();
@@ -27,9 +35,10 @@ function useAPI() {
         const res = await API;
         onResponse(res);
       } catch (error) {
-        const { error: errorResponse } =
-          ((error as AxiosError)?.response?.data as { error: ErrorResponse }) ??
-          {};
+        const { error: errorResponse } = ((error as AxiosError)?.response
+          ?.data as { error: ErrorResponse }) ?? {
+          error: defaultError(error as AxiosError)
+        };
         const { code, message, redirect, clearAccessToken } = errorResponse;
 
         console.error(message);
