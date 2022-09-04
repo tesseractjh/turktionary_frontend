@@ -9,6 +9,9 @@ const pxToRem = (...values: (number | string)[]): string => {
         const rem = value / ROOT_FONT_SIZE;
         return rem && !Number.isNaN(rem) ? `${rem}rem` : '0';
       }
+      if (value === 'auto') {
+        return 'auto';
+      }
       const rem = getNumFromStr(value) / ROOT_FONT_SIZE;
       return rem && !Number.isNaN(rem) ? `${rem}rem` : '0';
     })
