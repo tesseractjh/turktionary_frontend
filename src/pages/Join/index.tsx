@@ -5,11 +5,12 @@ import pxToRem from '@utils/pxToRem';
 import Logo from '@components/common/Logo';
 
 const Container = styled.div`
-  ${flex('flex-start')}
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  padding: ${pxToRem(80, 0, 40)};
+  padding: ${pxToRem(80, 0)};
+
+  & > * {
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 function Join() {
