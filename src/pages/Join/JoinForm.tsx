@@ -1,16 +1,18 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { SetterOrUpdater, useRecoilState } from 'recoil';
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
-import { joinInputTimerId } from '@recoil/join';
 import { border } from '@styles/minxin';
+import { joinInputTimerId } from '@recoil/join';
+import { accessTokenState } from '@recoil/user';
+import userAPI from '@api/user';
 import useAPI from '@hooks/useAPI';
+import useRedirect from '@hooks/useRedirect';
 import debounce from '@utils/debounce';
 import pxToRem from '@utils/pxToRem';
 import { emailValidation } from '@utils/validation';
 import JoinButton from './JoinButton';
 import JoinCheckbox from './JoinCheckbox';
 import JoinText from './JoinText';
-import userAPI from '@api/user';
 
 const Container = styled.div`
   position: relative;
@@ -141,7 +143,9 @@ function EmailInput({
 
 function JoinForm() {
   const [email, setEmail] = useState('');
+  const accessToken = useRecoilValue(accessTokenState);
   const api = useAPI();
+  useRedirect(!!accessToken);
 
   useEffect(() => {
     (async () => {
@@ -150,6 +154,10 @@ function JoinForm() {
       })();
     })();
   }, []);
+
+  if (accessToken) {
+    return null;
+  }
 
   return (
     <Container>
