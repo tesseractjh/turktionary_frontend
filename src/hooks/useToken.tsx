@@ -8,9 +8,11 @@ const useToken = () => {
   const setAccessToken = useSetAccessToken();
 
   const initiateAccessToken = useCallback(async () => {
-    await api(userAPI.getAccessToken(), ({ accessToken }) =>
-      setAccessToken(accessToken)
-    )();
+    await api(userAPI.getAccessToken(), ({ accessToken }) => {
+      if (accessToken) {
+        setAccessToken(accessToken);
+      }
+    })();
   }, []);
 
   useEffect(() => {
