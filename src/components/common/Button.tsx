@@ -1,27 +1,33 @@
 import { Color } from '@emotion/react';
 import styled from '@emotion/styled';
+import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import { MouseEventHandler } from 'react';
 
 interface StyledButtonProps {
   width?: number | string;
-  padding?: number | string;
+  padding?: number | string | Array<number>;
+  border?: [number, keyof Color];
   borderRadius?: number | string;
-  color?: keyof Color;
   backgroundColor?: keyof Color;
-  colorHover?: keyof Color;
-  backgroundColorHover?: keyof Color;
   fontSize?: number | string;
+  color?: keyof Color;
+  backgroundColorHover?: keyof Color;
+  colorHover?: keyof Color;
+  href?: string;
 }
 
 interface ButtonProps extends Props, StyledButtonProps {
+  useAnchor?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
+  ${flex('center', 'center', true)}
   ${({
     width,
     padding,
+    border,
     borderRadius,
     backgroundColor,
     fontSize,
@@ -31,7 +37,18 @@ const StyledButton = styled.button<StyledButtonProps>`
     theme
   }) => `
     width: ${typeof width === 'string' ? width : pxToRem(width ?? 120)};
-    padding: ${typeof padding === 'string' ? padding : pxToRem(padding ?? 8)};
+    padding: ${
+      typeof padding === 'string'
+        ? padding
+        : Array.isArray(padding)
+        ? pxToRem(...padding)
+        : pxToRem(padding ?? 8)
+    };
+    ${
+      border
+        ? `border: ${pxToRem(border[0])} solid ${theme.color[border[1]]};`
+        : ''
+    }
     border-radius: ${
       typeof borderRadius === 'string'
         ? borderRadius
@@ -42,6 +59,8 @@ const StyledButton = styled.button<StyledButtonProps>`
       typeof fontSize === 'string' ? fontSize : pxToRem(fontSize ?? 20)
     };
     color: ${theme.color[color ?? 'WHITE']};
+    text-align: center;
+    line-height: ${pxToRem(30)};
 
     &:hover {
       ${
@@ -57,6 +76,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 function Button({
   width,
   padding,
+  border,
   borderRadius,
   backgroundColor,
   fontSize,
@@ -64,13 +84,18 @@ function Button({
   backgroundColorHover,
   colorHover,
   onClick,
+  href,
+  useAnchor,
   children
 }: ButtonProps) {
   return (
     <StyledButton
-      type="button"
+      type={useAnchor ? undefined : 'button'}
+      as={useAnchor ? 'a' : 'button'}
+      href={useAnchor ? href : undefined}
       width={width}
       padding={padding}
+      border={border}
       borderRadius={borderRadius}
       color={color}
       backgroundColor={backgroundColor}

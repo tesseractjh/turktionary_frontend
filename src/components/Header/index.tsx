@@ -56,7 +56,7 @@ function Header() {
                 <UserIcon />
               </MenuButton>
             ) : (
-              <MenuButton text="로그인">
+              <MenuButton text="로그인" route="/login">
                 <LoginIcon />
               </MenuButton>
             )}

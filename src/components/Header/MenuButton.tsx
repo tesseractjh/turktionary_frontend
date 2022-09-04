@@ -5,9 +5,21 @@ import { Link } from 'react-router-dom';
 
 interface MenuButtonProps extends Props {
   text: string;
+  route?: string;
+  onClick?: () => void;
 }
 
-const Button = styled(Link)`
+const Button = styled.button`
+  ${flex()}
+  flex-direction: column;
+
+  & svg {
+    width: ${pxToRem(20)};
+    height: ${pxToRem(20)};
+  }
+`;
+
+const LinkButton = styled(Link)`
   ${flex()}
   flex-direction: column;
 
@@ -22,10 +34,21 @@ const Text = styled.span`
   font-size: ${pxToRem(12)};
 `;
 
-function MenuButton({ text, children }: MenuButtonProps) {
+function MenuButton({ text, route, onClick, children }: MenuButtonProps) {
+  if (route) {
+    return (
+      <li role="menuitem">
+        <LinkButton to={route}>
+          {children}
+          <Text>{text}</Text>
+        </LinkButton>
+      </li>
+    );
+  }
+
   return (
     <li role="menuitem">
-      <Button to="/login">
+      <Button onClick={onClick}>
         {children}
         <Text>{text}</Text>
       </Button>
