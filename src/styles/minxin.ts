@@ -3,9 +3,10 @@ import pxToRem from '@utils/pxToRem';
 
 export const flex = (
   justifyContent?: string | null,
-  alignItems?: string | null
+  alignItems?: string | null,
+  inline?: boolean
 ) => css`
-  display: flex;
+  display: ${inline ? 'inline-flex' : 'flex'};
   justify-content: ${justifyContent ?? 'center'};
   align-items: ${alignItems ?? 'center'};
 `;
