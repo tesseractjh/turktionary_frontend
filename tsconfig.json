@@ -17,6 +17,7 @@
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@contexts/*": ["src/contexts/*"],
+      "@hoc/*": ["src/hoc/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
       "@recoil/*": ["src/recoil/*"],
