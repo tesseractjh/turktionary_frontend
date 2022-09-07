@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.common');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
   mode: 'development',
@@ -10,7 +10,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new ReactRefreshPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     open: true,

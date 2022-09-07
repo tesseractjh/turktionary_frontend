@@ -1,4 +1,5 @@
 const path = require('path');
+const ReactRefreshTypescript = require('react-refresh-typescript');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
@@ -53,7 +54,15 @@ module.exports = {
               ].filter(Boolean)
             }
           },
-          'ts-loader'
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers: () => ({
+                before:
+                  this.mode === 'development' ? [ReactRefreshTypescript()] : []
+              })
+            }
+          }
         ],
         exclude: /node_modules/
       }
