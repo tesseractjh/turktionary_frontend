@@ -6,9 +6,8 @@ import pxToRem from '@utils/pxToRem';
 import GoogleIcon from '@assets/images/google.svg';
 import KakaoIcon from '@assets/images/kakao.png';
 import { Color } from '@emotion/react';
-import { useRecoilValue } from 'recoil';
-import { accessTokenState } from '@recoil/user';
 import useRedirect from '@hooks/useRedirect';
+import useVerifyRefreshToken from '@hooks/useVerifyRefreshToken';
 
 interface LoginButtonProps extends Props {
   provider: 'google' | 'kakao';
@@ -113,10 +112,10 @@ function LoginButton({
 }
 
 function Login() {
-  const accessToken = useRecoilValue(accessTokenState);
-  useRedirect(!!accessToken);
+  const isLoggedIn = useVerifyRefreshToken();
+  useRedirect(isLoggedIn);
 
-  if (accessToken) {
+  if (isLoggedIn) {
     return null;
   }
 

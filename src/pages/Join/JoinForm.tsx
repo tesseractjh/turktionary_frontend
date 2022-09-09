@@ -3,9 +3,9 @@ import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { border } from '@styles/minxin';
 import { joinInputTimerId, joinTextState } from '@recoil/join';
-import { accessTokenState } from '@recoil/user';
 import userAPI from '@api/user';
 import useAPI from '@hooks/useAPI';
+import useVerifyRefreshToken from '@hooks/useVerifyRefreshToken';
 import useRedirect from '@hooks/useRedirect';
 import debounce from '@utils/debounce';
 import pxToRem from '@utils/pxToRem';
@@ -157,10 +157,10 @@ function EmailInput() {
 }
 
 function JoinForm() {
-  const accessToken = useRecoilValue(accessTokenState);
-  useRedirect(!!accessToken);
+  const isLoggedIn = useVerifyRefreshToken();
+  useRedirect(isLoggedIn);
 
-  if (accessToken) {
+  if (isLoggedIn) {
     return null;
   }
 

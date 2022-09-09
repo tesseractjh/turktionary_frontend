@@ -33,6 +33,11 @@ const userAPI = {
   async getHeaderUserInfo() {
     const { data } = await axios.get('/user/info/header');
     return data;
+  },
+
+  async getIsLoggedIn() {
+    const { data } = await axios.get('/user/is-logged-in');
+    return data;
   }
 };
 
