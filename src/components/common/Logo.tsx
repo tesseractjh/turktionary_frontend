@@ -4,12 +4,25 @@ import pxToRem from '@utils/pxToRem';
 import LogoIcon from '@assets/images/star-and-crescent-solid.svg';
 
 interface LogoProps {
+  disableLink?: boolean;
   useHref?: boolean;
   className?: string;
 }
 
 const Container = styled.h1`
   text-align: center;
+`;
+
+const LinkDisabledContainer = styled.h1`
+  font-weight: 700;
+  font-size: ${pxToRem(56)};
+  text-align: center;
+
+  & svg {
+    width: ${pxToRem(40)};
+    height: ${pxToRem(40)};
+    margin-right: ${pxToRem(20)};
+  }
 `;
 
 const LogoLink = styled(Link)`
@@ -34,7 +47,16 @@ const LogoAnchor = styled.a`
   }
 `;
 
-function Logo({ useHref = false, className }: LogoProps) {
+function Logo({ disableLink = false, useHref = false, className }: LogoProps) {
+  if (disableLink) {
+    return (
+      <LinkDisabledContainer className={className}>
+        <LogoIcon />
+        Turktionary
+      </LinkDisabledContainer>
+    );
+  }
+
   if (useHref) {
     return (
       <Container className={className}>
