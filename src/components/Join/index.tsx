@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import Logo from '@components/common/Logo';
 
@@ -18,7 +17,7 @@ function Join() {
 
   return (
     <Container>
-      <Logo useHref={pathname === '/join/success'} />
+      <Logo useAnchor={pathname === '/join/success'} />
       <Outlet />
     </Container>
   );

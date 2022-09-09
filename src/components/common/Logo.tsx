@@ -5,7 +5,7 @@ import LogoIcon from '@assets/images/star-and-crescent-solid.svg';
 
 interface LogoProps {
   disableLink?: boolean;
-  useHref?: boolean;
+  useAnchor?: boolean;
   className?: string;
 }
 
@@ -47,7 +47,11 @@ const LogoAnchor = styled.a`
   }
 `;
 
-function Logo({ disableLink = false, useHref = false, className }: LogoProps) {
+function Logo({
+  disableLink = false,
+  useAnchor = false,
+  className
+}: LogoProps) {
   if (disableLink) {
     return (
       <LinkDisabledContainer className={className}>
@@ -57,23 +61,23 @@ function Logo({ disableLink = false, useHref = false, className }: LogoProps) {
     );
   }
 
-  if (useHref) {
+  if (useAnchor) {
     return (
       <Container className={className}>
-        <LogoLink to="/">
+        <LogoAnchor href="/">
           <LogoIcon />
           Turktionary
-        </LogoLink>
+        </LogoAnchor>
       </Container>
     );
   }
 
   return (
     <Container className={className}>
-      <LogoAnchor href="/">
+      <LogoLink to="/">
         <LogoIcon />
         Turktionary
-      </LogoAnchor>
+      </LogoLink>
     </Container>
   );
 }
