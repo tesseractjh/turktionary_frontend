@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { border } from '@styles/minxin';
-import { joinInputTimerId } from '@recoil/join';
+import { joinInputTimerId, joinTextState } from '@recoil/join';
 import { accessTokenState } from '@recoil/user';
 import userAPI from '@api/user';
 import useAPI from '@hooks/useAPI';
@@ -31,8 +31,15 @@ const Title = styled.h2`
 `;
 
 function NickNameInput() {
+  const nickname = useRecoilValue(joinTextState('nickname'));
   const [timerId, setTimerId] = useRecoilState(joinInputTimerId);
-  const api = useAPI();
+  const { refetch } = useAPI(
+    ['getHasUserName', nickname],
+    userAPI.getHasUserName,
+    {
+      enabled: false
+    }
+  );
 
   const handleChange = useCallback(
     (
@@ -65,15 +72,19 @@ function NickNameInput() {
         debounce(
           timerId,
           setTimerId,
-          api(userAPI.getHasUserName(nickname), ({ hasDuplicate }) => {
-            if (hasDuplicate) {
-              setStatus('DUPLICATE_NICKNAME');
-              setValidation(false);
-            } else {
-              setStatus('VALID_NICKNAME');
-              setValidation(true);
+          async () => {
+            const { data } = await refetch();
+            if (data) {
+              const { hasDuplicate } = data;
+              if (hasDuplicate) {
+                setStatus('DUPLICATE_NICKNAME');
+                setValidation(false);
+              } else {
+                setStatus('VALID_NICKNAME');
+                setValidation(true);
+              }
             }
-          }),
+          },
           350
         )();
       },
@@ -92,13 +103,17 @@ function NickNameInput() {
   );
 }
 
-function EmailInput({
-  email,
-  emailValidation
-}: {
-  email: string;
-  emailValidation: (value: string) => boolean;
-}) {
+function EmailInput() {
+  const [email, setEmail] = useState('');
+  const { data } = useAPI('getUserEmail', userAPI.getUserEmail);
+
+  useEffect(() => {
+    if (data) {
+      const { email } = data;
+      setEmail(email);
+    }
+  }, [data]);
+
   const handleChange = useCallback(
     (
         setState: SetterOrUpdater<string>,
@@ -142,18 +157,8 @@ function EmailInput({
 }
 
 function JoinForm() {
-  const [email, setEmail] = useState('');
   const accessToken = useRecoilValue(accessTokenState);
-  const api = useAPI();
   useRedirect(!!accessToken);
-
-  useEffect(() => {
-    (async () => {
-      await api(userAPI.getUserEmail(), ({ email }) => {
-        setEmail(email);
-      })();
-    })();
-  }, []);
 
   if (accessToken) {
     return null;
@@ -163,7 +168,7 @@ function JoinForm() {
     <Container>
       <Title>회원가입</Title>
       <NickNameInput />
-      <EmailInput email={email} emailValidation={emailValidation} />
+      <EmailInput />
       <JoinCheckbox
         param="termsOfUse"
         label="약관동의"

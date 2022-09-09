@@ -1,7 +1,22 @@
 import { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { accessTokenState } from '@recoil/user';
+
+interface ExtraQueryOptions {
+  useBoundary?: boolean;
+  useAlert?: boolean;
+}
+
+interface HandleError {
+  queryKey: string | any[];
+  API: (...args: any) => Promise<any>;
+  setAccessToken: SetterOrUpdater<string>;
+  navigate: NavigateFunction;
+  options?: ExtraQueryOptions;
+}
 
 const errorMap: Partial<Record<ErrorCode, string>> = {
   '000': '알 수 없는 오류가 발생하였습니다!',
@@ -22,42 +37,69 @@ const defaultError = (error: AxiosError) => {
   return { code: '000', message: errorMap['000'] };
 };
 
-function useAPI() {
+const handleError =
+  ({ queryKey, API, setAccessToken, navigate, options }: HandleError) =>
+  async () => {
+    try {
+      const res = await API(...queryKey.slice(1));
+      return res;
+    } catch (error) {
+      if (options?.useBoundary) {
+        throw error;
+      }
+
+      const { error: errorResponse } = ((error as AxiosError)?.response
+        ?.data as {
+        error: ErrorResponse;
+      }) ?? {
+        error: defaultError(error as AxiosError)
+      };
+      const { code, message, redirect, clearAccessToken } = errorResponse;
+
+      console.error(message);
+
+      if (clearAccessToken) {
+        setAccessToken('');
+      }
+
+      if (options?.useAlert && errorMap[code]) {
+        alert(errorMap[code]);
+      }
+
+      if (redirect) {
+        navigate(redirect);
+      }
+
+      return null;
+    }
+  };
+
+function useAPI<T>(
+  queryKey: string | string[],
+  API: (...args: any) => Promise<T>,
+  options?: UseQueryOptions<T> & ExtraQueryOptions
+) {
   const setAccessToken = useSetRecoilState(accessTokenState);
   const navigate = useNavigate();
-  return (
-      API: Promise<any>,
-      onResponse: (res: any) => void,
-      onError?: (code: ErrorCode, message: string, redirect?: string) => void
-    ) =>
-    async () => {
-      try {
-        const res = await API;
-        onResponse(res);
-      } catch (error) {
-        const { error: errorResponse } = ((error as AxiosError)?.response
-          ?.data as { error: ErrorResponse }) ?? {
-          error: defaultError(error as AxiosError)
-        };
-        const { code, message, redirect, clearAccessToken } = errorResponse;
-
-        console.error(message);
-
-        if (clearAccessToken) {
-          setAccessToken('');
-        }
-
-        if (onError) {
-          onError(code, message, redirect);
-        }
-
-        alert(errorMap[code]);
-
-        if (redirect) {
-          navigate(redirect);
-        }
+  return useQuery<T>(
+    typeof queryKey === 'string' ? [queryKey] : [...queryKey],
+    handleError({
+      queryKey,
+      API,
+      setAccessToken,
+      navigate,
+      options: {
+        useBoundary: options?.useBoundary ?? false,
+        useAlert: options?.useAlert ?? true
       }
-    };
+    }),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      suspense: true,
+      ...options
+    }
+  );
 }
 
 export default useAPI;
