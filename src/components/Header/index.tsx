@@ -6,11 +6,13 @@ import LoginIcon from '@assets/images/arrow-right-to-bracket-solid.svg';
 import InnerContainer from '@components/common/InnerContainer';
 import Logo from '@components/common/Logo';
 import MenuButton from './MenuButton';
-import { useEffect, useState } from 'react';
-import useAPI from '@hooks/useAPI';
-import userAPI from '@api/user';
-import { useRecoilValue } from 'recoil';
-import { accessTokenState } from '@recoil/user';
+
+interface HeaderProps {
+  user: {
+    user_name: string;
+    user_exp: number;
+  };
+}
 
 const Container = styled.nav`
   height: ${pxToRem(60)};
@@ -27,31 +29,14 @@ const HeaderMenu = styled.ul`
   gap: ${pxToRem(20)};
 `;
 
-function Header() {
-  const accessToken = useRecoilValue(accessTokenState);
-  const [userData, setUserData] = useState<Pick<
-    Model.User,
-    'user_name' | 'user_exp'
-  > | null>(null);
-  const api = useAPI();
-
-  useEffect(() => {
-    if (accessToken) {
-      (async () => {
-        await api(userAPI.getHeaderUserInfo(), (userData) => {
-          setUserData(userData);
-        })();
-      })();
-    }
-  }, [accessToken]);
-
+function Header({ user }: HeaderProps) {
   return (
     <Container>
       <InnerContainer>
         <Content>
           <Logo />
           <HeaderMenu role="menu">
-            {userData ? (
+            {user.user_name ? (
               <MenuButton text="내 정보">
                 <UserIcon />
               </MenuButton>

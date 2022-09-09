@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { joinResultState } from '@recoil/join';
-import useToken from '@hooks/useToken';
+import useLogin from '@hooks/useLogin';
 import pxToRem from '@utils/pxToRem';
+import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
 import Header from '@components/Header';
 import MenuList from '@components/MenuList';
 import InnerContainer from '@components/common/InnerContainer';
@@ -20,11 +21,11 @@ function Main() {
     setJoinResult(false);
   }, []);
 
-  useToken();
+  const user = useLogin();
 
   return (
     <>
-      <Header />
+      <Header user={user} />
       <MenuList />
       <Container>
         <InnerContainer>
@@ -35,4 +36,14 @@ function Main() {
   );
 }
 
-export default Main;
+export default withAsyncBoundary(Main, {
+  SuspenseFallback: (() => {
+    const Fallback = lazy<React.FC>(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve(import('./Fallback')), 300)
+        )
+    );
+    return <Fallback />;
+  })()
+});
