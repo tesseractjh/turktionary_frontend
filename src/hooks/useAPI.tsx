@@ -4,6 +4,7 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { accessTokenState } from '@recoil/user';
+import { useEffect, useState } from 'react';
 
 interface ExtraQueryOptions {
   useBoundary?: boolean;
@@ -14,7 +15,7 @@ interface HandleError {
   queryKey: string | any[];
   API: (...args: any) => Promise<any>;
   setAccessToken: SetterOrUpdater<string>;
-  navigate: NavigateFunction;
+  setRedirect: React.Dispatch<React.SetStateAction<string>>;
   options?: ExtraQueryOptions;
 }
 
@@ -38,7 +39,7 @@ const defaultError = (error: AxiosError) => {
 };
 
 const handleError =
-  ({ queryKey, API, setAccessToken, navigate, options }: HandleError) =>
+  ({ queryKey, API, setAccessToken, setRedirect, options }: HandleError) =>
   async () => {
     try {
       const res = await API(...queryKey.slice(1));
@@ -56,6 +57,8 @@ const handleError =
       };
       const { code, message, redirect, clearAccessToken } = errorResponse;
 
+      console.log('REDIRECT', redirect);
+
       console.error(message);
 
       if (clearAccessToken) {
@@ -67,7 +70,13 @@ const handleError =
       }
 
       if (redirect) {
-        navigate(redirect);
+        setRedirect(redirect);
+      }
+
+      // mount 전에 navigate 할 수 없기 때문에
+      // 만약 mount 전에 실행되었다면 window.location.href로 강제로 리디렉트
+      if (redirect) {
+        window.location.href = `${window.location.origin}${redirect}`;
       }
 
       return null;
@@ -79,15 +88,23 @@ function useAPI<T>(
   API: (...args: any) => Promise<T>,
   options?: UseQueryOptions<T> & ExtraQueryOptions
 ) {
+  const [redirect, setRedirect] = useState('');
   const setAccessToken = useSetRecoilState(accessTokenState);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (redirect) {
+      navigate(redirect);
+    }
+  }, [redirect]);
+
   return useQuery<T>(
     typeof queryKey === 'string' ? [queryKey] : [...queryKey],
     handleError({
       queryKey,
       API,
       setAccessToken,
-      navigate,
+      setRedirect,
       options: {
         useBoundary: options?.useBoundary ?? false,
         useAlert: options?.useAlert ?? true
