@@ -6,8 +6,8 @@ import { joinResultState } from '@recoil/join';
 import useLogin from '@hooks/useLogin';
 import pxToRem from '@utils/pxToRem';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
-import Header from '@components/Header';
-import MenuList from '@components/MenuList';
+import Header from '@components/Main/Header';
+import MenuList from '@components/Main/MenuList';
 import InnerContainer from '@components/common/InnerContainer';
 
 const Container = styled.section`

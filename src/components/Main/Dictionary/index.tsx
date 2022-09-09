@@ -1,4 +1,4 @@
-import SearchBar from '@components/SearchBar';
+import SearchBar from '@components/common/SearchBar';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';

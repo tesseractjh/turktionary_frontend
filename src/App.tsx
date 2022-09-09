@@ -3,12 +3,12 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GlobalStyle from '@styles/GlobalStyle';
 import ThemeProvider from '@contexts/ThemeProvider';
-import Login from '@pages/Login';
-import Join from '@pages/Join';
-import Main from '@pages/Main';
-import Dictionary from '@pages/Main/Dictionary';
-import JoinForm from '@pages/Join/JoinForm';
-import JoinSuccess from '@pages/Join/JoinSuccess';
+import Login from '@components/Login';
+import Join from '@components/Join';
+import Main from '@components/Main';
+import Dictionary from '@components/Main/Dictionary';
+import JoinForm from '@components/Join/JoinForm';
+import JoinSuccess from '@components/Join/JoinSuccess';
 
 const queryClient = new QueryClient();
 
