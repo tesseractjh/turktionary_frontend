@@ -1,10 +1,10 @@
-import { AxiosError } from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { SetterOrUpdater, useSetRecoilState } from 'recoil';
-import { accessTokenState } from '@recoil/user';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
+import { SetterOrUpdater, useSetRecoilState } from 'recoil';
+import { useQuery } from '@tanstack/react-query';
+import { accessTokenState } from '@recoil/user';
 
 interface ExtraQueryOptions {
   useBoundary?: boolean;
@@ -56,8 +56,6 @@ const handleError =
         error: defaultError(error as AxiosError)
       };
       const { code, message, redirect, clearAccessToken } = errorResponse;
-
-      console.log('REDIRECT', redirect);
 
       console.error(message);
 
