@@ -41,7 +41,7 @@ function Header({ user }: HeaderProps) {
                 <UserIcon />
               </MenuButton>
             ) : (
-              <MenuButton text="로그인" route="/login">
+              <MenuButton text="로그인" route="/login" useAnchor>
                 <LoginIcon />
               </MenuButton>
             )}
