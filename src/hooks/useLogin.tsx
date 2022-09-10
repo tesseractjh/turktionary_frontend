@@ -6,15 +6,20 @@ import useAPI from './useAPI';
 const useToken = () => {
   const [user, setUser] = useState({ user_name: '', user_exp: 0 });
   const setAccessToken = useSetAccessToken();
-  const { data } = useAPI('getHeaderUserInfo', userAPI.getHeaderUserInfo);
+  const { refetch } = useAPI('getHeaderUserInfo', userAPI.getHeaderUserInfo, {
+    enabled: false
+  });
 
   useEffect(() => {
-    if (data) {
-      const { accessToken, user } = data;
-      setAccessToken(accessToken);
-      setUser(user);
-    }
-  }, [data]);
+    (async () => {
+      const { data } = await refetch();
+      if (data) {
+        const { accessToken, user } = data;
+        setAccessToken(accessToken);
+        setUser(user);
+      }
+    })();
+  }, []);
 
   return user;
 };
