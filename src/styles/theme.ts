@@ -31,6 +31,13 @@ export const darkColor = {
   BROWN_DARK: '#ad7833'
 };
 
+export const media = {
+  laptop: 'screen and (max-width: 1024px)',
+  tablet: 'screen and (max-width: 768px)',
+  mobile: 'screen and (max-width: 480px)',
+  galaxyFold: 'screen and (max-width: 320px)'
+};
+
 export const fontSize: Record<Size, string> & {
   custom: (size: Size, variation: number, multiply?: boolean) => string;
 } = {
@@ -50,11 +57,13 @@ export const fontSize: Record<Size, string> & {
 
 const lightTheme = {
   color: lightColor,
+  media,
   fontSize
 };
 
 const darkTheme = {
   color: darkColor,
+  media,
   fontSize
 };
 
