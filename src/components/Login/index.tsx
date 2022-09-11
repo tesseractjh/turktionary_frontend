@@ -93,8 +93,7 @@ function LoginButton({
   return (
     <ButtonItem fontFamily={fontFamily}>
       <Button
-        width={300}
-        padding={0}
+        type="login"
         backgroundColor={backgroundColor}
         color={color}
         border={[1, provider === 'google' ? 'BORDER' : 'KAKAO_YELLOW']}

@@ -47,7 +47,7 @@ function JoinSuccess() {
           <br />더 나은 Turktionary를 위해 귀하의 지식을 기꺼이 공유해주실 것을
           기대하며 미리 감사드립니다.
         </Paragraph>
-        <Button width={200} backgroundColorHover="BROWN" href="/" useAnchor>
+        <Button type="lg" backgroundColorHover="BROWN" href="/" useAnchor>
           홈으로
         </Button>
       </InnerContainer>

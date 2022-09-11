@@ -43,7 +43,8 @@ function JoinButton() {
 
   return (
     <Button
-      width={'100%'}
+      type="lg"
+      stretchWidth
       backgroundColor={isValid ? 'TEAL_DARK' : 'BORDER'}
       backgroundColorHover={isValid ? 'TEAL' : undefined}
       colorHover={isValid ? 'TEAL_DARK' : undefined}
