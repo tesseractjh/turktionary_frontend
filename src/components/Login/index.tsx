@@ -141,7 +141,7 @@ function Login() {
             backgroundColor="KAKAO_YELLOW"
             color="KAKAO_BLACK"
             fontFamily={`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`}
-            href="http://localhost:3000/"
+            href={`${API_URL}/auth/kakao`}
           >
             카카오 로그인
           </LoginButton>
