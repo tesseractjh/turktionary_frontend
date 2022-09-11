@@ -1,3 +1,6 @@
+import { Size } from '@emotion/react';
+import pxToRem from '@utils/pxToRem';
+
 export const lightColor = {
   BLACK: '#000000',
   WHITE: '#ffffff',
@@ -28,12 +31,31 @@ export const darkColor = {
   BROWN_DARK: '#ad7833'
 };
 
+export const fontSize: Record<Size, string> & {
+  custom: (size: Size, variation: number, multiply?: boolean) => string;
+} = {
+  xs: pxToRem(14),
+  sm: pxToRem(16),
+  md: pxToRem(20),
+  lg: pxToRem(28),
+  xl: pxToRem(36),
+  custom(size: Size, variation: number, multiply?: boolean) {
+    const originalSize = Number(this[size].slice(0, -3));
+    const variationSize = Number(pxToRem(variation).slice(0, -3));
+    return `${
+      multiply ? originalSize * variation : originalSize + variationSize
+    }rem`;
+  }
+};
+
 const lightTheme = {
-  color: lightColor
+  color: lightColor,
+  fontSize
 };
 
 const darkTheme = {
-  color: darkColor
+  color: darkColor,
+  fontSize
 };
 
 const themeGroup: ThemeGroup = {

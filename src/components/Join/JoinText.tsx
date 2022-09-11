@@ -25,7 +25,7 @@ const Input = styled.input<{ color: keyof Color }>`
   margin: ${pxToRem(10, 0)};
   border: ${border()} ${({ theme }) => theme.color.BROWN};
   border-radius: ${pxToRem(6)};
-  font-size: ${pxToRem(14)};
+  font-size: ${({ theme }) => theme.fontSize.xs};
 
   &:focus {
     border-color: ${({ theme }) => theme.color.BROWN_DARK};
@@ -54,7 +54,7 @@ const Input = styled.input<{ color: keyof Color }>`
 const Status = styled.p<{ color: keyof Color }>`
   height: ${pxToRem(20)};
   font-weight: 500;
-  font-size: ${pxToRem(14)};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme, color }) => theme.color[color]};
 `;
 
@@ -63,7 +63,7 @@ const Length = styled.span`
   position: absolute;
   top: ${pxToRem(47)};
   right: ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.BROWN};
 `;
 

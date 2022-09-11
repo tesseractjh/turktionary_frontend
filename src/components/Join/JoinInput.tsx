@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const Label = styled.label`
   font-weight: 600;
-  font-size: ${pxToRem(16)};
+  font-size: ${({ theme }) => theme.fontSize.sm};
 `;
 
 function JoinInput({ htmlFor, label, children }: JoinFormProps) {

@@ -26,7 +26,7 @@ const Container = styled.div`
 const Title = styled.h2`
   margin-bottom: ${pxToRem(30)};
   font-weight: 600;
-  font-size: ${pxToRem(36)};
+  font-size: ${({ theme }) => theme.fontSize.xl};
   text-align: center;
 `;
 

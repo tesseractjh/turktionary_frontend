@@ -15,7 +15,7 @@ const Container = styled.h1`
 
 const LinkDisabledContainer = styled.h1`
   font-weight: 700;
-  font-size: ${pxToRem(56)};
+  font-size: ${({ theme }) => theme.fontSize.custom('lg', 2, true)};
   text-align: center;
 
   & svg {
@@ -27,7 +27,7 @@ const LinkDisabledContainer = styled.h1`
 
 const LogoLink = styled(Link)`
   font-weight: 600;
-  font-size: ${pxToRem(28)};
+  font-size: ${({ theme }) => theme.fontSize.lg};
 
   & svg {
     width: ${pxToRem(20)};
@@ -38,7 +38,7 @@ const LogoLink = styled(Link)`
 
 const LogoAnchor = styled.a`
   font-weight: 600;
-  font-size: ${pxToRem(28)};
+  font-size: ${({ theme }) => theme.fontSize.lg};
 
   & svg {
     width: ${pxToRem(20)};

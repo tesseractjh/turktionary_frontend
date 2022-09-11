@@ -19,7 +19,7 @@ const Input = styled.input`
   flex: 1;
   width: 100%;
   padding: ${pxToRem(6, 10)};
-  font-size: ${pxToRem(20)};
+  font-size: ${({ theme }) => theme.fontSize.md};
   color: ${({ theme }) => theme.color.BLACK};
 
   &:focus::placeholder {

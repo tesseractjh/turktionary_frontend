@@ -16,14 +16,14 @@ const Container = styled.div`
 const Title = styled.h2`
   margin-top: ${pxToRem(20)};
   font-weight: 700;
-  font-size: ${pxToRem(28)};
+  font-size: ${({ theme }) => theme.fontSize.lg};
   text-align: center;
 `;
 
 const Paragraph = styled.p`
   width: 100%;
   margin: ${pxToRem(40)} auto;
-  font-size: ${pxToRem(16)};
+  font-size: ${({ theme }) => theme.fontSize.sm};
   line-height: 1.5;
   text-align: center;
 `;

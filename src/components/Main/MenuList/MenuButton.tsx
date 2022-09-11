@@ -34,7 +34,7 @@ const Container = styled.li<{ isSelected: boolean }>`
 
 const Button = styled(Link)`
   padding: ${pxToRem(0, 4)};
-  font-size: ${pxToRem(14)};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.BLACK};
   line-height: 1;
 

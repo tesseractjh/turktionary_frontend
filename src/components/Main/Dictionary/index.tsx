@@ -16,13 +16,13 @@ const SearchBarContainer = styled.div`
 
 const Title = styled.h2`
   font-weight: 700;
-  font-size: ${pxToRem(32)};
+  font-size: ${({ theme }) => theme.fontSize.custom('lg', 4)};
   text-align: center;
   color: ${({ theme }) => theme.color.BROWN_DARK};
 
   & span {
     font-weight: 400;
-    font-size: ${pxToRem(30)};
+    font-size: ${({ theme }) => theme.fontSize.custom('lg', 2)};
     color: ${({ theme }) => theme.color.BLACK};
   }
 `;

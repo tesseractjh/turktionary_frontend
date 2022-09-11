@@ -16,7 +16,7 @@ const ThankYou = styled.p<{ angle: number; trigger: boolean }>`
   min-width: fit-content;
   width: 100%;
   font-weight: 700;
-  font-size: ${pxToRem(96)};
+  font-size: ${({ theme }) => theme.fontSize.custom('sm', 6, true)};
   transform: translate(-50%, -50%) rotate(${({ angle }) => angle}deg);
   transform-origin: left center;
   ${({ trigger }) => (trigger ? '' : 'transition: all 1s 2s;')}

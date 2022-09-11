@@ -38,7 +38,7 @@ const LoginContainer = styled.div`
 const Title = styled.h2`
   margin: ${pxToRem(30, 0, 50)};
   font-weight: 600;
-  font-size: ${pxToRem(36)};
+  font-size: ${({ theme }) => theme.fontSize.xl};
   text-align: center;
 `;
 
@@ -53,7 +53,7 @@ const ButtonItem = styled.li<{ fontFamily: string }>`
     padding-left: ${pxToRem(14)};
     font-family: ${({ fontFamily }) => fontFamily};
     font-weight: 600;
-    font-size: ${pxToRem(14)};
+    font-size: ${({ theme }) => theme.fontSize.xs};
     text-align: center;
   }
 `;

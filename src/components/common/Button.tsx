@@ -56,7 +56,9 @@ const StyledButton = styled.button<StyledButtonProps>`
     };
     background-color: ${theme.color[backgroundColor ?? 'BROWN_DARK']};
     font-size: ${
-      typeof fontSize === 'string' ? fontSize : pxToRem(fontSize ?? 20)
+      typeof fontSize === 'string'
+        ? fontSize
+        : pxToRem(fontSize ?? theme.fontSize.md)
     };
     color: ${theme.color[color ?? 'WHITE']};
     text-align: center;
