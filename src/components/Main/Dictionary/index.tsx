@@ -25,6 +25,14 @@ const Title = styled.h2`
     font-size: ${({ theme }) => theme.fontSize.custom('lg', 2)};
     color: ${({ theme }) => theme.color.BLACK};
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.lg};
+
+    & span {
+      font-size: ${({ theme }) => theme.fontSize.custom('lg', -2)};
+    }
+  }
 `;
 
 const ContentContainer = styled.div``;

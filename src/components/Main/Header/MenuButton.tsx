@@ -43,6 +43,10 @@ const Anchor = styled.a`
 const Text = styled.span`
   margin-top: ${pxToRem(6)};
   font-size: ${({ theme }) => theme.fontSize.custom('xs', -2)};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 
 function MenuButton({

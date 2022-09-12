@@ -7,6 +7,21 @@ const Container = styled.div`
   width: ${pxToRem(100)};
   height: ${pxToRem(100)};
   background-color: ${({ theme }) => theme.color.WHITE};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    width: ${pxToRem(80)};
+    height: ${pxToRem(80)};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(60)};
+    height: ${pxToRem(60)};
+  }
+
+  @media ${({ theme }) => theme.media.galaxyFold} {
+    width: ${pxToRem(50)};
+    height: ${pxToRem(50)};
+  }
 `;
 
 const spinnerAnimation = keyframes`
@@ -22,14 +37,26 @@ const SpinnerQuarter = styled.div<{ delay?: number }>`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: ${pxToRem(50)};
-  height: ${pxToRem(50)};
-  border: 10px solid;
+  width: 50%;
+  height: 50%;
+  border: ${pxToRem(10)} solid;
   border-color: ${({ theme }) => theme.color.TEAL_DARK} transparent transparent
     transparent;
   border-radius: 50%;
   animation: ${spinnerAnimation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   animation-delay: ${({ delay }) => delay ?? 0}s;
+
+  @media ${({ theme }) => theme.media.tablet} {
+    border-width: ${pxToRem(8)};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    border-width: ${pxToRem(6)};
+  }
+
+  @media ${({ theme }) => theme.media.galaxyFold} {
+    border-width: ${pxToRem(5)};
+  }
 `;
 
 function Spinner() {

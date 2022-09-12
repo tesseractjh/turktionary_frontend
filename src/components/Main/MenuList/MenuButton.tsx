@@ -8,8 +8,10 @@ interface MenuButtonProps extends Props {
 }
 
 const Container = styled.li<{ isSelected: boolean }>`
+  flex-shrink: 0;
   ${flex()};
   position: relative;
+  width: fit-content;
   height: 100%;
 
   ${({ isSelected, theme }) =>
@@ -33,6 +35,7 @@ const Container = styled.li<{ isSelected: boolean }>`
 `;
 
 const Button = styled(Link)`
+  flex-shrink: 0;
   padding: ${pxToRem(0, 4)};
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.BLACK};

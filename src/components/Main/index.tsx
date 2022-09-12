@@ -12,6 +12,14 @@ import InnerContainer from '@components/common/InnerContainer';
 
 const Container = styled.section`
   padding: ${pxToRem(80, 0)};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    padding: ${pxToRem(60, 0)};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    padding: ${pxToRem(40, 0)};
+  }
 `;
 
 function Main() {

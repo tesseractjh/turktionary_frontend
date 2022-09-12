@@ -1,10 +1,17 @@
-import { Color, Size } from '@emotion/react';
+import { Color, Media, Size } from '@emotion/react';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import { MouseEventHandler } from 'react';
 
 type ButtonSize = Size | 'login';
+type ButtonStyle = {
+  width?: string;
+  height: string;
+  fontSize?: Size;
+};
+
+const windows = ['desktop', 'laptop', 'tablet', 'mobile', 'galaxyFold'];
 
 interface StyledButtonProps {
   buttonType: ButtonSize;
@@ -26,44 +33,59 @@ interface ButtonProps extends Props, Omit<StyledButtonProps, 'buttonType'> {
 
 const buttons: Record<
   ButtonSize,
-  { width: string; height: string; fontSize: Size }
+  { [K in typeof windows[number]]: ButtonStyle }
 > = {
   xs: {
-    width: pxToRem(200),
-    height: pxToRem(48),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(200),
+      height: pxToRem(48),
+      fontSize: 'md'
+    }
   },
   sm: {
-    width: pxToRem(200),
-    height: pxToRem(48),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(200),
+      height: pxToRem(48),
+      fontSize: 'md'
+    }
   },
   md: {
-    width: pxToRem(200),
-    height: pxToRem(48),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(200),
+      height: pxToRem(48),
+      fontSize: 'md'
+    }
   },
   lg: {
-    width: pxToRem(200),
-    height: pxToRem(48),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(200),
+      height: pxToRem(48),
+      fontSize: 'md'
+    }
   },
   xl: {
-    width: pxToRem(200),
-    height: pxToRem(48),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(200),
+      height: pxToRem(48),
+      fontSize: 'md'
+    }
   },
   login: {
-    width: pxToRem(300),
-    height: pxToRem(40),
-    fontSize: 'md'
+    desktop: {
+      width: pxToRem(300),
+      height: pxToRem(40)
+    },
+    mobile: {
+      width: pxToRem(240),
+      height: pxToRem(40)
+    }
   }
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
   ${flex('center', 'center', true)}
   ${({
-    buttonType,
+    buttonType: type,
     stretchWidth,
     border,
     borderRadius,
@@ -73,8 +95,8 @@ const StyledButton = styled.button<StyledButtonProps>`
     colorHover,
     theme
   }) => `
-    width: ${stretchWidth ? '100%' : buttons[buttonType].width};
-    height: ${buttons[buttonType].height};
+    width: ${stretchWidth ? '100%' : buttons[type].desktop.width};
+    height: ${buttons[type].desktop.height};
     ${
       border
         ? `border: ${pxToRem(border[0])} solid ${theme.color[border[1]]};`
@@ -86,7 +108,7 @@ const StyledButton = styled.button<StyledButtonProps>`
         : pxToRem(borderRadius ?? 6)
     };
     background-color: ${theme.color[backgroundColor ?? 'BROWN_DARK']};
-    font-size: ${theme.fontSize[buttons[buttonType].fontSize]};
+    font-size: ${theme.fontSize[buttons[type].desktop?.fontSize ?? 'md']};
     color: ${theme.color[color ?? 'WHITE']};
     text-align: center;
 
@@ -98,6 +120,22 @@ const StyledButton = styled.button<StyledButtonProps>`
       }
       ${colorHover ? `color: ${theme.color[colorHover]};` : ''}
     }
+
+    ${windows
+      .slice(1)
+      .map((media) => {
+        const style = buttons[type][media];
+        if (!style) {
+          return '';
+        }
+        return `
+      @media ${theme.media[media as keyof Media]} {
+        width: ${stretchWidth ? '100%' : style.width};
+        height: ${style.height};
+        fontSize: ${style.fontSize}
+      }`;
+      })
+      .join('')}
   `}
 `;
 

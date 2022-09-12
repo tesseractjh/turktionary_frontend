@@ -21,6 +21,27 @@ const Container = styled.div`
   margin-top: ${pxToRem(40)};
   border: ${border()} ${({ theme }) => theme.color.BROWN_DARK};
   border-radius: ${pxToRem(10)};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    width: ${pxToRem(450)};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(350)};
+    padding: ${pxToRem(30, 24)};
+    & input::placeholder {
+      color: transparent;
+    }
+  }
+
+  @media ${({ theme }) => theme.media.galaxyFold} {
+    width: ${pxToRem(260)};
+    padding: 0;
+    border: none;
+    & input::placeholder {
+      color: transparent;
+    }
+  }
 `;
 
 const Title = styled.h2`
@@ -28,6 +49,10 @@ const Title = styled.h2`
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.xl};
   text-align: center;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.lg};
+  }
 `;
 
 function NickNameInput() {

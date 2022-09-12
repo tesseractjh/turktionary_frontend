@@ -4,7 +4,9 @@ import pxToRem from '@utils/pxToRem';
 import GlassIcon from '@assets/images/magnifying-glass-solid.svg';
 
 const Container = styled.div`
-  width: 50%;
+  min-width: ${pxToRem(240)};
+  max-width: ${pxToRem(550)};
+  width: calc(100vw - ${pxToRem(40)});
   margin-top: ${pxToRem(20)};
 `;
 

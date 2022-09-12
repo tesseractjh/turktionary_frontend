@@ -9,23 +9,37 @@ import Message from './Message';
 
 const Container = styled.div`
   width: 100%;
-  margin-top: ${pxToRem(80)};
+  margin-top: ${pxToRem(40)};
   text-align: center;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin-top: ${pxToRem(24)};
+  }
 `;
 
 const Title = styled.h2`
-  margin-top: ${pxToRem(20)};
+  margin-top: ${pxToRem(40)};
   font-weight: 700;
   font-size: ${({ theme }) => theme.fontSize.lg};
   text-align: center;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin-top: ${pxToRem(24)};
+    font-size: ${({ theme }) => theme.fontSize.md};
+  }
 `;
 
 const Paragraph = styled.p`
   width: 100%;
-  margin: ${pxToRem(40)} auto;
+  padding: ${pxToRem(0, 20)};
+  margin: ${pxToRem(40, 'auto')};
   font-size: ${({ theme }) => theme.fontSize.sm};
   line-height: 1.5;
   text-align: center;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin: ${pxToRem(24, 'auto')};
+  }
 `;
 
 function JoinSuccess() {

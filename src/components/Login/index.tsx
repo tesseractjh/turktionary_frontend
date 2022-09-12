@@ -1,11 +1,11 @@
 import Button from '@components/common/Button';
 import Logo from '@components/common/Logo';
 import styled from '@emotion/styled';
+import { Color } from '@emotion/react';
 import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import GoogleIcon from '@assets/images/google.svg';
 import KakaoIcon from '@assets/images/kakao.png';
-import { Color } from '@emotion/react';
 import useRedirect from '@hooks/useRedirect';
 import useVerifyRefreshToken from '@hooks/useVerifyRefreshToken';
 
@@ -33,6 +33,17 @@ const LoginContainer = styled.div`
   margin-top: ${pxToRem(40)};
   border: ${border()} ${({ theme }) => theme.color.BROWN_DARK};
   border-radius: ${pxToRem(10)};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(300)};
+    padding: ${pxToRem(20, 15)};
+  }
+
+  @media ${({ theme }) => theme.media.galaxyFold} {
+    width: ${pxToRem(250)};
+    padding: 0;
+    border: none;
+  }
 `;
 
 const Title = styled.h2`
@@ -40,6 +51,11 @@ const Title = styled.h2`
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.xl};
   text-align: center;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin: ${pxToRem(20, 0, 30)};
+    font-size: ${({ theme }) => theme.fontSize.lg};
+  }
 `;
 
 const ButtonItem = styled.li<{ fontFamily: string }>`
@@ -50,7 +66,7 @@ const ButtonItem = styled.li<{ fontFamily: string }>`
 
   & strong {
     flex: 1;
-    padding-left: ${pxToRem(14)};
+    padding: ${pxToRem(0, 10, 0, 14)};
     font-family: ${({ fontFamily }) => fontFamily};
     font-weight: 600;
     font-size: ${({ theme }) => theme.fontSize.xs};
@@ -120,7 +136,7 @@ function Login() {
 
   return (
     <Container>
-      <Logo />
+      <Logo useAnchor />
       <LoginContainer>
         <Title>로그인</Title>
         <ul>

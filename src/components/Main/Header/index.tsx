@@ -17,11 +17,19 @@ interface HeaderProps {
 const Container = styled.nav`
   height: ${pxToRem(60)};
   background-color: ${({ theme }) => theme.color.TEAL};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    height: ${pxToRem(48)};
+  }
 `;
 
 const Content = styled.div`
   ${flex('space-between')}
   height: ${pxToRem(60)};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    height: ${pxToRem(48)};
+  }
 `;
 
 const HeaderMenu = styled.ul`
