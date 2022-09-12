@@ -34,7 +34,7 @@ const Content = styled.div`
 
 const HeaderMenu = styled.ul`
   ${flex('flex-end')}
-  gap: ${pxToRem(20)};
+  gap: ${pxToRem(10)};
 `;
 
 function Header({ user }: HeaderProps) {
