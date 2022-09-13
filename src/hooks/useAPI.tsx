@@ -43,6 +43,10 @@ const handleError =
   async () => {
     try {
       const res = await API(...queryKey.slice(1));
+      const { accessToken } = res;
+      if (accessToken) {
+        setAccessToken(accessToken);
+      }
       return res;
     } catch (error) {
       if (options?.useBoundary) {
