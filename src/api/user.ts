@@ -1,15 +1,8 @@
 import axios from 'axios';
-import queryString from '@utils/queryString';
 
 const userAPI = {
   async getAccessToken() {
     const { data } = await axios.patch('/user/refresh');
-    return data;
-  },
-
-  async getUserInfo(condition: Partial<Model.User>, path?: string) {
-    const query = queryString(condition);
-    const { data } = await axios.get(`/user${path ?? ''}?${query}`);
     return data;
   },
 
