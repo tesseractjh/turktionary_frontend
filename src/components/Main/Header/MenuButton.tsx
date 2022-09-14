@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
-import { Link } from 'react-router-dom';
 
 interface MenuButtonProps extends Props {
   text: string;
@@ -20,6 +20,10 @@ const Container = styled.li`
     & * {
       color: ${({ theme }) => theme.color.WHITE};
       fill: ${({ theme }) => theme.color.WHITE};
+    }
+    & .noti-count {
+      background-color: ${({ theme }) => theme.color.TEAL};
+      color: ${({ theme }) => theme.color.BLACK};
     }
   }
 
