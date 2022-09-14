@@ -1,10 +1,13 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryKey,
+  useQueryClient,
+  UseQueryOptions
+} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
-import { SetterOrUpdater, useSetRecoilState } from 'recoil';
+import axios, { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { accessTokenState } from '@recoil/user';
 
 interface ExtraQueryOptions {
   useBoundary?: boolean;
@@ -12,9 +15,9 @@ interface ExtraQueryOptions {
 }
 
 interface HandleError {
-  queryKey: string | any[];
+  queryKey: QueryKey;
   API: (...args: any) => Promise<any>;
-  setAccessToken: SetterOrUpdater<string>;
+  queryClient: QueryClient;
   setRedirect: React.Dispatch<React.SetStateAction<string>>;
   options?: ExtraQueryOptions;
 }
@@ -39,13 +42,16 @@ const defaultError = (error: AxiosError) => {
 };
 
 const handleError =
-  ({ queryKey, API, setAccessToken, setRedirect, options }: HandleError) =>
+  ({ queryKey, API, queryClient, setRedirect, options }: HandleError) =>
   async () => {
     try {
       const res = await API(...queryKey.slice(1));
       const { accessToken } = res;
       if (accessToken) {
-        setAccessToken(accessToken);
+        queryClient.setQueryData(['getAccessToken'], accessToken);
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${accessToken}`;
       }
       return res;
     } catch (error) {
@@ -64,7 +70,8 @@ const handleError =
       console.error(message);
 
       if (clearAccessToken) {
-        setAccessToken('');
+        queryClient.setQueryData(['getAccessToken'], '');
+        axios.defaults.headers.common['Authorization'] = '';
       }
 
       if (options?.useAlert && errorMap[code]) {
@@ -86,12 +93,12 @@ const handleError =
   };
 
 function useAPI<T>(
-  queryKey: string | string[],
+  queryKey: string | QueryKey,
   API: (...args: any) => Promise<T>,
   options?: UseQueryOptions<T> & ExtraQueryOptions
 ) {
   const [redirect, setRedirect] = useState('');
-  const setAccessToken = useSetRecoilState(accessTokenState);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,9 +110,9 @@ function useAPI<T>(
   return useQuery<T>(
     typeof queryKey === 'string' ? [queryKey] : [...queryKey],
     handleError({
-      queryKey,
+      queryKey: typeof queryKey === 'string' ? [queryKey] : [...queryKey],
       API,
-      setAccessToken,
+      queryClient,
       setRedirect,
       options: {
         useBoundary: options?.useBoundary ?? false,
