@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import GlobalStyle from '@styles/GlobalStyle';
 import ThemeProvider from '@contexts/ThemeProvider';
 import Login from '@components/Login';
@@ -42,6 +43,7 @@ function App() {
               </Routes>
             </BrowserRouter>
           </ThemeProvider>
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </RecoilRoot>
     </>
