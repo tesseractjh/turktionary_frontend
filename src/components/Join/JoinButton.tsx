@@ -6,7 +6,6 @@ import {
   joinTextState,
   joinTextValidationState
 } from '@recoil/join';
-import { accessTokenState } from '@recoil/user';
 import userAPI from '@api/user';
 import useAPI from '@hooks/useAPI';
 import Button from '@components/common/Button';
@@ -18,7 +17,6 @@ function JoinButton() {
   const isEmailValid = useRecoilValue(joinTextValidationState('email'));
   const agreement = useRecoilValue(joinCheckboxState('termsOfUse'));
   const setJoinResult = useSetRecoilState(joinResultState);
-  const setAccessToken = useSetRecoilState(accessTokenState);
   const { refetch } = useAPI<{ accessToken: string }>(
     ['createUser', nickname, email],
     userAPI.updateUser,
@@ -34,8 +32,6 @@ function JoinButton() {
     }
     const { data } = await refetch();
     if (data) {
-      const { accessToken } = data;
-      setAccessToken(accessToken);
       setJoinResult(true);
       navigate('/join/success');
     }

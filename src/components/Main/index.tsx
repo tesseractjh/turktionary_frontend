@@ -29,7 +29,7 @@ function Main() {
     setJoinResult(false);
   }, []);
 
-  const user = useLogin();
+  const [user, notification] = useLogin();
 
   return (
     <>

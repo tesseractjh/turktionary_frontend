@@ -10,10 +10,7 @@ import NotiCount from '@components/common/NotiCount';
 import MenuButton from './MenuButton';
 
 interface HeaderProps {
-  user: {
-    user_name: string;
-    user_exp: number;
-  };
+  user: Partial<Model.User>;
 }
 
 const Container = styled.nav`
