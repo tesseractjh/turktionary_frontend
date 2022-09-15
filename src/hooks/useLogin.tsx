@@ -5,45 +5,23 @@ import useAPI from '@hooks/useAPI';
 import useAccessToken from '@hooks/useAccessToken';
 
 const useLogin = () => {
-  const [user, setUser] = useState<Partial<Model.User>>({
-    user_name: '',
-    user_exp: 0
-  });
-  const [notification, setNotification] = useState([]);
   const accessToken = useAccessToken();
-  const { refetch: getUserInfo } = useAPI(
+  const { data: user } = useAPI(
     'getHeaderUserInfo',
     userAPI.getHeaderUserInfo,
     {
-      enabled: false
+      enabled: !!accessToken
     }
   );
-  const { refetch: getNotification } = useAPI(
+  const { data: notification } = useAPI(
     'getNotification',
     notificationAPI.getNotification,
     {
-      enabled: false
+      enabled: !!accessToken
     }
   );
 
-  useEffect(() => {
-    if (accessToken) {
-      (async () => {
-        const [{ data: userInfo }, { data: userNotification }] =
-          await Promise.all([getUserInfo(), getNotification()]);
-        if (userInfo) {
-          const { user } = userInfo;
-          setUser(user);
-        }
-        if (notification) {
-          const { notification } = userNotification;
-          setNotification(notification);
-        }
-      })();
-    }
-  }, [accessToken]);
-
-  return [user, notification] as [Partial<Model.User>, never[]];
+  return [user, notification] as const;
 };
 
 export default useLogin;

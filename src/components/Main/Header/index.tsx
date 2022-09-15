@@ -10,7 +10,8 @@ import NotiCount from '@components/common/NotiCount';
 import MenuButton from './MenuButton';
 
 interface HeaderProps {
-  user: Partial<Model.User>;
+  user: Model.User;
+  notification: Model.Notification;
 }
 
 const Container = styled.nav`
@@ -36,18 +37,18 @@ const HeaderMenu = styled.ul`
   gap: ${pxToRem(10)};
 `;
 
-function Header({ user }: HeaderProps) {
+function Header({ user, notification }: HeaderProps) {
   return (
     <Container>
       <InnerContainer>
         <Content>
           <Logo />
           <HeaderMenu role="menu">
-            {user.user_name ? (
+            {user?.user.user_name ? (
               <>
                 <MenuButton text="알림">
                   <BellIcon />
-                  <NotiCount count={555} />
+                  <NotiCount count={notification?.notification.length} />
                 </MenuButton>
                 <MenuButton text="내 정보">
                   <UserIcon />

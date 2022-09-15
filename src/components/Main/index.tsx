@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
@@ -22,6 +22,20 @@ const Container = styled.section`
   }
 `;
 
+function SuspsenseFallback() {
+  const Fallback = lazy<React.FC>(
+    () =>
+      new Promise((resolve) =>
+        setTimeout(() => resolve(import('./Fallback')), 300)
+      )
+  );
+  return (
+    <Suspense>
+      <Fallback />
+    </Suspense>
+  );
+}
+
 function Main() {
   const setJoinResult = useSetRecoilState(joinResultState);
 
@@ -33,7 +47,7 @@ function Main() {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user} notification={notification} />
       <MenuList />
       <Container>
         <InnerContainer>
@@ -45,13 +59,5 @@ function Main() {
 }
 
 export default withAsyncBoundary(Main, {
-  SuspenseFallback: (() => {
-    const Fallback = lazy<React.FC>(
-      () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve(import('./Fallback')), 300)
-        )
-    );
-    return <Fallback />;
-  })()
+  SuspenseFallback: <SuspsenseFallback />
 });
