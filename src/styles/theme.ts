@@ -3,6 +3,7 @@ import pxToRem from '@utils/pxToRem';
 
 export const lightColor = {
   BLACK: '#000000',
+  GRAY: '#9a9a9a',
   WHITE: '#ffffff',
   BORDER: '#e6e6e6',
   TEAL: '#cee5d0',
@@ -12,12 +13,14 @@ export const lightColor = {
   GOOGLE_BLACK: '#0000008a',
   KAKAO_BLACK: '#000000d9',
   KAKAO_YELLOW: '#fee500',
+  GRAY_LIGHT: '#f2f2f2',
   TEAL_DARK: '#5ca862',
   BROWN_DARK: '#ad7833'
 };
 
 export const darkColor = {
   BLACK: '#000000',
+  GRAY: '#9a9a9a',
   WHITE: '#ffffff',
   BORDER: '#e6e6e6',
   TEAL: '#cee5d0',
@@ -27,6 +30,7 @@ export const darkColor = {
   GOOGLE_BLACK: '#0000008a',
   KAKAO_BLACK: '#000000d9',
   KAKAO_YELLOW: '#fee500',
+  GRAY_LIGHT: '#f2f2f2',
   TEAL_DARK: '#5ca862',
   BROWN_DARK: '#ad7833'
 };

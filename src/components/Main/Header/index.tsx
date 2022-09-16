@@ -8,6 +8,8 @@ import InnerContainer from '@components/common/InnerContainer';
 import Logo from '@components/common/Logo';
 import NotiCount from '@components/common/NotiCount';
 import MenuButton from './MenuButton';
+import Notification from './Notification';
+import { MouseEventHandler, useCallback, useState } from 'react';
 
 interface HeaderProps {
   user: Model.User;
@@ -25,6 +27,7 @@ const Container = styled.nav`
 
 const Content = styled.div`
   ${flex('space-between')}
+  position: relative;
   height: ${pxToRem(60)};
 
   @media ${({ theme }) => theme.media.mobile} {
@@ -38,6 +41,21 @@ const HeaderMenu = styled.ul`
 `;
 
 function Header({ user, notification }: HeaderProps) {
+  const [isNotiHidden, setIsNotiHidden] = useState(true);
+
+  const handleNotiClick = useCallback(() => {
+    setIsNotiHidden((state) => !state);
+  }, []);
+
+  const handleDocumentClick = useCallback<(event: MouseEvent) => void>(
+    ({ target }) => {
+      if (!(target as Element).closest('.notification')) {
+        setIsNotiHidden(true);
+      }
+    },
+    []
+  );
+
   return (
     <Container>
       <InnerContainer>
@@ -46,7 +64,11 @@ function Header({ user, notification }: HeaderProps) {
           <HeaderMenu role="menu">
             {user?.user.user_name ? (
               <>
-                <MenuButton text="알림">
+                <MenuButton
+                  text="알림"
+                  onClick={handleNotiClick}
+                  className="notification"
+                >
                   <BellIcon />
                   <NotiCount count={notification?.notification.length} />
                 </MenuButton>
@@ -60,6 +82,12 @@ function Header({ user, notification }: HeaderProps) {
               </MenuButton>
             )}
           </HeaderMenu>
+          <Notification
+            notifications={notification?.notification ?? []}
+            handleDocumentClick={handleDocumentClick}
+            setHidden={setIsNotiHidden}
+            hidden={isNotiHidden}
+          />
         </Content>
       </InnerContainer>
     </Container>

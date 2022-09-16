@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import userAPI from '@api/user';
 import notificationAPI from '@api/notification';
 import useAPI from '@hooks/useAPI';
@@ -17,7 +16,8 @@ const useLogin = () => {
     'getNotification',
     notificationAPI.getNotification,
     {
-      enabled: !!accessToken
+      enabled: !!accessToken,
+      refetchInterval: 30 * 60 * 1000
     }
   );
 

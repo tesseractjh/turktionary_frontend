@@ -1,6 +1,6 @@
 declare namespace Model {
-  type User = { user: Partial<UserTable> };
-  type Notification = { notification: Partial<NotificationTable>[] };
+  type User = { user: UserTable };
+  type Notification = { notification: NotificationTable[] };
 
   interface UserTable {
     user_id: number;
@@ -11,15 +11,16 @@ declare namespace Model {
     introduction: string | null;
     email: string | null;
     refresh_token: string | null;
-    created_time: Date;
+    created_time: string;
   }
 
   interface NotificationTable {
     notification_id: number;
     user_id: number;
+    notification_type: string;
+    notification_title: string;
     notification_text: string;
     notification_link: string;
-    checked: boolean;
-    created_time: Date;
+    created_time: string;
   }
 }
