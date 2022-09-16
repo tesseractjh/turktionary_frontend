@@ -10,6 +10,7 @@ import Logo from '@components/common/Logo';
 import NotiCount from '@components/common/NotiCount';
 import MenuButton from './MenuButton';
 import Notification from './Notification';
+import UserMenu from './UserMenu';
 
 interface HeaderProps {
   user: Model.User;
@@ -53,13 +54,23 @@ const handleDocumentClick =
 
 function Header({ user, notification }: HeaderProps) {
   const [isNotiHidden, setIsNotiHidden] = useState(true);
+  const [isUserHidden, setIsUserHidden] = useState(true);
 
   const handleNotiClick = useCallback(() => {
     setIsNotiHidden((state) => !state);
   }, []);
 
+  const handleUserClick = useCallback(() => {
+    setIsUserHidden((state) => !state);
+  }, []);
+
   const handleNotiClose = useCallback(
     handleDocumentClick('popup-notification', setIsNotiHidden),
+    []
+  );
+
+  const handleUserClose = useCallback(
+    handleDocumentClick('popup-user', setIsUserHidden),
     []
   );
 
@@ -82,9 +93,27 @@ function Header({ user, notification }: HeaderProps) {
                   <BellIcon />
                   <NotiCount count={notification?.notification.length} />
                 </MenuButton>
-                <MenuButton text="내 정보">
+                <MenuButton
+                  id="btn-user-popup"
+                  className="popup-user"
+                  text="내 정보"
+                  onClick={handleUserClick}
+                  aria-haspopup="true"
+                  aria-controls="popup-user"
+                >
                   <UserIcon />
                 </MenuButton>
+                <Notification
+                  notifications={notification?.notification ?? []}
+                  handleDocumentClick={handleNotiClose}
+                  setHidden={setIsNotiHidden}
+                  hidden={isNotiHidden}
+                />
+                <UserMenu
+                  user={user?.user}
+                  handleDocumentClick={handleUserClose}
+                  hidden={isUserHidden}
+                />
               </>
             ) : (
               <MenuButton text="로그인" route="/login" useAnchor>
@@ -92,12 +121,6 @@ function Header({ user, notification }: HeaderProps) {
               </MenuButton>
             )}
           </HeaderMenu>
-          <Notification
-            notifications={notification?.notification ?? []}
-            handleDocumentClick={handleNotiClose}
-            setHidden={setIsNotiHidden}
-            hidden={isNotiHidden}
-          />
         </Content>
       </InnerContainer>
     </Container>

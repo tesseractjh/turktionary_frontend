@@ -31,6 +31,11 @@ const userAPI = {
   async getIsLoggedIn() {
     const { data } = await axios.get('/user/is-logged-in');
     return data;
+  },
+
+  async logout() {
+    const { data } = await axios.post('/user/logout');
+    return data;
   }
 };
 
