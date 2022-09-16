@@ -8,6 +8,7 @@ interface MenuButtonProps extends Props {
   route?: string;
   useAnchor?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 const Container = styled.li`
@@ -83,12 +84,13 @@ function MenuButton({
   route,
   useAnchor,
   onClick,
+  className,
   children
 }: MenuButtonProps) {
   if (route) {
     if (useAnchor) {
       return (
-        <Container role="menuitem">
+        <Container role="menuitem" className={className}>
           <Anchor href={route}>
             {children}
             <Text>{text}</Text>
@@ -98,7 +100,7 @@ function MenuButton({
     }
 
     return (
-      <Container role="menuitem">
+      <Container role="menuitem" className={className}>
         <LinkButton to={route}>
           {children}
           <Text>{text}</Text>
@@ -108,7 +110,7 @@ function MenuButton({
   }
 
   return (
-    <Container role="menuitem">
+    <Container role="menuitem" className={className}>
       <Button onClick={onClick}>
         {children}
         <Text>{text}</Text>
