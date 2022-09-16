@@ -6,6 +6,7 @@ import { border, flex } from '@styles/minxin';
 import notificationAPI from '@api/notification';
 import useMutationAPI from '@hooks/useMutationAPI';
 import pxToRem from '@utils/pxToRem';
+import PopupContainer from '@components/common/styledComponents/PopupContainer';
 import Message from './Message';
 
 interface NotificationProps {
@@ -14,23 +15,6 @@ interface NotificationProps {
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;
   hidden: boolean;
 }
-
-const Container = styled.div<{ hidden: boolean }>`
-  ${flex('center', 'stretch')}
-  ${({ hidden }) => (hidden ? 'display: none;' : '')}
-  flex-direction: column;
-  overflow: hidden;
-  position: absolute;
-  top: ${pxToRem(64)};
-  right: 0;
-  z-index: 10;
-  width: ${pxToRem(360)};
-  max-height: ${pxToRem(400)};
-  border: ${border()} ${({ theme }) => theme.color.BORDER};
-  border-radius: ${pxToRem(10)};
-  box-shadow: 0 7px 20px rgb(0 0 0 / 17%);
-  background-color: ${({ theme }) => theme.color.WHITE};
-`;
 
 const Top = styled.div`
   ${flex('flex-end')}
@@ -142,7 +126,13 @@ function Notification({
   }, [notifications]);
 
   return (
-    <Container hidden={hidden} className="notification">
+    <PopupContainer
+      id="popup-notification"
+      hidden={hidden}
+      className="popup-notification"
+      role="menu"
+      aria-labelledby="btn-notification-popup"
+    >
       <Top>
         <DeleteButton onClick={handleDelete}>모든 알림 읽음 표시</DeleteButton>
       </Top>
@@ -162,7 +152,7 @@ function Notification({
           <NoMessage>새로운 알림이 없습니다</NoMessage>
         )}
       </Bottom>
-    </Container>
+    </PopupContainer>
   );
 }
 

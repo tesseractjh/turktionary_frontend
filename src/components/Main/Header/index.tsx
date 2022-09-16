@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
@@ -9,7 +10,6 @@ import Logo from '@components/common/Logo';
 import NotiCount from '@components/common/NotiCount';
 import MenuButton from './MenuButton';
 import Notification from './Notification';
-import { MouseEventHandler, useCallback, useState } from 'react';
 
 interface HeaderProps {
   user: Model.User;
@@ -40,6 +40,17 @@ const HeaderMenu = styled.ul`
   gap: ${pxToRem(10)};
 `;
 
+const handleDocumentClick =
+  (
+    className: string,
+    setState: React.Dispatch<React.SetStateAction<boolean>>
+  ) =>
+  ({ target }: MouseEvent) => {
+    if (!(target as Element).closest(`.${className}`)) {
+      setState(true);
+    }
+  };
+
 function Header({ user, notification }: HeaderProps) {
   const [isNotiHidden, setIsNotiHidden] = useState(true);
 
@@ -47,12 +58,8 @@ function Header({ user, notification }: HeaderProps) {
     setIsNotiHidden((state) => !state);
   }, []);
 
-  const handleDocumentClick = useCallback<(event: MouseEvent) => void>(
-    ({ target }) => {
-      if (!(target as Element).closest('.notification')) {
-        setIsNotiHidden(true);
-      }
-    },
+  const handleNotiClose = useCallback(
+    handleDocumentClick('popup-notification', setIsNotiHidden),
     []
   );
 
@@ -65,9 +72,12 @@ function Header({ user, notification }: HeaderProps) {
             {user?.user.user_name ? (
               <>
                 <MenuButton
+                  id="btn-notification-popup"
+                  className="popup-notification"
                   text="알림"
                   onClick={handleNotiClick}
-                  className="notification"
+                  aria-haspopup="true"
+                  aria-controls="popup-notification"
                 >
                   <BellIcon />
                   <NotiCount count={notification?.notification.length} />
@@ -84,7 +94,7 @@ function Header({ user, notification }: HeaderProps) {
           </HeaderMenu>
           <Notification
             notifications={notification?.notification ?? []}
-            handleDocumentClick={handleDocumentClick}
+            handleDocumentClick={handleNotiClose}
             setHidden={setIsNotiHidden}
             hidden={isNotiHidden}
           />
