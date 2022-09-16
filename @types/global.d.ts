@@ -14,6 +14,10 @@ declare global {
     redirect?: string;
     clearAccessToken?: boolean;
   };
+  type MutationParams = {
+    query?: Record<string, any>;
+    body?: any;
+  };
 
   interface ThemeGroup {
     LIGHT: Theme;
