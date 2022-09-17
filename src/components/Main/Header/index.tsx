@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Keyframes, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { flex } from '@styles/minxin';
+import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import BellIcon from '@assets/images/bell-solid.svg';
 import UserIcon from '@assets/images/user-solid.svg';
@@ -8,14 +9,35 @@ import LoginIcon from '@assets/images/arrow-right-to-bracket-solid.svg';
 import InnerContainer from '@components/common/InnerContainer';
 import Logo from '@components/common/Logo';
 import NotiCount from '@components/common/NotiCount';
+import SearchBar from '@components/common/SearchBar';
 import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
+import { useSetRecoilState } from 'recoil';
+import { searchBarPositionState } from '@recoil/search';
 
 interface HeaderProps {
   user: Model.User;
   notification: Model.Notification;
 }
+
+const mountAnimation = keyframes`
+  0% {
+    transform: translateY(${pxToRem(50)});
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
+const unmountAnimation = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(${pxToRem(50)});
+  }
+`;
 
 const Container = styled.nav`
   position: fixed;
@@ -39,7 +61,36 @@ const Content = styled.div`
   }
 `;
 
-const HeaderMenu = styled.ul`
+const SearchBarWrapper = styled.div<{ animation: Keyframes }>`
+  overflow: hidden;
+  max-width: 50%;
+  width: 100%;
+
+  & > div {
+    animation: ${({ animation }) => animation} 0.2s ease-in-out;
+
+    @media ${({ theme }) => theme.media.tablet} {
+      animation: none;
+    }
+  }
+
+  @media ${({ theme }) => theme.media.tablet} {
+    position: fixed;
+    top: ${pxToRem(60)};
+    left: 0;
+    max-width: none;
+    width: 100vw;
+    padding: ${pxToRem(4, 20)};
+    border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
+    background-color: ${({ theme }) => theme.color.TEAL};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    top: ${pxToRem(48)};
+  }
+`;
+
+const Menu = styled.ul`
   ${flex('flex-end')}
   gap: ${pxToRem(10)};
 `;
@@ -55,7 +106,7 @@ const handleDocumentClick =
     }
   };
 
-function Header({ user, notification }: HeaderProps) {
+function HeaderMenu({ user, notification }: HeaderProps) {
   const [isNotiHidden, setIsNotiHidden] = useState(true);
   const [isUserHidden, setIsUserHidden] = useState(true);
 
@@ -78,52 +129,126 @@ function Header({ user, notification }: HeaderProps) {
   );
 
   return (
+    <Menu role="menu">
+      {user?.user.user_name ? (
+        <>
+          <MenuButton
+            id="btn-notification-popup"
+            className="popup-notification"
+            text="알림"
+            onClick={handleNotiClick}
+            aria-haspopup="true"
+            aria-controls="popup-notification"
+          >
+            <BellIcon />
+            <NotiCount count={notification?.notification.length} />
+          </MenuButton>
+          <MenuButton
+            id="btn-user-popup"
+            className="popup-user"
+            text="내 정보"
+            onClick={handleUserClick}
+            aria-haspopup="true"
+            aria-controls="popup-user"
+          >
+            <UserIcon />
+          </MenuButton>
+          <Notification
+            notifications={notification?.notification ?? []}
+            handleDocumentClick={handleNotiClose}
+            setHidden={setIsNotiHidden}
+            hidden={isNotiHidden}
+          />
+          <UserMenu
+            user={user?.user}
+            handleDocumentClick={handleUserClose}
+            hidden={isUserHidden}
+          />
+        </>
+      ) : (
+        <MenuButton text="로그인" route="/login" useAnchor>
+          <LoginIcon />
+        </MenuButton>
+      )}
+    </Menu>
+  );
+}
+
+function HeaderSearchBar() {
+  const [animation, setAnimation] = useState(mountAnimation);
+  const [position, setPosition] = useState('content');
+  const setPositionAtom = useSetRecoilState(searchBarPositionState);
+
+  useEffect(() => {
+    const searchContent = document.querySelector('#search-dictionary');
+    const header = document.querySelector('#header');
+
+    let handleScroll: () => void;
+    let headerTimer: NodeJS.Timeout | null = null;
+    let contentTimer: NodeJS.Timeout | null = null;
+
+    if (searchContent && header) {
+      handleScroll = () => {
+        const { top, height } = searchContent.getBoundingClientRect();
+        const { height: headerHeight } = header.getBoundingClientRect();
+        if (top + height <= headerHeight) {
+          if (position === 'content') {
+            setAnimation(mountAnimation);
+            setPosition('header');
+            if (headerTimer) {
+              clearTimeout(headerTimer);
+              headerTimer = null;
+            }
+            headerTimer = setTimeout(() => {
+              const input = header.querySelector(
+                '#search-header input'
+              ) as HTMLInputElement;
+              input.blur();
+              input.focus();
+            }, 200);
+          }
+        } else {
+          if (position === 'header') {
+            if (!contentTimer) {
+              setAnimation(unmountAnimation);
+              contentTimer = setTimeout(() => {
+                setPosition('content');
+                contentTimer = null;
+              }, 200);
+            }
+            const input = searchContent.querySelector(
+              'input'
+            ) as HTMLInputElement;
+            input.blur();
+            input.focus();
+          }
+        }
+      };
+      document.addEventListener('scroll', handleScroll);
+    }
+
+    setPositionAtom(position);
+
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [position]);
+
+  return position === 'header' ? (
+    <SearchBarWrapper animation={animation}>
+      <SearchBar id="search-header" color="TEAL_DARK" />
+    </SearchBarWrapper>
+  ) : null;
+}
+
+function Header({ user, notification }: HeaderProps) {
+  return (
     <Container>
       <InnerContainer>
         <Content>
           <Logo />
-          <HeaderMenu role="menu">
-            {user?.user.user_name ? (
-              <>
-                <MenuButton
-                  id="btn-notification-popup"
-                  className="popup-notification"
-                  text="알림"
-                  onClick={handleNotiClick}
-                  aria-haspopup="true"
-                  aria-controls="popup-notification"
-                >
-                  <BellIcon />
-                  <NotiCount count={notification?.notification.length} />
-                </MenuButton>
-                <MenuButton
-                  id="btn-user-popup"
-                  className="popup-user"
-                  text="내 정보"
-                  onClick={handleUserClick}
-                  aria-haspopup="true"
-                  aria-controls="popup-user"
-                >
-                  <UserIcon />
-                </MenuButton>
-                <Notification
-                  notifications={notification?.notification ?? []}
-                  handleDocumentClick={handleNotiClose}
-                  setHidden={setIsNotiHidden}
-                  hidden={isNotiHidden}
-                />
-                <UserMenu
-                  user={user?.user}
-                  handleDocumentClick={handleUserClose}
-                  hidden={isUserHidden}
-                />
-              </>
-            ) : (
-              <MenuButton text="로그인" route="/login" useAnchor>
-                <LoginIcon />
-              </MenuButton>
-            )}
-          </HeaderMenu>
+          <HeaderSearchBar />
+          <HeaderMenu user={user} notification={notification} />
         </Content>
       </InnerContainer>
     </Container>

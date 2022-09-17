@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
@@ -6,9 +6,9 @@ import { joinResultState } from '@recoil/join';
 import useLogin from '@hooks/useLogin';
 import pxToRem from '@utils/pxToRem';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
-import Header from '@components/Main/Header';
-import MenuList from '@components/Main/MenuList';
 import InnerContainer from '@components/common/InnerContainer';
+import Header from './Header';
+import MenuList from './MenuList';
 
 const Fixed = styled.header`
   position: relative;
@@ -20,14 +20,14 @@ const Fixed = styled.header`
 `;
 
 const Container = styled.section`
-  padding: ${pxToRem(80, 0)};
+  padding: ${pxToRem(80, 0, 8888)};
 
   @media ${({ theme }) => theme.media.tablet} {
-    padding: ${pxToRem(60, 0)};
+    padding: ${pxToRem(60, 0, 8888)};
   }
 
   @media ${({ theme }) => theme.media.mobile} {
-    padding: ${pxToRem(40, 0)};
+    padding: ${pxToRem(40, 0, 8888)};
   }
 `;
 
@@ -56,7 +56,7 @@ function Main() {
 
   return (
     <>
-      <Fixed>
+      <Fixed id="header">
         <Header user={user} notification={notification} />
         <MenuList />
       </Fixed>

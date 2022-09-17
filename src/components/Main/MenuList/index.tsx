@@ -3,14 +3,20 @@ import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import InnerContainer from '@components/common/InnerContainer';
 import MenuButton from './MenuButton';
+import { useRecoilValue } from 'recoil';
+import { searchBarPositionState } from '@recoil/search';
 
-const Container = styled.div`
+const Container = styled.div<{ isHidden: boolean }>`
   position: fixed;
   top: ${pxToRem(60)};
   width: 100%;
   height: ${pxToRem(40)};
   border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
   background-color: ${({ theme }) => theme.color.WHITE};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    ${({ isHidden }) => (isHidden ? 'display: none;' : '')}
+  }
 
   @media ${({ theme }) => theme.media.mobile} {
     top: ${pxToRem(48)};
@@ -39,8 +45,10 @@ const List = styled.ul`
 `;
 
 function MenuList() {
+  const searchBarPosition = useRecoilValue(searchBarPositionState);
+
   return (
-    <Container>
+    <Container isHidden={searchBarPosition === 'header'}>
       <InnerContainer>
         <ScrollWrapper>
           <List>

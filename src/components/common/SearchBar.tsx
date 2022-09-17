@@ -1,20 +1,26 @@
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
+import { Color } from '@emotion/react';
 import { border, flex } from '@styles/minxin';
+import { searchInputState } from '@recoil/search/atoms';
 import pxToRem from '@utils/pxToRem';
 import GlassIcon from '@assets/images/magnifying-glass-solid.svg';
 
-const Container = styled.div`
-  min-width: ${pxToRem(240)};
-  max-width: ${pxToRem(550)};
-  width: calc(100vw - ${pxToRem(40)});
-  margin-top: ${pxToRem(20)};
-`;
+interface SearchBarProps {
+  id?: string;
+  color?: keyof Color;
+}
 
-const Wrapper = styled.div`
+const Container = styled.div<{ color?: keyof Color }>`
   display: flex;
-  height: 50px;
-  border: ${border(3)} ${({ theme }) => theme.color.BROWN};
-  background-color: ${({ theme }) => theme.color.BROWN};
+  height: ${pxToRem(50)};
+  border: ${border(3)} ${({ color, theme }) => theme.color[color ?? 'BROWN']};
+  background-color: ${({ color, theme }) => theme.color[color ?? 'BROWN']};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    height: ${pxToRem(40)};
+  }
 `;
 
 const Input = styled.input`
@@ -29,10 +35,10 @@ const Input = styled.input`
   }
 `;
 
-const SearchButton = styled.button`
+const SearchButton = styled.button<{ color?: keyof Color }>`
   ${flex()}
   width: ${pxToRem(44)};
-  background-color: ${({ theme }) => theme.color.BROWN};
+  background-color: ${({ color, theme }) => theme.color[color ?? 'BROWN']};
   & svg {
     width: ${pxToRem(24)};
     height: ${pxToRem(24)};
@@ -40,15 +46,33 @@ const SearchButton = styled.button`
   }
 `;
 
-function SearchBar() {
+function SearchInput() {
+  const [searchInput, setSearchInput] = useRecoilState(searchInputState);
+
+  const handleChange = useCallback(
+    ({ target }: ChangeEvent<HTMLInputElement>) => {
+      setSearchInput(target.value);
+    },
+    []
+  );
   return (
-    <Container>
-      <Wrapper>
-        <Input maxLength={255} placeholder="검색할 단어를 입력하세요." />
-        <SearchButton type="button">
-          <GlassIcon />
-        </SearchButton>
-      </Wrapper>
+    <Input
+      value={searchInput}
+      maxLength={255}
+      placeholder="검색할 단어를 입력하세요."
+      onChange={handleChange}
+      spellCheck={false}
+    />
+  );
+}
+
+function SearchBar({ id, color }: SearchBarProps) {
+  return (
+    <Container id={id} color={color}>
+      <SearchInput />
+      <SearchButton type="button" color={color}>
+        <GlassIcon />
+      </SearchButton>
     </Container>
   );
 }

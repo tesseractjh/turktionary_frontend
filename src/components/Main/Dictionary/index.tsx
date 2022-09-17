@@ -35,6 +35,13 @@ const Title = styled.h2`
   }
 `;
 
+const SearchBarWrapper = styled.div`
+  min-width: ${pxToRem(240)};
+  max-width: ${pxToRem(550)};
+  width: 100%;
+  margin-top: ${pxToRem(20)};
+`;
+
 const ContentContainer = styled.div``;
 
 const contents = {
@@ -69,7 +76,9 @@ function Dictionary({ type }: DictionaryProps) {
           {contents[type].title}
           <span>{type === 'ALL' ? ' 통합사전' : ' 사전'}</span>
         </Title>
-        <SearchBar />
+        <SearchBarWrapper>
+          <SearchBar id="search-dictionary" />
+        </SearchBarWrapper>
       </SearchBarContainer>
       <ContentContainer></ContentContainer>
     </>
