@@ -10,6 +10,15 @@ import Header from '@components/Main/Header';
 import MenuList from '@components/Main/MenuList';
 import InnerContainer from '@components/common/InnerContainer';
 
+const Fixed = styled.header`
+  position: relative;
+  height: ${pxToRem(100)};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    height: ${pxToRem(80)};
+  }
+`;
+
 const Container = styled.section`
   padding: ${pxToRem(80, 0)};
 
@@ -47,8 +56,10 @@ function Main() {
 
   return (
     <>
-      <Header user={user} notification={notification} />
-      <MenuList />
+      <Fixed>
+        <Header user={user} notification={notification} />
+        <MenuList />
+      </Fixed>
       <Container>
         <InnerContainer>
           <Outlet />

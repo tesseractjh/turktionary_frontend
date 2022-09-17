@@ -18,6 +18,9 @@ interface HeaderProps {
 }
 
 const Container = styled.nav`
+  position: fixed;
+  z-index: 10;
+  width: 100%;
   height: ${pxToRem(60)};
   background-color: ${({ theme }) => theme.color.TEAL};
 

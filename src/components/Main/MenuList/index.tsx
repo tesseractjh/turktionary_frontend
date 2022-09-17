@@ -5,11 +5,15 @@ import InnerContainer from '@components/common/InnerContainer';
 import MenuButton from './MenuButton';
 
 const Container = styled.div`
+  position: fixed;
+  top: ${pxToRem(60)};
+  width: 100%;
   height: ${pxToRem(40)};
   border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
   background-color: ${({ theme }) => theme.color.WHITE};
 
   @media ${({ theme }) => theme.media.mobile} {
+    top: ${pxToRem(48)};
     height: ${pxToRem(32)};
   }
 `;
