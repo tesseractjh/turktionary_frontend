@@ -39,13 +39,6 @@ const Nickname = styled.span`
   color: ${({ theme }) => theme.color.TEAL_DARK};
 `;
 
-const TotalExperience = styled.span`
-  display: inline-block;
-  width: 100%;
-  margin-top: ${pxToRem(10)};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-`;
-
 function UserMenu({
   user,
   handleDocumentClick,
@@ -88,11 +81,10 @@ function UserMenu({
         <Info>
           <Level>{`Lv.${level}`}</Level>
           <Nickname>{user.user_name}</Nickname>
-          <TotalExperience>{`전체 경험치: ${user.user_exp}`}</TotalExperience>
           <ExperiencePoint
             totalExp={user.user_exp}
-            exp={user.user_exp - prevRequirement}
-            requirement={curRequirement - prevRequirement}
+            prevRequirement={prevRequirement}
+            curRequirement={curRequirement}
           />
         </Info>
         <ul>
