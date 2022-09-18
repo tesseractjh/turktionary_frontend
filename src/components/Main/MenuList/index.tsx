@@ -1,8 +1,10 @@
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import { searchBarPositionState } from '@recoil/search';
 import pxToRem from '@utils/pxToRem';
+import handleHorizontalScroll from '@utils/handleHorizontalScroll';
 import LANG from '@constants/language';
 import InnerContainer from '@components/common/InnerContainer';
 import MenuButton from './MenuButton';
@@ -46,12 +48,21 @@ const List = styled.ul`
 `;
 
 function MenuList() {
+  const ref = useRef<HTMLDivElement>(null);
   const searchBarPosition = useRecoilValue(searchBarPositionState);
+
+  useEffect(() => {
+    if (ref?.current) {
+      ref.current.addEventListener('wheel', handleHorizontalScroll, {
+        passive: false
+      });
+    }
+  }, [ref]);
 
   return (
     <Container isHidden={searchBarPosition === 'header'}>
       <InnerContainer>
-        <ScrollWrapper>
+        <ScrollWrapper ref={ref}>
           <List>
             {Object.entries(LANG).map(([type, { id, title }]) => {
               if (type === 'ALL') {
