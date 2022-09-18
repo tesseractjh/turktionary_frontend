@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
-import PopupContainer from '@components/common/styledComponents/PopupContainer';
+import PopupContainer from '@components/common/PopupContainer';
 import { useCallback, useEffect } from 'react';
 import getLevelAndExp from '@utils/getLevelAndExp';
 import ExperiencePoint from './ExperiencePoint';
@@ -14,21 +14,13 @@ interface UserMenuProps {
   user: Model.UserTable;
   handleDocumentClick: (event: MouseEvent) => void;
   hidden: boolean;
+  setHidden: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Top = styled.div`
-  ${flex('flex-start')}
-  height: ${pxToRem(36)};
-  padding: ${pxToRem(0, 10)};
-  background-color: ${({ theme }) => theme.color.BROWN_DARK};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.color.WHITE};
-`;
-
-const Bottom = styled.div`
-  ${flex('space-between', 'stretch')}
+const Wrapper = styled.div`
+  ${flex('space-between', 'stretcth')}
   flex-direction: column;
-  height: ${pxToRem(214)};
+  height: 100%;
 `;
 
 const Info = styled.div`
@@ -44,7 +36,7 @@ const Level = styled.span`
 const Nickname = styled.span`
   font-weight: 700;
   font-size: ${({ theme }) => theme.fontSize.md};
-  color: ${({ theme }) => theme.color.BROWN_DARK};
+  color: ${({ theme }) => theme.color.TEAL_DARK};
 `;
 
 const TotalExperience = styled.span`
@@ -54,7 +46,12 @@ const TotalExperience = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
-function UserMenu({ user, handleDocumentClick, hidden }: UserMenuProps) {
+function UserMenu({
+  user,
+  handleDocumentClick,
+  hidden,
+  setHidden
+}: UserMenuProps) {
   const [level, prevRequirement, curRequirement] = getLevelAndExp(
     user.user_exp
   );
@@ -74,24 +71,20 @@ function UserMenu({ user, handleDocumentClick, hidden }: UserMenuProps) {
     );
   }, []);
 
-  useEffect(() => {
-    if (hidden) {
-      document.removeEventListener('click', handleDocumentClick);
-    } else {
-      document.addEventListener('click', handleDocumentClick);
-    }
-  }, [hidden]);
-
   return (
     <PopupContainer
       id="popup-user"
-      hidden={hidden}
       className="popup-user"
       role="menu"
+      width={300}
+      bottomHeight={214}
+      hidden={hidden}
+      setHidden={setHidden}
+      handleDocumentClick={handleDocumentClick}
       aria-labelledby="btn-user-popup"
+      topContent="내 정보"
     >
-      <Top>내 정보</Top>
-      <Bottom>
+      <Wrapper>
         <Info>
           <Level>{`Lv.${level}`}</Level>
           <Nickname>{user.user_name}</Nickname>
@@ -108,7 +101,7 @@ function UserMenu({ user, handleDocumentClick, hidden }: UserMenuProps) {
             로그아웃
           </Button>
         </ul>
-      </Bottom>
+      </Wrapper>
     </PopupContainer>
   );
 }

@@ -1,12 +1,11 @@
-import { MouseEventHandler, useCallback, useEffect } from 'react';
+import { MouseEventHandler, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import notificationAPI from '@api/notification';
 import useMutationAPI from '@hooks/useMutationAPI';
-import pxToRem from '@utils/pxToRem';
-import PopupContainer from '@components/common/styledComponents/PopupContainer';
+import PopupContainer from '@components/common/PopupContainer';
 import Message from './Message';
 
 interface NotificationProps {
@@ -16,11 +15,8 @@ interface NotificationProps {
   hidden: boolean;
 }
 
-const Top = styled.div`
-  ${flex('flex-end')}
-  height: ${pxToRem(36)};
-  padding: ${pxToRem(0, 10)};
-  background-color: ${({ theme }) => theme.color.TEAL_DARK};
+const ButotnWrapper = styled.div`
+  width: 100%;
   text-align: right;
 `;
 
@@ -31,24 +27,9 @@ const DeleteButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
-`;
 
-const Bottom = styled.div`
-  overflow-x: none;
-  overflow-y: auto;
-  height: ${pxToRem(364)};
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: ${({ theme }) => theme.color.GRAY};
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.color.BORDER};
+  @media ${({ theme }) => theme.media.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
   }
 `;
 
@@ -64,6 +45,10 @@ const NoMessage = styled.div`
   height: 100%;
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.GRAY};
+
+  @media ${({ theme }) => theme.media.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 function Notification({
@@ -80,14 +65,6 @@ function Notification({
   const { mutate: deleteAllNotifiation } = useMutationAPI(
     notificationAPI.deleteAllNotification
   );
-
-  useEffect(() => {
-    if (hidden) {
-      document.removeEventListener('click', handleDocumentClick);
-    } else {
-      document.addEventListener('click', handleDocumentClick);
-    }
-  }, [hidden]);
 
   const handleMessageClick = useCallback<MouseEventHandler<HTMLUListElement>>(
     async ({ target }) => {
@@ -128,30 +105,34 @@ function Notification({
   return (
     <PopupContainer
       id="popup-notification"
-      hidden={hidden}
       className="popup-notification"
       role="menu"
+      hidden={hidden}
+      setHidden={setHidden}
+      handleDocumentClick={handleDocumentClick}
       aria-labelledby="btn-notification-popup"
+      topContent={
+        <ButotnWrapper>
+          <DeleteButton onClick={handleDelete}>
+            모든 알림 읽음 표시
+          </DeleteButton>
+        </ButotnWrapper>
+      }
     >
-      <Top>
-        <DeleteButton onClick={handleDelete}>모든 알림 읽음 표시</DeleteButton>
-      </Top>
-      <Bottom>
-        {notifications.length ? (
-          <MessageList onClick={handleMessageClick}>
-            {notifications.map((notification, index) => (
-              <Message
-                key={notification.notification_id}
-                notification={notification}
-                index={index}
-                className="notification-msg"
-              />
-            ))}
-          </MessageList>
-        ) : (
-          <NoMessage>새로운 알림이 없습니다</NoMessage>
-        )}
-      </Bottom>
+      {notifications.length ? (
+        <MessageList onClick={handleMessageClick}>
+          {notifications.map((notification, index) => (
+            <Message
+              key={notification.notification_id}
+              notification={notification}
+              index={index}
+              className="notification-msg"
+            />
+          ))}
+        </MessageList>
+      ) : (
+        <NoMessage>새로운 알림이 없습니다</NoMessage>
+      )}
     </PopupContainer>
   );
 }

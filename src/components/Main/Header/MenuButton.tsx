@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from '@emotion/styled';
+import styled, { StyledComponent } from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 
@@ -9,9 +9,10 @@ interface MenuButtonProps extends Props {
   useAnchor?: boolean;
   onClick?: () => void;
   id?: string;
+  exceptOnPC?: boolean;
 }
 
-const Container = styled.li`
+const Container = styled.li<{ exceptOnPC: boolean }>`
   ${flex()}
   width: ${pxToRem(52)};
   height: ${pxToRem(52)};
@@ -27,6 +28,16 @@ const Container = styled.li`
       color: ${({ theme }) => theme.color.BLACK};
     }
   }
+
+  ${({ exceptOnPC, theme }) =>
+    exceptOnPC
+      ? `
+    display: none;
+    @media ${theme.media.tablet} {
+      display: block;
+    }
+  `
+      : ''}
 
   @media ${({ theme }) => theme.media.mobile} {
     width: ${pxToRem(36)};
@@ -85,12 +96,13 @@ function MenuButton({
   useAnchor,
   onClick,
   children,
+  exceptOnPC,
   ...restProps
 }: MenuButtonProps) {
   if (route) {
     if (useAnchor) {
       return (
-        <Container role="menuitem">
+        <Container role="menuitem" exceptOnPC={!!exceptOnPC}>
           <Anchor href={route} {...restProps}>
             {children}
             <Text>{text}</Text>
@@ -100,7 +112,7 @@ function MenuButton({
     }
 
     return (
-      <Container role="menuitem">
+      <Container role="menuitem" exceptOnPC={!!exceptOnPC}>
         <LinkButton to={route} {...restProps}>
           {children}
           <Text>{text}</Text>
@@ -110,7 +122,7 @@ function MenuButton({
   }
 
   return (
-    <Container role="menuitem">
+    <Container role="menuitem" exceptOnPC={!!exceptOnPC}>
       <Button onClick={onClick} {...restProps}>
         {children}
         <Text>{text}</Text>

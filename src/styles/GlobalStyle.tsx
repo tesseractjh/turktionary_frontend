@@ -1,5 +1,6 @@
 import { Global, css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
+import { media } from './theme';
 
 const resetStyle = css`
   ${emotionReset}
@@ -46,6 +47,12 @@ const resetStyle = css`
 
     &:focus {
       outline: none;
+    }
+  }
+
+  .full-screen {
+    @media ${media.tablet} {
+      overflow: hidden;
     }
   }
 `;

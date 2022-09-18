@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Keyframes, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
+import { searchBarPositionState } from '@recoil/search';
 import pxToRem from '@utils/pxToRem';
+import GlobeIcon from '@assets/images/globe-solid.svg';
 import BellIcon from '@assets/images/bell-solid.svg';
 import UserIcon from '@assets/images/user-solid.svg';
 import LoginIcon from '@assets/images/arrow-right-to-bracket-solid.svg';
@@ -13,8 +16,6 @@ import SearchBar from '@components/common/SearchBar';
 import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
-import { useSetRecoilState } from 'recoil';
-import { searchBarPositionState } from '@recoil/search';
 
 interface HeaderProps {
   user: Model.User;
@@ -109,6 +110,7 @@ const handleDocumentClick =
 function HeaderMenu({ user, notification }: HeaderProps) {
   const [isNotiHidden, setIsNotiHidden] = useState(true);
   const [isUserHidden, setIsUserHidden] = useState(true);
+  const searchBarPosition = useRecoilValue(searchBarPositionState);
 
   const handleNotiClick = useCallback(() => {
     setIsNotiHidden((state) => !state);
@@ -132,6 +134,18 @@ function HeaderMenu({ user, notification }: HeaderProps) {
     <Menu role="menu">
       {user?.user.user_name ? (
         <>
+          {searchBarPosition === 'header' ? (
+            <MenuButton
+              id="btn-dict-lang-popup"
+              className="popup-dict-lang"
+              text="사전"
+              arai-haspopup="true"
+              aria-controls="popup-dict-lang"
+              exceptOnPC
+            >
+              <GlobeIcon />
+            </MenuButton>
+          ) : null}
           <MenuButton
             id="btn-notification-popup"
             className="popup-notification"
@@ -156,13 +170,14 @@ function HeaderMenu({ user, notification }: HeaderProps) {
           <Notification
             notifications={notification?.notification ?? []}
             handleDocumentClick={handleNotiClose}
-            setHidden={setIsNotiHidden}
             hidden={isNotiHidden}
+            setHidden={setIsNotiHidden}
           />
           <UserMenu
             user={user?.user}
             handleDocumentClick={handleUserClose}
             hidden={isUserHidden}
+            setHidden={setIsUserHidden}
           />
         </>
       ) : (

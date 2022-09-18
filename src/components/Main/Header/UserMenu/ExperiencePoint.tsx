@@ -14,15 +14,15 @@ const Container = styled.div`
   width: 100%;
   height: ${pxToRem(30)};
   margin-top: ${pxToRem(6)};
-  border: ${border()} ${({ theme }) => theme.color.BROWN_DARK};
+  border: ${border()} ${({ theme }) => theme.color.TEAL_DARK};
   border-radius: ${pxToRem(4)};
-  background-color: ${({ theme }) => theme.color.BEIGE};
+  background-color: ${({ theme }) => theme.color.TEAL};
 `;
 
 const Bar = styled.div<{ ratio: number }>`
   width: ${({ ratio }) => ratio * 100}%;
   height: 100%;
-  background-color: ${({ theme }) => theme.color.BROWN_DARK};
+  background-color: ${({ theme }) => theme.color.TEAL_DARK};
 `;
 
 const Percent = styled.span`
@@ -31,7 +31,7 @@ const Percent = styled.span`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.color.BROWN_DARK};
+  color: ${({ theme }) => theme.color.TEAL_DARK};
   mix-blend-mode: difference;
 `;
 
