@@ -16,6 +16,7 @@
       "@api/*": ["src/api/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hoc/*": ["src/hoc/*"],
       "@hooks/*": ["src/hooks/*"],
