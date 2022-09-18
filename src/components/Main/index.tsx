@@ -35,7 +35,7 @@ function SuspsenseFallback() {
   const Fallback = lazy<React.FC>(
     () =>
       new Promise((resolve) =>
-        setTimeout(() => resolve(import('./Fallback')), 300)
+        setTimeout(() => resolve(import('../common/Fallback')), 300)
       )
   );
   return (
