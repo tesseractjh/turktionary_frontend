@@ -16,6 +16,7 @@ import SearchBar from '@components/common/SearchBar';
 import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
+import LangMenu from './LangMenu';
 
 interface HeaderProps {
   user: Model.User;
@@ -108,9 +109,14 @@ const handleDocumentClick =
   };
 
 function HeaderMenu({ user, notification }: HeaderProps) {
+  const [isLangHidden, setIsLangHidden] = useState(true);
   const [isNotiHidden, setIsNotiHidden] = useState(true);
   const [isUserHidden, setIsUserHidden] = useState(true);
   const searchBarPosition = useRecoilValue(searchBarPositionState);
+
+  const handleLangClick = useCallback(() => {
+    setIsLangHidden((state) => !state);
+  }, []);
 
   const handleNotiClick = useCallback(() => {
     setIsNotiHidden((state) => !state);
@@ -119,6 +125,11 @@ function HeaderMenu({ user, notification }: HeaderProps) {
   const handleUserClick = useCallback(() => {
     setIsUserHidden((state) => !state);
   }, []);
+
+  const handleLangClose = useCallback(
+    handleDocumentClick('popup-dict-lang', setIsLangHidden),
+    []
+  );
 
   const handleNotiClose = useCallback(
     handleDocumentClick('popup-notification', setIsNotiHidden),
@@ -139,7 +150,8 @@ function HeaderMenu({ user, notification }: HeaderProps) {
               id="btn-dict-lang-popup"
               className="popup-dict-lang"
               text="사전"
-              arai-haspopup="true"
+              onClick={handleLangClick}
+              aria-haspopup="true"
               aria-controls="popup-dict-lang"
               exceptOnPC
             >
@@ -167,6 +179,11 @@ function HeaderMenu({ user, notification }: HeaderProps) {
           >
             <UserIcon />
           </MenuButton>
+          <LangMenu
+            handleDocumentClick={handleLangClose}
+            hidden={isLangHidden}
+            setHidden={setIsLangHidden}
+          />
           <Notification
             notifications={notification?.notification ?? []}
             handleDocumentClick={handleNotiClose}
