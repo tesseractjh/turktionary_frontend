@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import GlobalStyle from '@styles/GlobalStyle';
 import ThemeProvider from '@contexts/ThemeProvider';
+import LANG from '@constants/language';
 import Login from '@components/Login';
 import Join from '@components/Join';
 import Main from '@components/Main';
@@ -23,16 +24,24 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route element={<Main />}>
-                  <Route index element={<Dictionary type="ALL" />} />
-                  <Route path="turkish" element={<Dictionary type="TR" />} />
-                  <Route
-                    path="azerbaijani"
-                    element={<Dictionary type="AZ" />}
-                  />
-                  <Route path="uzbek" element={<Dictionary type="UZ" />} />
-                  <Route path="kazakh" element={<Dictionary type="KZ" />} />
-                  <Route path="turkmen" element={<Dictionary type="TM" />} />
-                  <Route path="kyrgyz" element={<Dictionary type="KG" />} />
+                  {Object.entries(LANG).map(([type, { id }]) => {
+                    if (type === 'ALL') {
+                      return (
+                        <Route
+                          key={type}
+                          index
+                          element={<Dictionary type="ALL" />}
+                        />
+                      );
+                    }
+                    return (
+                      <Route
+                        key={type}
+                        path={id}
+                        element={<Dictionary type={type as DictionaryType} />}
+                      />
+                    );
+                  })}
                   <Route path="*" element={<div>Not Found</div>} />
                 </Route>
                 <Route path="login" element={<Login />} />

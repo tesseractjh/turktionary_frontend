@@ -1,10 +1,11 @@
+import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
+import { searchBarPositionState } from '@recoil/search';
 import pxToRem from '@utils/pxToRem';
+import LANG from '@constants/language';
 import InnerContainer from '@components/common/InnerContainer';
 import MenuButton from './MenuButton';
-import { useRecoilValue } from 'recoil';
-import { searchBarPositionState } from '@recoil/search';
 
 const Container = styled.div<{ isHidden: boolean }>`
   position: fixed;
@@ -52,13 +53,20 @@ function MenuList() {
       <InnerContainer>
         <ScrollWrapper>
           <List>
-            <MenuButton route="/">통합사전</MenuButton>
-            <MenuButton route="/turkish">터키어</MenuButton>
-            <MenuButton route="/azerbaijani">아제르바이잔어</MenuButton>
-            <MenuButton route="/uzbek">우즈베크어</MenuButton>
-            <MenuButton route="/kazakh">카자흐어</MenuButton>
-            <MenuButton route="/turkmen">투르크멘어</MenuButton>
-            <MenuButton route="/kyrgyz">키르기스어</MenuButton>
+            {Object.entries(LANG).map(([type, { id, title }]) => {
+              if (type === 'ALL') {
+                return (
+                  <MenuButton key={type} route="/">
+                    통합사전
+                  </MenuButton>
+                );
+              }
+              return (
+                <MenuButton key={type} route={`/${id}`}>
+                  {title}
+                </MenuButton>
+              );
+            })}
           </List>
         </ScrollWrapper>
       </InnerContainer>

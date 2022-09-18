@@ -1,7 +1,7 @@
-import SearchBar from '@components/common/SearchBar';
 import styled from '@emotion/styled';
-import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
+import LANG from '@constants/language';
+import SearchBar from '@components/common/SearchBar';
 
 interface DictionaryProps {
   type: DictionaryType;
@@ -44,36 +44,12 @@ const SearchBarWrapper = styled.div`
 
 const ContentContainer = styled.div``;
 
-const contents = {
-  ALL: {
-    title: '튀르크어'
-  },
-  TR: {
-    title: '터키어'
-  },
-  AZ: {
-    title: '아제르바이잔어'
-  },
-  UZ: {
-    title: '우즈베크어'
-  },
-  KZ: {
-    title: '카자흐어'
-  },
-  TM: {
-    title: '투르크멘어'
-  },
-  KG: {
-    title: '키르기스어'
-  }
-};
-
 function Dictionary({ type }: DictionaryProps) {
   return (
     <>
       <SearchBarContainer>
         <Title>
-          {contents[type].title}
+          {LANG[type].title}
           <span>{type === 'ALL' ? ' 통합사전' : ' 사전'}</span>
         </Title>
         <SearchBarWrapper>
