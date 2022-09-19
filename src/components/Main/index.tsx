@@ -3,8 +3,8 @@ import { Outlet } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { joinResultState } from '@recoil/join';
-import useLogin from '@hooks/useLogin';
 import pxToRem from '@utils/pxToRem';
+import useAccessToken from '@hooks/useAccessToken';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
 import Deferred from '@components/common/Defered';
 import Fallback from '@components/common/Fallback';
@@ -22,17 +22,16 @@ const Fixed = styled.header`
 
 function Main() {
   const setJoinResult = useSetRecoilState(joinResultState);
+  useAccessToken();
 
   useEffect(() => {
     setJoinResult(false);
   }, []);
 
-  const [user, notification] = useLogin();
-
   return (
     <>
       <Fixed id="header">
-        <Header user={user} notification={notification} />
+        <Header />
         <MenuList />
       </Fixed>
       <Outlet />

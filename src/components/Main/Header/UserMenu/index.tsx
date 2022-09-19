@@ -9,6 +9,7 @@ import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import useMutationAPI from '@hooks/useMutationAPI';
 import userAPI from '@api/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface UserMenuProps {
   user: Model.UserTable;
@@ -48,6 +49,7 @@ function UserMenu({
   const [level, prevRequirement, curRequirement] = getLevelAndExp(
     user.user_exp
   );
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: logout } = useMutationAPI(userAPI.logout);
 
@@ -63,6 +65,12 @@ function UserMenu({
       }
     );
   }, []);
+
+  useEffect(() => {
+    if (!hidden) {
+      queryClient.invalidateQueries(['getHeaderUserInfo']);
+    }
+  }, [hidden]);
 
   return (
     <PopupContainer

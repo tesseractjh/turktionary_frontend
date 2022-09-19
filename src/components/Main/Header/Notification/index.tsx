@@ -1,4 +1,4 @@
-import { MouseEventHandler, useCallback } from 'react';
+import { MouseEventHandler, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import styled from '@emotion/styled';
@@ -101,6 +101,12 @@ function Notification({
       }
     );
   }, [notifications]);
+
+  useEffect(() => {
+    if (!hidden) {
+      queryClient.invalidateQueries(['getNotification']);
+    }
+  }, [hidden]);
 
   return (
     <PopupContainer

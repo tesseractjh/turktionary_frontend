@@ -17,11 +17,9 @@ import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
 import LangMenu from './LangMenu';
-
-interface HeaderProps {
-  user: Model.User;
-  notification: Model.Notification;
-}
+import useAPI from '@hooks/useAPI';
+import userAPI from '@api/user';
+import notificationAPI from '@api/notification';
 
 const mountAnimation = keyframes`
   0% {
@@ -108,11 +106,20 @@ const handleDocumentClick =
     }
   };
 
-function HeaderMenu({ user, notification }: HeaderProps) {
+function HeaderMenu() {
   const [isLangHidden, setIsLangHidden] = useState(true);
   const [isNotiHidden, setIsNotiHidden] = useState(true);
   const [isUserHidden, setIsUserHidden] = useState(true);
   const searchBarPosition = useRecoilValue(searchBarPositionState);
+
+  const { data: user } = useAPI('getHeaderUserInfo', userAPI.getHeaderUserInfo);
+  const { data: notification } = useAPI(
+    'getNotification',
+    notificationAPI.getNotification,
+    {
+      refetchInterval: 5 * 60 * 1000
+    }
+  );
 
   const handleLangClick = useCallback(() => {
     setIsLangHidden((state) => !state);
@@ -273,14 +280,14 @@ function HeaderSearchBar() {
   ) : null;
 }
 
-function Header({ user, notification }: HeaderProps) {
+function Header() {
   return (
     <Container>
       <InnerContainer>
         <Content>
           <Logo />
           <HeaderSearchBar />
-          <HeaderMenu user={user} notification={notification} />
+          <HeaderMenu />
         </Content>
       </InnerContainer>
     </Container>
