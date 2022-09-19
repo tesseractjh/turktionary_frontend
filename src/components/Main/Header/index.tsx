@@ -20,6 +20,7 @@ import LangMenu from './LangMenu';
 import useAPI from '@hooks/useAPI';
 import userAPI from '@api/user';
 import notificationAPI from '@api/notification';
+import useAccessToken from '@hooks/useAccessToken';
 
 const mountAnimation = keyframes`
   0% {
@@ -112,11 +113,17 @@ function HeaderMenu() {
   const [isUserHidden, setIsUserHidden] = useState(true);
   const searchBarPosition = useRecoilValue(searchBarPositionState);
 
-  const { data: user } = useAPI('getHeaderUserInfo', userAPI.getHeaderUserInfo);
+  const accessToken = useAccessToken();
+  const { data: user } = useAPI(
+    'getHeaderUserInfo',
+    userAPI.getHeaderUserInfo,
+    { enabled: !!accessToken }
+  );
   const { data: notification } = useAPI(
     'getNotification',
     notificationAPI.getNotification,
     {
+      enabled: !!accessToken,
       refetchInterval: 5 * 60 * 1000
     }
   );
