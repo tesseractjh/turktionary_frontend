@@ -16,13 +16,10 @@ const Container = styled.ul``;
 
 const ButtonWrapper = styled.li`
   width: 100%;
+  border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
 
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY_LIGHT};
-  }
-
-  &:not(:first-of-type) {
-    border-top: ${border()} ${({ theme }) => theme.color.BORDER};
   }
 `;
 

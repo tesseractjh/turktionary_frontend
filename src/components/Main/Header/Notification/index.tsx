@@ -34,7 +34,7 @@ const DeleteButton = styled.button`
 `;
 
 const MessageList = styled.ul`
-  & li:not(:last-of-type) {
+  & li {
     border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
   }
 `;
