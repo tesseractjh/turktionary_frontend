@@ -38,7 +38,7 @@ function VocaCounter({ pathname }: { pathname: string }) {
     <TotalCountContainer>
       {
         <>
-          지금까지 총 <strong>{count[lang] ?? 0}</strong>
+          지금까지 총 <strong>{(count[lang] ?? 0).toLocaleString()}</strong>
           개의 어휘가 등록되었습니다.
         </>
       }
