@@ -87,19 +87,25 @@ const ContentContainer = styled.div`
 
 function Dictionary({ type }: DictionaryProps) {
   const { pathname } = useLocation();
+  const isAll = type === 'ALL';
 
   return (
     <>
       <SearchContainer>
         <InnerContainer>
           <TopMenu>
-            <TopMenuButton to={`/edit${pathname}`}>단어 등록</TopMenuButton>|
-            <TopMenuButton to={`/pos${pathname}`}>품사 목록</TopMenuButton>
+            {isAll ? null : (
+              <>
+                <TopMenuButton to={`/edit${pathname}`}>단어 등록</TopMenuButton>
+                |<TopMenuButton to={`/pos${pathname}`}>품사 목록</TopMenuButton>
+              </>
+            )}
           </TopMenu>
+
           <SearchBarContainer>
             <Title>
               {LANG[type].title}
-              <span>{type === 'ALL' ? ' 통합사전' : ' 사전'}</span>
+              <span>{isAll ? ' 통합사전' : ' 사전'}</span>
             </Title>
             <SearchBarWrapper>
               <SearchBar id="search-dictionary" />
