@@ -19,7 +19,7 @@ const TotalCountContainer = styled.p`
 
 function VocaCounter({ pathname }: { pathname: string }) {
   const { data } = useAPI(['totalVocaCount'], vocaAPI.getTotalVocaCount, {
-    staleTime: 10 * 1000
+    staleTime: 30 * 60 * 1000
   });
 
   const lang = pathname.split('/')[1];
