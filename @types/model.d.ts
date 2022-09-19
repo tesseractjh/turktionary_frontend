@@ -1,6 +1,7 @@
 declare namespace Model {
   type User = { user: UserTable };
   type Notification = { notification: NotificationTable[] };
+  type VocaCount = { count: (VocaTable & { count: number })[] };
 
   interface UserTable {
     user_id: number;
@@ -21,6 +22,15 @@ declare namespace Model {
     notification_title: string;
     notification_text: string;
     notification_link: string;
+    created_time: string;
+  }
+
+  interface VocaTable {
+    voca_id: number;
+    user_id: number;
+    lang_name: string;
+    word: string;
+    word_order: number;
     created_time: string;
   }
 }
