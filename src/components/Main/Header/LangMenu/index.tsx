@@ -48,7 +48,7 @@ function LangMenu({ handleDocumentClick, hidden, setHidden }: LangMenuProps) {
       topContent={'사전 선택'}
     >
       <Container>
-        {Object.entries(LANG).map(([type, { id, title }]) => {
+        {Object.entries(LANG).map(([type, { id, name }]) => {
           if (type === 'ALL') {
             return (
               <ButtonWrapper key={type}>
@@ -61,7 +61,7 @@ function LangMenu({ handleDocumentClick, hidden, setHidden }: LangMenuProps) {
           return (
             <ButtonWrapper key={type}>
               <Button to={`/${id}`} onClick={handleClick}>
-                {title}
+                {name}
               </Button>
             </ButtonWrapper>
           );
