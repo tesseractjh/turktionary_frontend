@@ -3,17 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 function useRedirect(
   condition: boolean,
-  options?: { path?: string; onBefore: () => void }
+  options?: { path?: string | number; onBefore?: () => void }
 ) {
   const navigate = useNavigate();
-  useEffect(() => {
+  const redirect = (condition: boolean) => () => {
     if (condition) {
       if (options?.onBefore) {
         options?.onBefore();
       }
-      navigate(options?.path ?? '/');
+      if (typeof options?.path === 'number') {
+        navigate(options?.path);
+      } else {
+        navigate(options?.path ?? '/');
+      }
     }
+  };
+
+  useEffect(() => {
+    redirect(condition)();
   }, []);
+
+  return redirect(true);
 }
 
 export default useRedirect;
