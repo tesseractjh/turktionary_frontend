@@ -2,6 +2,10 @@ declare namespace Model {
   type User = { user: UserTable };
   type Notification = { notification: NotificationTable[] };
   type VocaCount = { count: (VocaTable & { count: number })[] };
+  type POSList = POSTable & {
+    examples: (string | null)[];
+    example_orders: (number | null)[];
+  };
 
   interface UserTable {
     user_id: number;
@@ -32,5 +36,14 @@ declare namespace Model {
     word: string;
     word_order: number;
     created_time: string;
+  }
+
+  interface POSTable {
+    pos_id: number;
+    user_id: number;
+    lang_name: string;
+    pos_name: string;
+    pos_text: string;
+    created_time: Date;
   }
 }
