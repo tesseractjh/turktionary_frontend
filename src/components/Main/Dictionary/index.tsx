@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
@@ -6,6 +6,7 @@ import LANG from '@constants/language';
 import SearchBar from '@components/common/SearchBar';
 import InnerContainer from '@components/common/InnerContainer';
 import VocaCounter from './VocaCounter';
+import POS from './POS';
 
 interface DictionaryProps {
   type: DictionaryType;
@@ -81,7 +82,7 @@ const SearchBarWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding: ${pxToRem(80, 0)};
+  padding: ${pxToRem(10, 0)};
   background-color: ${({ theme }) => theme.color.GRAY_LIGHT};
 `;
 
@@ -96,15 +97,15 @@ function Dictionary({ type }: DictionaryProps) {
           <TopMenu>
             {isAll ? null : (
               <>
-                <TopMenuButton to={`/edit${pathname}`}>단어 등록</TopMenuButton>
-                |<TopMenuButton to={`/pos${pathname}`}>품사 목록</TopMenuButton>
+                <TopMenuButton to="edit">단어 추가</TopMenuButton>|
+                <TopMenuButton to="pos">품사 목록</TopMenuButton>
               </>
             )}
           </TopMenu>
 
           <SearchBarContainer>
             <Title>
-              {LANG[type].title}
+              {LANG[type].name}
               <span>{isAll ? ' 통합사전' : ' 사전'}</span>
             </Title>
             <SearchBarWrapper>
@@ -114,7 +115,12 @@ function Dictionary({ type }: DictionaryProps) {
         </InnerContainer>
       </SearchContainer>
       <ContentContainer>
-        <VocaCounter pathname={pathname} />
+        <InnerContainer>
+          <Routes>
+            <Route index element={<VocaCounter pathname={pathname} />} />
+            <Route path="pos/*" element={<POS />} />
+          </Routes>
+        </InnerContainer>
       </ContentContainer>
     </>
   );

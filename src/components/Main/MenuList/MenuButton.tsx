@@ -50,7 +50,11 @@ function MenuButton({ route, children }: MenuButtonProps) {
   const { pathname } = useLocation();
 
   return (
-    <Container isSelected={pathname === route}>
+    <Container
+      isSelected={
+        route === '/' ? pathname === route : pathname.startsWith(route)
+      }
+    >
       <Button to={route}>{children}</Button>
     </Container>
   );

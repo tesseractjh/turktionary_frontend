@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import vocaAPI from '@api/voca';
 import useAPI from '@hooks/useAPI';
+import pxToRem from '@utils/pxToRem';
 
 const TotalCountContainer = styled.p`
+  padding: ${pxToRem(70, 0)};
   font-weight: 500;
   font-size: ${({ theme }) => theme.fontSize.xl};
   text-align: center;

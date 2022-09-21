@@ -64,7 +64,7 @@ function MenuList() {
       <InnerContainer>
         <ScrollWrapper ref={ref}>
           <List>
-            {Object.entries(LANG).map(([type, { id, title }]) => {
+            {Object.entries(LANG).map(([type, { id, name }]) => {
               if (type === 'ALL') {
                 return (
                   <MenuButton key={type} route="/">
@@ -74,7 +74,7 @@ function MenuList() {
               }
               return (
                 <MenuButton key={type} route={`/${id}`}>
-                  {title}
+                  {name}
                 </MenuButton>
               );
             })}

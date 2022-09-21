@@ -54,7 +54,7 @@ function App() {
                       return (
                         <Route
                           key={type}
-                          path={id}
+                          path={`${id}/*`}
                           element={<Dictionary type={type as DictionaryType} />}
                         />
                       );
