@@ -7,8 +7,12 @@ import useLanguage from '@hooks/useLanguage';
 import useMutationAPI from '@hooks/useMutationAPI';
 import pxToRem from '@utils/pxToRem';
 import Button from '@components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAlertBeforeLeave from '@hooks/useAlertBeforeLeave';
+
+interface SubmitButtonProps {
+  isCreate: boolean;
+}
 
 const ButtonContainer = styled.div`
   padding-right: ${pxToRem(10)};
@@ -23,11 +27,12 @@ const validateForm = (posName: string, posText: string) => {
   return [isValid, safePosName, safePosText];
 };
 
-function SubmitButton() {
+function SubmitButton({ isCreate }: SubmitButtonProps) {
   useAlertBeforeLeave();
 
   const { langId } = useLanguage();
   const queryClient = useQueryClient();
+  const { posOrder } = useParams();
   const navigate = useNavigate();
   const { mutate: createPOS } = useMutationAPI(posAPI.createPos);
 
@@ -49,16 +54,17 @@ function SubmitButton() {
           return;
         }
 
+        const body = isCreate
+          ? { langId, posName, posText }
+          : { langId, posName, posText, posOrder };
+
         createPOS(
+          { body },
           {
-            body: {
-              langId,
-              posName,
-              posText
-            }
-          },
-          {
-            onSuccess: () => {
+            onSuccess: (data) => {
+              if (!data) {
+                return;
+              }
               reset(posNameState);
               reset(posTextState);
               queryClient.invalidateQueries([
@@ -71,7 +77,7 @@ function SubmitButton() {
           }
         );
       },
-    []
+    [isCreate]
   );
 
   return (

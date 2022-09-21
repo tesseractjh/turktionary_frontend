@@ -6,6 +6,7 @@ declare namespace Model {
     examples: (string | null)[];
     example_orders: (number | null)[];
   };
+  type POS = { pos: POSTable };
 
   interface UserTable {
     user_id: number;
@@ -44,6 +45,7 @@ declare namespace Model {
     lang_name: string;
     pos_name: string;
     pos_text: string;
+    pos_order: number;
     created_time: Date;
   }
 }

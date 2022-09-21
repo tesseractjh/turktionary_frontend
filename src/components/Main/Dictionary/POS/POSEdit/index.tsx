@@ -1,8 +1,15 @@
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { dictFormState } from '@recoil/dict';
+import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
+import useLogin from '@hooks/useLogin';
+import useAPI from '@hooks/useAPI';
+import useRedirect from '@hooks/useRedirect';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Form from '../../Form';
 import SubmitButton from './SubmitButton';
-import useLogin from '@hooks/useLogin';
 
 interface POSEditProps {
   isCreate?: boolean;
@@ -11,6 +18,35 @@ interface POSEditProps {
 function POSEdit({ isCreate }: POSEditProps) {
   const { langId, langName } = useLanguage();
   const isAllowed = useLogin(-1);
+  const { posOrder } = useParams();
+  const redirect = useRedirect(false, {
+    path: -1,
+    onBefore: () => {
+      alert('존재하지 않는 데이터입니다!');
+    }
+  });
+  const setPosName = useSetRecoilState(dictFormState(`${langId}-pos-name`));
+  const setPosText = useSetRecoilState(dictFormState(`${langId}-pos-text`));
+
+  const { data } = useAPI(
+    ['posByLangAndName', langId, posOrder],
+    posAPI.getPosByLangAndName,
+    {
+      enabled: isAllowed && !isCreate
+    }
+  );
+
+  useEffect(() => {
+    if (!isCreate) {
+      const { pos_name: posName, pos_text: posText } = data?.pos ?? {};
+      if (posName) {
+        setPosName(posName as string);
+        setPosText(posText as string);
+      } else {
+        redirect();
+      }
+    }
+  }, [data]);
 
   if (!isAllowed) {
     return null;
@@ -35,7 +71,7 @@ function POSEdit({ isCreate }: POSEditProps) {
         showLength
         isTextarea
       />
-      <SubmitButton />
+      <SubmitButton isCreate={!!isCreate} />
     </DictContentContainer>
   );
 }

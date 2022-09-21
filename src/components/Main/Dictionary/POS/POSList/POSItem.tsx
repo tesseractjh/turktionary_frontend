@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import useLanguage from '@hooks/useLanguage';
 import pxToRem from '@utils/pxToRem';
-import Button from '../../../../common/EllipsisMenu';
+import EllipsisMenu from '../../../../common/EllipsisMenu';
 
 interface POSItemProps {
   title: string;
   text: string;
+  order: number;
   examples: string[];
   exampleOrders: number[];
 }
@@ -55,7 +56,13 @@ const Example = styled(Link)`
   }
 `;
 
-function POSItem({ title, text, examples, exampleOrders }: POSItemProps) {
+function POSItem({
+  title,
+  text,
+  order,
+  examples,
+  exampleOrders
+}: POSItemProps) {
   const { langId } = useLanguage();
 
   return (
@@ -83,7 +90,7 @@ function POSItem({ title, text, examples, exampleOrders }: POSItemProps) {
           </ExampleList>
         ) : null}
       </Content>
-      <Button posName={title} />
+      <EllipsisMenu order={order} />
     </Container>
   );
 }
