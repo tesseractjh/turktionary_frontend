@@ -44,9 +44,14 @@ const buttons: Record<
   },
   sm: {
     desktop: {
-      width: pxToRem(200),
-      height: pxToRem(48),
+      width: pxToRem(150),
+      height: pxToRem(36),
       fontSize: 'md'
+    },
+    tablet: {
+      width: pxToRem(120),
+      height: pxToRem(30),
+      fontSize: 'sm'
     }
   },
   md: {
@@ -132,7 +137,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       @media ${theme.media[media as keyof Media]} {
         width: ${stretchWidth ? '100%' : style.width};
         height: ${style.height};
-        fontSize: ${style.fontSize}
+        ${style.fontSize ? `font-size: ${theme.fontSize[style.fontSize]};` : ''}
       }`;
       })
       .join('')}
