@@ -1,14 +1,14 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import styled from '@emotion/styled';
-import { dictFormState } from '@recoil/dict';
+import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
 import useMutationAPI from '@hooks/useMutationAPI';
+import useAlertBeforeLeave from '@hooks/useAlertBeforeLeave';
 import pxToRem from '@utils/pxToRem';
 import Button from '@components/common/Button';
-import { useNavigate, useParams } from 'react-router-dom';
-import useAlertBeforeLeave from '@hooks/useAlertBeforeLeave';
 
 interface SubmitButtonProps {
   isCreate: boolean;
@@ -20,20 +20,38 @@ const ButtonContainer = styled.div`
   text-align: right;
 `;
 
-const validateForm = (posName: string, posText: string) => {
+const validateForm = (
+  posName: string,
+  posText: string,
+  prevPosName: string,
+  prevPosText: string
+) => {
   const safePosName = posName.trim().slice(0, 20);
   const safePosText = posText.trim().slice(0, 255);
-  const isValid = !!safePosName;
-  return [isValid, safePosName, safePosText];
+  let isValid = true;
+  let errorMsg = '';
+
+  if (posName === prevPosName && posText === prevPosText) {
+    isValid = false;
+    errorMsg = '변동된 내용이 없습니다!';
+  }
+
+  if (!safePosName) {
+    isValid = false;
+    errorMsg = '품사 이름을 입력해주세요!';
+  }
+
+  return [isValid, errorMsg, safePosName, safePosText];
 };
 
 function SubmitButton({ isCreate }: SubmitButtonProps) {
   useAlertBeforeLeave();
 
   const { langId } = useLanguage();
-  const queryClient = useQueryClient();
   const { posOrder } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const { mutate: createPOS } = useMutationAPI(posAPI.createPos);
 
   const handleClick = useRecoilCallback(
@@ -41,16 +59,23 @@ function SubmitButton({ isCreate }: SubmitButtonProps) {
       async () => {
         const posNameState = dictFormState(`${langId}-pos-name`);
         const posTextState = dictFormState(`${langId}-pos-text`);
+        const prevPosNameState = dictFormPrevState(`${langId}-pos-name`);
+        const prevPosTextState = dictFormPrevState(`${langId}-pos-text`);
+
         const unsafePosName = await snapshot.getPromise(posNameState);
         const unsafePosText = await snapshot.getPromise(posTextState);
+        const prevPosName = await snapshot.getPromise(prevPosNameState);
+        const prevPosText = await snapshot.getPromise(prevPosTextState);
 
-        const [isValid, posName, posText] = validateForm(
+        const [isValid, errorMsg, posName, posText] = validateForm(
           unsafePosName,
-          unsafePosText
+          unsafePosText,
+          prevPosName,
+          prevPosText
         );
 
         if (!isValid) {
-          alert('품사 이름을 입력해주세요!');
+          alert(errorMsg);
           return;
         }
 

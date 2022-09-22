@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { dictFormState } from '@recoil/dict';
+import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
 import useLogin from '@hooks/useLogin';
@@ -28,6 +28,12 @@ function POSEdit({ isCreate }: POSEditProps) {
   });
   const setPosName = useSetRecoilState(dictFormState(`${langId}-pos-name`));
   const setPosText = useSetRecoilState(dictFormState(`${langId}-pos-text`));
+  const setPrevPosName = useSetRecoilState(
+    dictFormPrevState(`${langId}-pos-name`)
+  );
+  const setPrevPosText = useSetRecoilState(
+    dictFormPrevState(`${langId}-pos-text`)
+  );
 
   const { data } = useAPI(
     ['posByLangAndName', langId, posOrder],
@@ -38,11 +44,18 @@ function POSEdit({ isCreate }: POSEditProps) {
   );
 
   useEffect(() => {
-    if (!isCreate) {
+    if (isCreate) {
+      setPosName('');
+      setPosText('');
+      setPrevPosName('');
+      setPrevPosText('');
+    } else {
       const { pos_name: posName, pos_text: posText } = data?.pos ?? {};
       if (posName) {
         setPosName(posName as string);
         setPosText(posText as string);
+        setPrevPosName(posName as string);
+        setPrevPosText(posText as string);
       } else {
         redirect();
       }
