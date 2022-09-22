@@ -5,7 +5,7 @@ import pxToRem from '@utils/pxToRem';
 import MenuIcon from '@assets/images/ellipsis-vertical-solid.svg';
 
 interface EllipsisMenuProps {
-  order: number;
+  param: number;
 }
 
 const Container = styled.div`
@@ -75,7 +75,7 @@ const MenuButton = styled(Link)<{ textcolor?: keyof Color }>`
   }
 `;
 
-function EllipsisMenu({ order }: EllipsisMenuProps) {
+function EllipsisMenu({ param }: EllipsisMenuProps) {
   return (
     <Container>
       <Ellipsis>
@@ -83,8 +83,8 @@ function EllipsisMenu({ order }: EllipsisMenuProps) {
       </Ellipsis>
       <Hover />
       <Menu>
-        <MenuButton to={`edit/${order}`}>편집</MenuButton>
-        <MenuButton to={`report/${order}`} textcolor="RED">
+        <MenuButton to={`edit/${param}`}>편집</MenuButton>
+        <MenuButton to={`report/${param}`} textcolor="RED">
           신고
         </MenuButton>
       </Menu>

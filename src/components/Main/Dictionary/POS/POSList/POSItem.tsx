@@ -90,7 +90,7 @@ function POSItem({
           </ExampleList>
         ) : null}
       </Content>
-      <EllipsisMenu order={order} />
+      <EllipsisMenu param={order} />
     </Container>
   );
 }
