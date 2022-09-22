@@ -1,4 +1,5 @@
 declare namespace Model {
+  type History = { user_exp: number; user_name: string };
   type User = { user: UserTable };
   type Notification = { notification: NotificationTable[] };
   type VocaCount = { count: (VocaTable & { count: number })[] };
@@ -6,6 +7,7 @@ declare namespace Model {
     examples: (string | null)[];
     example_orders: (number | null)[];
   };
+  type POSHistory = { pos: (POSTable & History)[] };
   type POS = { pos: POSTable };
 
   interface UserTable {
