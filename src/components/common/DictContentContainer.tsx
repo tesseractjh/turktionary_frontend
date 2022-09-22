@@ -46,7 +46,7 @@ function DictContentContainer({
     <Container>
       <Header headerColor={headerColor}>
         <Title>{title}</Title>
-        {buttons ? <div>{buttons}</div> : null}
+        {buttons ?? null}
       </Header>
       <Content>{children}</Content>
     </Container>
