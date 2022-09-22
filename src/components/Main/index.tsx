@@ -13,6 +13,7 @@ import MenuList from './MenuList';
 
 const Fixed = styled.header`
   position: relative;
+  z-index: 10;
   height: ${pxToRem(100)};
 
   @media ${({ theme }) => theme.media.mobile} {
