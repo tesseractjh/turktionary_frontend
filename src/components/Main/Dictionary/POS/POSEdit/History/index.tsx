@@ -5,6 +5,8 @@ import useAPI from '@hooks/useAPI';
 import useLanguage from '@hooks/useLanguage';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Log from './Log';
+import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
+import Deferred from '@components/common/Defered';
 
 function History() {
   const { langId } = useLanguage();
@@ -33,4 +35,12 @@ function History() {
   );
 }
 
-export default History;
+export default withAsyncBoundary(History, {
+  SuspenseFallback: (
+    <DictContentContainer
+      title="최근 편집 기록"
+      headerColor="BEIGE"
+      isLoading
+    />
+  )
+});
