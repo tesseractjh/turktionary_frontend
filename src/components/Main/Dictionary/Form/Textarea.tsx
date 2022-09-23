@@ -41,6 +41,10 @@ const StyledTextarea = styled.textarea<{
         theme.color[formColor?.[1] ?? 'BROWN_DARK']};
     }
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 const Length = styled.span`

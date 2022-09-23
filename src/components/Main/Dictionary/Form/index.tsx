@@ -22,6 +22,10 @@ const Container = styled.div`
 const Label = styled.label`
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.md};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 function Form({

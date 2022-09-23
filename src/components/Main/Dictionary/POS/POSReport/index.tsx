@@ -9,17 +9,34 @@ import DictContentContainer from '@components/common/DictContentContainer';
 import Form from '../../Form';
 import SubmitButton from '@components/common/SubmitButton';
 import usePOSReportSubmit from '@hooks/usePOSReportSubmit';
+import { flex } from '@styles/minxin';
 
 const Text = styled.p`
+  ${flex('flex-start')}
   padding-left: ${pxToRem(10)};
   margin-bottom: ${pxToRem(10)};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.sm};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 const Label = styled.span`
+  flex-shrink: 0;
+  align-self: flex-start;
   margin-right: ${pxToRem(10)};
   font-size: ${({ theme }) => theme.fontSize.md};
+  line-height: 1.5;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
+`;
+
+const TargetInfo = styled.span`
+  line-height: 1.5;
 `;
 
 const UserName = styled(Link)`
@@ -35,6 +52,10 @@ const Target = styled(Link)`
   font-weight: 500;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.color.WHITE};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 function POSReport() {
@@ -53,13 +74,15 @@ function POSReport() {
     <DictContentContainer title="신고하기" headerColor="RED">
       <Text>
         <Label>신고 대상:</Label>
-        <UserName to={`/mypage?user=${data?.pos.user_name}`}>
-          {data?.pos.user_name}
-        </UserName>
-        {`님이 작성한 ${langName} 품사`}
-        <Target to={`/${langId}/pos/edit/${data?.pos.pos_order}`}>
-          {data?.pos.pos_name}
-        </Target>
+        <TargetInfo>
+          <UserName to={`/mypage?user=${data?.pos.user_name}`}>
+            {data?.pos.user_name}
+          </UserName>
+          {`님이 작성한 ${langName} 품사`}
+          <Target to={`/${langId}/pos/edit/${data?.pos.pos_order}`}>
+            {data?.pos.pos_name}
+          </Target>
+        </TargetInfo>
       </Text>
       <Form
         id={`pos-${posId}-report-text`}

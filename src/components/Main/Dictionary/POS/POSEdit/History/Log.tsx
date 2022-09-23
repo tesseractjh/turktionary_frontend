@@ -21,12 +21,20 @@ const Container = styled.div``;
 const LogText = styled.div`
   ${flex('space-between')}
   max-width: ${pxToRem(450)};
-  min-width: ${pxToRem(400)};
   margin-bottom: ${pxToRem(16)};
   font-size: ${({ theme }) => theme.fontSize.sm};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    flex-wrap: wrap;
+  }
+`;
+
+const Wrapper = styled.span`
+  ${flex('center', 'center', true)};
 `;
 
 const CompareButton = styled.button`
+  flex-shrink: 0;
   padding-right: ${pxToRem(20)};
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.BROWN_DARK};
@@ -44,17 +52,40 @@ const CompareButton = styled.button`
     border-radius: 50%;
     background-color: ${({ theme }) => theme.color.BROWN};
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(75)};
+    padding-right: ${pxToRem(10)};
+  }
 `;
 
 const Time = styled.time`
   padding-right: ${pxToRem(10)};
   font-size: ${({ theme }) => theme.fontSize.xs};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.custom('xs', -2)};
+  }
+`;
+
+const User = styled.span`
+  border-left: ${border(2)} ${({ theme }) => theme.color.BROWN};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    padding-left: ${pxToRem(75)};
+    margin-top: ${pxToRem(10)};
+    border: none;
+  }
 `;
 
 const UserLevel = styled.span`
   padding: ${pxToRem(0, 10)};
-  border-left: ${border(2)} ${({ theme }) => theme.color.BROWN};
   font-size: ${({ theme }) => theme.fontSize.xs};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    padding-left: 0;
+  }
 `;
 
 const UserName = styled(Link)`
@@ -79,16 +110,16 @@ function Log({ langId, posOrder, pos, index }: LogProps) {
   return (
     <Container>
       <LogText>
-        <span>
+        <Wrapper>
           <CompareButton type="button" onClick={handleClick}>
             {isOpen ? '숨기기' : '비교'}
           </CompareButton>
           <Time>{getDateString(created_time).dateString}</Time>
-        </span>
-        <span>
+        </Wrapper>
+        <User>
           <UserLevel>{`Lv ${getLevelAndExp(user_exp)[0]}`}</UserLevel>
           <UserName to={`/mypage?user=${user_name}`}>{user_name}</UserName>
-        </span>
+        </User>
       </LogText>
       {isOpen && data ? (
         <>

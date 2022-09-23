@@ -17,6 +17,21 @@ const TotalCountContainer = styled.p`
   & .fallback {
     color: transparent;
   }
+
+  @media ${({ theme }) => theme.media.laptop} {
+    padding: ${pxToRem(60, 0)};
+    font-size: ${({ theme }) => theme.fontSize.lg};
+  }
+
+  @media ${({ theme }) => theme.media.tablet} {
+    padding: ${pxToRem(40, 0)};
+    font-size: ${({ theme }) => theme.fontSize.md};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    padding: ${pxToRem(30, 0)};
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 function VocaCounter({ pathname }: { pathname: string }) {

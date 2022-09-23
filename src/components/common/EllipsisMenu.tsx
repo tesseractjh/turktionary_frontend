@@ -48,6 +48,10 @@ const Hover = styled.div`
   width: ${pxToRem(80)};
   height: ${pxToRem(30)};
   background-color: transparent;
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(60)};
+  }
 `;
 
 const Menu = styled.div`
@@ -59,6 +63,10 @@ const Menu = styled.div`
   width: ${pxToRem(80)};
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0 2px 5px rgb(0 0 0 / 17%);
+
+  @media ${({ theme }) => theme.media.mobile} {
+    width: ${pxToRem(60)};
+  }
 `;
 
 const MenuButton = styled(Link)<{ textcolor?: keyof Color }>`

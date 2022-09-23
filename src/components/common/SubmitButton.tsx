@@ -11,6 +11,14 @@ const ButtonContainer = styled.div`
   padding-right: ${pxToRem(10)};
   margin-top: ${pxToRem(30)};
   text-align: right;
+
+  @media ${({ theme }) => theme.media.tablet} {
+    margin-top: ${pxToRem(20)};
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin-top: ${pxToRem(10)};
+  }
 `;
 
 function SubmitButton({ useClickHandler, ...restProps }: SubmitButtonProps) {

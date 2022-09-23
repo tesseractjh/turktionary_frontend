@@ -26,12 +26,20 @@ const Header = styled.div<{ headerColor?: keyof Color }>`
   padding: ${pxToRem(10, 20)};
   background-color: ${({ headerColor, theme }) =>
     theme.color[headerColor ?? 'BROWN']};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    padding: ${pxToRem(10, 16)};
+  }
 `;
 
 const Title = styled.h3`
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.md};
   color: ${({ theme }) => theme.color.BLACK};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 const Content = styled.div<{ isLoading?: boolean }>`
@@ -50,6 +58,10 @@ const Content = styled.div<{ isLoading?: boolean }>`
       }
     `
       : ''}
+    
+  @media ${({ theme }) => theme.media.mobile} {
+    padding: ${pxToRem(10)};
+  }
 `;
 
 function DictContentContainer({

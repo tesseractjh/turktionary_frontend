@@ -44,6 +44,10 @@ const TopMenuButton = styled(Link)`
   &:hover {
     color: ${({ theme }) => theme.color.BROWN_DARK};
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 const SearchBarContainer = styled.div`

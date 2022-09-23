@@ -30,10 +30,19 @@ const Title = styled.h4`
   margin-bottom: ${pxToRem(20)};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.lg};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin-bottom: ${pxToRem(16)};
+    font-size: ${({ theme }) => theme.fontSize.md};
+  }
 `;
 
 const Text = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 const ExampleList = styled.ul`
@@ -41,6 +50,10 @@ const ExampleList = styled.ul`
   flex-wrap: wrap;
   gap: ${pxToRem(16)};
   margin-top: ${pxToRem(20)};
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin-top: ${pxToRem(16)};
+  }
 `;
 
 const Example = styled(Link)`
@@ -54,6 +67,14 @@ const Example = styled(Link)`
   & sup {
     font-size: ${({ theme }) => theme.fontSize.custom('xs', -2)};
     vertical-align: super;
+  }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+
+    & sup {
+      font-size: ${({ theme }) => theme.fontSize.custom('xs', -4)};
+    }
   }
 `;
 
