@@ -12,7 +12,7 @@ import Diff from './Diff';
 interface LogProps {
   langId: string;
   posOrder: string;
-  pos: Model.POSHistory['pos'][number];
+  pos: Model.POSHistoryList['pos'][number];
   index: number;
 }
 

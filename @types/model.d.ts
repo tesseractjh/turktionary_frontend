@@ -7,7 +7,8 @@ declare namespace Model {
     examples: (string | null)[];
     example_orders: (number | null)[];
   };
-  type POSHistory = { pos: (POSTable & History)[] };
+  type POSHistory = { pos: POSTable & History };
+  type POSHistoryList = { pos: (POSTable & History)[] };
   type POS = { pos: POSTable };
 
   interface UserTable {

@@ -12,7 +12,7 @@ function History() {
   const { langId } = useLanguage();
   const { posOrder } = useParams();
 
-  const { data } = useAPI<Model.POSHistory>(
+  const { data } = useAPI<Model.POSHistoryList>(
     ['posHistory', langId, posOrder],
     posAPI.getPosHistory
   );

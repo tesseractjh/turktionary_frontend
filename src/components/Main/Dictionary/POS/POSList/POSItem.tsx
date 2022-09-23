@@ -6,6 +6,7 @@ import pxToRem from '@utils/pxToRem';
 import EllipsisMenu from '../../../../common/EllipsisMenu';
 
 interface POSItemProps {
+  id: number;
   title: string;
   text: string;
   order: number;
@@ -57,6 +58,7 @@ const Example = styled(Link)`
 `;
 
 function POSItem({
+  id,
   title,
   text,
   order,
@@ -90,7 +92,7 @@ function POSItem({
           </ExampleList>
         ) : null}
       </Content>
-      <EllipsisMenu param={order} />
+      <EllipsisMenu id={id} order={order} />
     </Container>
   );
 }

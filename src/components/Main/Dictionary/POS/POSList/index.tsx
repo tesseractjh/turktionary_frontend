@@ -26,10 +26,18 @@ function POSList() {
       buttons={<HeaderButton to="create">품사 추가</HeaderButton>}
     >
       {data?.map(
-        ({ pos_name, pos_text, pos_order, examples, example_orders }) => {
+        ({
+          pos_name,
+          pos_id,
+          pos_text,
+          pos_order,
+          examples,
+          example_orders
+        }) => {
           return (
             <POSItem
               key={`${langId}-pos-${pos_order}`}
+              id={pos_id}
               title={pos_name}
               text={pos_text}
               order={pos_order}
