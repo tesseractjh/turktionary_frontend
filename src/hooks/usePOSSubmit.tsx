@@ -1,24 +1,13 @@
+import posAPI from '@api/pos';
+import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
-import { useQueryClient } from '@tanstack/react-query';
-import styled from '@emotion/styled';
-import { dictFormPrevState, dictFormState } from '@recoil/dict';
-import posAPI from '@api/pos';
-import useLanguage from '@hooks/useLanguage';
-import useMutationAPI from '@hooks/useMutationAPI';
-import useAlertBeforeLeave from '@hooks/useAlertBeforeLeave';
-import pxToRem from '@utils/pxToRem';
-import Button from '@components/common/Button';
+import useLanguage from './useLanguage';
+import useMutationAPI from './useMutationAPI';
 
-interface SubmitButtonProps {
-  isCreate: boolean;
+interface UsePOSSumbitProps {
+  isCreate?: boolean;
 }
-
-const ButtonContainer = styled.div`
-  padding-right: ${pxToRem(10)};
-  margin-top: ${pxToRem(30)};
-  text-align: right;
-`;
 
 const validateForm = (
   posName: string,
@@ -44,13 +33,10 @@ const validateForm = (
   return [isValid, errorMsg, safePosName, safePosText];
 };
 
-function SubmitButton({ isCreate }: SubmitButtonProps) {
-  useAlertBeforeLeave();
-
+function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
   const { langId } = useLanguage();
   const { posOrder } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const { mutate: createPOS } = useMutationAPI(posAPI.createPos);
 
@@ -92,10 +78,6 @@ function SubmitButton({ isCreate }: SubmitButtonProps) {
               }
               reset(posNameState);
               reset(posTextState);
-              queryClient.invalidateQueries([
-                `${langId}-pos-name`,
-                `${langId}-pos-text`
-              ]);
               alert('정상적으로 제출되었습니다!');
               navigate(`/${langId}/pos`);
             }
@@ -105,13 +87,7 @@ function SubmitButton({ isCreate }: SubmitButtonProps) {
     [isCreate]
   );
 
-  return (
-    <ButtonContainer>
-      <Button type="sm" backgroundColorHover="BROWN" onClick={handleClick}>
-        제출
-      </Button>
-    </ButtonContainer>
-  );
+  return handleClick;
 }
 
-export default SubmitButton;
+export default usePOSSubmit;

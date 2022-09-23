@@ -10,7 +10,8 @@ import useRedirect from '@hooks/useRedirect';
 import DictContentContainer from '@components/common/DictContentContainer';
 import History from '@components/Main/Dictionary/POS/POSEdit/History';
 import Form from '../../Form';
-import SubmitButton from './SubmitButton';
+import SubmitButton from '@components/common/SubmitButton';
+import usePOSSubmit from '@hooks/usePOSSubmit';
 
 interface POSEditProps {
   isCreate?: boolean;
@@ -86,7 +87,7 @@ function POSEdit({ isCreate }: POSEditProps) {
           showLength
           isTextarea
         />
-        <SubmitButton isCreate={!!isCreate} />
+        <SubmitButton useClickHandler={usePOSSubmit} isCreate={!!isCreate} />
       </DictContentContainer>
       {isCreate ? null : <History />}
     </>
