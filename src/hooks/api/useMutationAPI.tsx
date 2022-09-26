@@ -3,7 +3,7 @@ import {
   useMutation,
   UseMutationOptions
 } from '@tanstack/react-query';
-import useHandleError, { ExtraQueryOptions } from '@hooks/useHandleError';
+import useHandleError, { ExtraQueryOptions } from '@hooks/api/useHandleError';
 
 function useMutationAPI<T>(
   API: (...args: any) => Promise<T>,

@@ -1,5 +1,5 @@
 import userAPI from '@api/user';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 
 function useAccessToken() {
   const { data } = useAPI('getAccessToken', userAPI.getAccessToken, {

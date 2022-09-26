@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
 import { dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
-import useLanguage from './useLanguage';
+import useLanguage from '../useLanguage';
 import useMutationAPI from './useMutationAPI';
 
 const validateForm = (reportText: string) => {

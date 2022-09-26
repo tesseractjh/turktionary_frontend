@@ -7,7 +7,7 @@ import {
   joinTextValidationState
 } from '@recoil/join';
 import userAPI from '@api/user';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import Button from '@components/common/Button';
 
 function JoinButton() {

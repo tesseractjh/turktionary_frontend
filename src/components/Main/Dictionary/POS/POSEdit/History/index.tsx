@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Log from './Log';

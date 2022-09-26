@@ -17,10 +17,10 @@ import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
 import LangMenu from './LangMenu';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import userAPI from '@api/user';
 import notificationAPI from '@api/notification';
-import useAccessToken from '@hooks/useAccessToken';
+import useAccessToken from '@hooks/api/useAccessToken';
 
 const mountAnimation = keyframes`
   0% {

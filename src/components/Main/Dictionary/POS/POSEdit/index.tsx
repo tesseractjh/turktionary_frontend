@@ -4,14 +4,14 @@ import { useSetRecoilState } from 'recoil';
 import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
-import useLogin from '@hooks/useLogin';
-import useAPI from '@hooks/useAPI';
+import useLogin from '@hooks/api/useLogin';
+import useAPI from '@hooks/api/useAPI';
 import useRedirect from '@hooks/useRedirect';
 import DictContentContainer from '@components/common/DictContentContainer';
 import History from '@components/Main/Dictionary/POS/POSEdit/History';
 import Form from '../../Form';
 import SubmitButton from '@components/common/SubmitButton';
-import usePOSSubmit from '@hooks/usePOSSubmit';
+import usePOSSubmit from '@hooks/api/usePOSSubmit';
 
 interface POSEditProps {
   isCreate?: boolean;

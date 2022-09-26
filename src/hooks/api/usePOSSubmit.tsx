@@ -2,7 +2,7 @@ import posAPI from '@api/pos';
 import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
-import useLanguage from './useLanguage';
+import useLanguage from '../useLanguage';
 import useMutationAPI from './useMutationAPI';
 
 interface UsePOSSumbitProps {

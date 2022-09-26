@@ -7,7 +7,7 @@ import pxToRem from '@utils/pxToRem';
 import GoogleIcon from '@assets/images/google.svg';
 import KakaoIcon from '@assets/images/kakao.png';
 import useRedirect from '@hooks/useRedirect';
-import useVerifyRefreshToken from '@hooks/useVerifyRefreshToken';
+import useVerifyRefreshToken from '@hooks/api/useVerifyRefreshToken';
 
 interface LoginButtonProps extends Props {
   provider: 'google' | 'kakao';

@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import notificationAPI from '@api/notification';
-import useMutationAPI from '@hooks/useMutationAPI';
+import useMutationAPI from '@hooks/api/useMutationAPI';
 import PopupContainer from '@components/common/PopupContainer';
 import Message from './Message';
 

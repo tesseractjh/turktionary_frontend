@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import DictContentContainer from '@components/common/DictContentContainer';
 import POSItem from './POSItem';
 import styled from '@emotion/styled';

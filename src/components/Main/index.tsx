@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { joinResultState } from '@recoil/join';
 import pxToRem from '@utils/pxToRem';
-import useAccessToken from '@hooks/useAccessToken';
+import useAccessToken from '@hooks/api/useAccessToken';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
 import Deferred from '@components/common/Defered';
 import Fallback from '@components/common/Fallback';

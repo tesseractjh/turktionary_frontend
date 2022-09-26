@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import getDateString from '@utils/getDateString';
 import getLevelAndExp from '@utils/getLevelAndExp';
 import pxToRem from '@utils/pxToRem';

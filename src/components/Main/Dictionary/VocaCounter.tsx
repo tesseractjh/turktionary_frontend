@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import vocaAPI from '@api/voca';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import pxToRem from '@utils/pxToRem';
 
 const TotalCountContainer = styled.p`

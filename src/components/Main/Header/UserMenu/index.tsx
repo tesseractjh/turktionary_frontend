@@ -7,7 +7,7 @@ import getLevelAndExp from '@utils/getLevelAndExp';
 import ExperiencePoint from './ExperiencePoint';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import useMutationAPI from '@hooks/useMutationAPI';
+import useMutationAPI from '@hooks/api/useMutationAPI';
 import userAPI from '@api/user';
 import { useQueryClient } from '@tanstack/react-query';
 

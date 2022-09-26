@@ -1,14 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/useAPI';
+import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
-import useLogin from '@hooks/useLogin';
+import useLogin from '@hooks/api/useLogin';
 import pxToRem from '@utils/pxToRem';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Form from '../../Form';
 import SubmitButton from '@components/common/SubmitButton';
-import usePOSReportSubmit from '@hooks/usePOSReportSubmit';
+import usePOSReportSubmit from '@hooks/api/usePOSReportSubmit';
 import { flex } from '@styles/minxin';
 
 const Text = styled.p`
