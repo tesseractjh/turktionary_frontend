@@ -10,6 +10,7 @@ import Form from '../../Form';
 import SubmitButton from '@components/common/SubmitButton';
 import usePOSReportSubmit from '@hooks/api/usePOSReportSubmit';
 import { flex } from '@styles/minxin';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 const Text = styled.p`
   ${flex('flex-start')}
@@ -59,14 +60,14 @@ const Target = styled(Link)`
 `;
 
 function POSReport() {
-  const isAllowed = useLogin(-1);
+  const isLoggedIn = useLogin(-1);
   const { langId, langName } = useLanguage();
   const { posId } = useParams();
-  const { data } = useAPI(['posReport', posId], posAPI.getPos, {
+  const { data } = useAPIWithToken(['posReport', { posId }], posAPI.getPos, {
     staleTime: 60 * 60 * 1000
   });
 
-  if (!isAllowed) {
+  if (!isLoggedIn || !data?.pos) {
     return null;
   }
 
@@ -75,12 +76,12 @@ function POSReport() {
       <Text>
         <Label>신고 대상:</Label>
         <TargetInfo>
-          <UserName to={`/mypage?user=${data?.pos.user_name}`}>
-            {data?.pos.user_name}
+          <UserName to={`/mypage?user=${data.pos.user_name}`}>
+            {data.pos.user_name}
           </UserName>
           {`님이 작성한 ${langName} 품사`}
-          <Target to={`/${langId}/pos/edit/${data?.pos.pos_order}`}>
-            {data?.pos.pos_name}
+          <Target to={`/${langId}/pos/edit/${data.pos.pos_order}`}>
+            {data.pos.pos_name}
           </Target>
         </TargetInfo>
       </Text>

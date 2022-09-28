@@ -59,11 +59,9 @@ function NickNameInput() {
   const nickname = useRecoilValue(joinTextState('nickname'));
   const [timerId, setTimerId] = useRecoilState(joinInputTimerId);
   const { refetch } = useAPI(
-    ['getHasUserName', nickname],
+    ['getHasUserName', { nickname }],
     userAPI.getHasUserName,
-    {
-      enabled: false
-    }
+    { enabled: false }
   );
 
   const handleChange = useCallback(
@@ -130,7 +128,7 @@ function NickNameInput() {
 
 function EmailInput() {
   const [email, setEmail] = useState('');
-  const { data } = useAPI('getUserEmail', userAPI.getUserEmail);
+  const { data } = useAPI(['getUserEmail'], userAPI.getUserEmail);
 
   useEffect(() => {
     if (data) {

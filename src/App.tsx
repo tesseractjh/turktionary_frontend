@@ -7,7 +7,15 @@ import GlobalStyle from '@styles/GlobalStyle';
 import ThemeProvider from '@contexts/ThemeProvider';
 import LANG from '@constants/language';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      suspense: true
+    }
+  }
+});
 
 function SuspsenseFallback() {
   const Fallback = lazy<React.FC>(

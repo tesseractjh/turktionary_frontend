@@ -1,34 +1,22 @@
-import {
-  QueryFunction,
-  QueryKey,
-  UseQueryOptions
-} from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
-import useHandleError, { ExtraQueryOptions } from './useHandleError';
+import { UseQueryOptions, useQuery, QueryKey } from '@tanstack/react-query';
+import useOnError from './useOnError';
+import useQueryFunction from './useQueryFunction';
 
 function useAPI<T>(
-  queryKey: string | QueryKey,
-  API: (...args: any) => Promise<T>,
-  options?: UseQueryOptions<T> & ExtraQueryOptions
+  queryKey: QueryKey,
+  API: (...args: any) => Promise<ResultData<T>>,
+  options?: UseQueryOptions<ResultData<T>> & ExtraOptions
 ) {
-  const handleError = useHandleError();
-  return useQuery<T>(
-    typeof queryKey === 'string' ? [queryKey] : [...queryKey],
-    handleError({
-      queryKey: typeof queryKey === 'string' ? [queryKey] : [...queryKey],
-      API,
-      options: {
-        useBoundary: options?.useBoundary ?? false,
-        useAlert: options?.useAlert ?? true
-      }
-    }) as QueryFunction<T, QueryKey>,
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-      suspense: true,
-      ...options
-    }
-  );
+  const queryFn = useQueryFunction(queryKey, API);
+  const onError = useOnError({
+    useAlert: options?.useAlert ?? true,
+    ...options
+  });
+
+  return useQuery<ResultData<T>>(queryKey, queryFn, {
+    ...options,
+    onError
+  });
 }
 
 export default useAPI;

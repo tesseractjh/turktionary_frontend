@@ -7,13 +7,14 @@ import DictContentContainer from '@components/common/DictContentContainer';
 import Log from './Log';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
 import Deferred from '@components/common/Defered';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 function History() {
   const { langId } = useLanguage();
   const { posOrder } = useParams();
 
-  const { data } = useAPI<Model.POSHistoryList>(
-    ['posHistory', langId, posOrder],
+  const { data } = useAPIWithToken(
+    ['posHistory', { langId, posOrder }],
     posAPI.getPosHistory
   );
 

@@ -4,7 +4,10 @@ import { Keyframes, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import { searchBarPositionState } from '@recoil/search';
+import userAPI from '@api/user';
+import notificationAPI from '@api/notification';
 import pxToRem from '@utils/pxToRem';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import GlobeIcon from '@assets/images/globe-solid.svg';
 import BellIcon from '@assets/images/bell-solid.svg';
 import UserIcon from '@assets/images/user-solid.svg';
@@ -17,10 +20,6 @@ import MenuButton from './MenuButton';
 import Notification from './Notification';
 import UserMenu from './UserMenu';
 import LangMenu from './LangMenu';
-import useAPI from '@hooks/api/useAPI';
-import userAPI from '@api/user';
-import notificationAPI from '@api/notification';
-import useAccessToken from '@hooks/api/useAccessToken';
 
 const mountAnimation = keyframes`
   0% {
@@ -113,19 +112,15 @@ function HeaderMenu() {
   const [isUserHidden, setIsUserHidden] = useState(true);
   const searchBarPosition = useRecoilValue(searchBarPositionState);
 
-  const accessToken = useAccessToken();
-  const { data: user } = useAPI(
-    'getHeaderUserInfo',
-    userAPI.getHeaderUserInfo,
-    { enabled: !!accessToken }
+  const { data: user } = useAPIWithToken(
+    ['headerUserInfo'],
+    userAPI.getHeaderUserInfo
   );
-  const { data: notification } = useAPI(
-    'getNotification',
+
+  const { data: notification } = useAPIWithToken(
+    ['notification'],
     notificationAPI.getNotification,
-    {
-      enabled: !!accessToken,
-      refetchInterval: 5 * 60 * 1000
-    }
+    { refetchInterval: 5 * 60 * 1000 }
   );
 
   const handleLangClick = useCallback(() => {
@@ -157,7 +152,7 @@ function HeaderMenu() {
 
   return (
     <Menu role="menu">
-      {user?.user.user_name ? (
+      {user?.user?.user_name ? (
         <>
           {searchBarPosition === 'header' ? (
             <MenuButton
@@ -181,7 +176,7 @@ function HeaderMenu() {
             aria-controls="popup-notification"
           >
             <BellIcon />
-            <NotiCount count={notification?.notification.length} />
+            <NotiCount count={notification?.notification?.length ?? 0} />
           </MenuButton>
           <MenuButton
             id="btn-user-popup"

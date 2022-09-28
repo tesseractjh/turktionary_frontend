@@ -7,8 +7,8 @@ import {
   joinTextValidationState
 } from '@recoil/join';
 import userAPI from '@api/user';
-import useAPI from '@hooks/api/useAPI';
 import Button from '@components/common/Button';
+import useMutationAPI from '@hooks/api/useMutationAPI';
 
 function JoinButton() {
   const nickname = useRecoilValue(joinTextState('nickname'));
@@ -17,12 +17,9 @@ function JoinButton() {
   const isEmailValid = useRecoilValue(joinTextValidationState('email'));
   const agreement = useRecoilValue(joinCheckboxState('termsOfUse'));
   const setJoinResult = useSetRecoilState(joinResultState);
-  const { refetch } = useAPI<{ accessToken: string }>(
-    ['createUser', nickname, email],
-    userAPI.updateUser,
-    { enabled: false }
-  );
   const navigate = useNavigate();
+
+  const { mutate: join } = useMutationAPI(userAPI.updateUser);
 
   const isValid = isNicknameValid && isEmailValid && agreement;
 
@@ -30,11 +27,15 @@ function JoinButton() {
     if (!isValid) {
       return;
     }
-    const { data } = await refetch();
-    if (data) {
-      setJoinResult(true);
-      navigate('/join/success');
-    }
+    join(
+      { body: { nickname, email } },
+      {
+        onSuccess: () => {
+          setJoinResult(true);
+          navigate('/join/success');
+        }
+      }
+    );
   };
 
   return (

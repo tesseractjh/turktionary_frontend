@@ -7,6 +7,7 @@ import notificationAPI from '@api/notification';
 import useMutationAPI from '@hooks/api/useMutationAPI';
 import PopupContainer from '@components/common/PopupContainer';
 import Message from './Message';
+import useMutationOnSuccess from '@hooks/api/useMutationOnSuccess';
 
 interface NotificationProps {
   notifications: Model.NotificationTable[];
@@ -59,12 +60,15 @@ function Notification({
 }: NotificationProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutate: deleteNotification } = useMutationAPI(
-    notificationAPI.deleteNotification
-  );
-  const { mutate: deleteAllNotifiation } = useMutationAPI(
-    notificationAPI.deleteAllNotification
-  );
+  const onSuccess = useMutationOnSuccess();
+  const onSuccessAll = useMutationOnSuccess();
+
+  const { mutate: deleteNotification, mutateAsync: deleteNotificationAsync } =
+    useMutationAPI(notificationAPI.deleteNotification);
+  const {
+    mutate: deleteAllNotifiation,
+    mutateAsync: deleteAllNotificationAsync
+  } = useMutationAPI(notificationAPI.deleteAllNotification);
 
   const handleMessageClick = useCallback<MouseEventHandler<HTMLUListElement>>(
     async ({ target }) => {
@@ -75,10 +79,12 @@ function Notification({
         deleteNotification(
           { query: { notification_id } },
           {
-            onSuccess: () => {
-              navigate(notification_link);
-              setHidden(true);
-              queryClient.invalidateQueries(['getNotification']);
+            onSuccess: async (data, variables) => {
+              await onSuccess(data, variables, deleteNotificationAsync, () => {
+                navigate(notification_link);
+                setHidden(true);
+                queryClient.invalidateQueries(['notification']);
+              });
             }
           }
         );
@@ -95,8 +101,15 @@ function Notification({
     deleteAllNotifiation(
       {},
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries(['getNotification']);
+        onSuccess: async (data, variables) => {
+          await onSuccessAll(
+            data,
+            variables,
+            deleteAllNotificationAsync,
+            () => {
+              queryClient.invalidateQueries(['notification']);
+            }
+          );
         }
       }
     );
@@ -104,7 +117,7 @@ function Notification({
 
   useEffect(() => {
     if (!hidden) {
-      queryClient.invalidateQueries(['getNotification']);
+      queryClient.invalidateQueries(['notification']);
     }
   }, [hidden]);
 

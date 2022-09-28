@@ -1,35 +1,47 @@
 import axios from 'axios';
 
+interface UserParams extends MutationParams {
+  nickname: string;
+}
+
 const userAPI = {
+  isAccessTokenFetching: false,
+
   async getAccessToken() {
-    const { data } = await axios.patch('/user/refresh');
+    const { data } = await axios.patch<{ accessToken: string }>(
+      '/user/refresh'
+    );
     return data;
   },
 
-  async getHasUserName(user_name: string) {
-    const { data } = await axios(
-      `/user/name?user_name=${encodeURIComponent(user_name)}`
+  async getHasUserName(params: UserParams) {
+    const { nickname } = params;
+    const { data } = await axios.get<{ hasDuplicate: boolean }>(
+      `/user/name?user_name=${encodeURIComponent(nickname)}`
     );
     return data;
   },
 
   async getUserEmail() {
-    const { data } = await axios.get('/user/email');
+    const { data } = await axios.get<{ email: string }>('/user/email');
     return data;
   },
 
-  async updateUser(nickname: string, email: string) {
-    const { data } = await axios.patch('/user/join', { nickname, email });
+  async updateUser(params: UserParams) {
+    const { body } = params;
+    const { data } = await axios.patch('/user/join', body);
     return data;
   },
 
   async getHeaderUserInfo() {
-    const { data } = await axios.get('/user/info/header');
+    const { data } = await axios.get<Model.User>('/user/info/header');
     return data;
   },
 
   async getIsLoggedIn() {
-    const { data } = await axios.get('/user/is-logged-in');
+    const { data } = await axios.get<{ isLoggedIn: boolean }>(
+      '/user/is-logged-in'
+    );
     return data;
   },
 

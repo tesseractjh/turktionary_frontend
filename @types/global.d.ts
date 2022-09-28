@@ -1,6 +1,7 @@
 import React from 'react';
-import { color } from '@styles/theme';
+import { QueryKey, UseQueryOptions } from '@tanstack/react-query';
 import { Theme } from '@emotion/react';
+import { color } from '@styles/theme';
 import LANG from '@constants/language';
 
 declare global {
@@ -28,6 +29,14 @@ declare global {
   interface Props {
     children?: React.ReactNode | React.ReactNode[];
     className?: string;
+  }
+
+  type ResultData<T> = T & { refreshAccessToken?: boolean };
+
+  interface ExtraOptions {
+    useBoundary?: boolean;
+    useAlert?: boolean;
+    onError?: (error: unknown) => void;
   }
 }
 

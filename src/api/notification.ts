@@ -3,7 +3,7 @@ import queryString from '@utils/queryString';
 
 const notificationAPI = {
   async getNotification() {
-    const { data } = await axios.get('/notification');
+    const { data } = await axios.get<Model.Notification>('/notification');
     return data;
   },
 

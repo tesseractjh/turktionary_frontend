@@ -4,6 +4,7 @@ import { dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
 import useLanguage from '../useLanguage';
 import useMutationAPI from './useMutationAPI';
+import useMutationOnSuccess from './useMutationOnSuccess';
 
 const validateForm = (reportText: string) => {
   const safeReportText = reportText.trim().slice(0, 500);
@@ -17,8 +18,10 @@ function usePOSReportSubmit() {
   const { langId } = useLanguage();
   const { posId } = useParams();
   const navigate = useNavigate();
+  const onSuccess = useMutationOnSuccess<Model.POSTable>();
 
-  const { mutate: createPOSReport } = useMutationAPI(posAPI.createPosReport);
+  const { mutate: createPOSReport, mutateAsync: createPOSReportAsync } =
+    useMutationAPI(posAPI.createPosReport);
 
   const handleClick = useRecoilCallback(
     ({ snapshot, reset }) =>
@@ -42,13 +45,12 @@ function usePOSReportSubmit() {
         createPOSReport(
           { body },
           {
-            onSuccess: (data) => {
-              if (!data) {
-                return;
-              }
-              reset(posReportTextState);
-              alert('정상적으로 제출되었습니다!');
-              navigate(`/${langId}/pos`);
+            onSuccess: async (data, variables) => {
+              await onSuccess(data, variables, createPOSReportAsync, () => {
+                reset(posReportTextState);
+                alert('정상적으로 제출되었습니다!');
+                navigate(`/${langId}/pos`);
+              });
             }
           }
         );

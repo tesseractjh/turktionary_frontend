@@ -18,7 +18,7 @@ const HeaderButton = styled(Link)`
 
 function POSList() {
   const { langId, langName } = useLanguage();
-  const { data } = useAPI(['posList', langId], posAPI.getPosList);
+  const { data } = useAPI(['posList', { langId }], posAPI.getPosList);
 
   return (
     <DictContentContainer

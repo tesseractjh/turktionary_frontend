@@ -8,6 +8,7 @@ import getDateString from '@utils/getDateString';
 import getLevelAndExp from '@utils/getLevelAndExp';
 import pxToRem from '@utils/pxToRem';
 import Diff from './Diff';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 interface LogProps {
   langId: string;
@@ -97,8 +98,8 @@ function Log({ langId, posOrder, pos, index }: LogProps) {
   const { user_exp, user_name, pos_id, created_time } = pos;
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data } = useAPI(
-    ['posHistoryDiff', langId, posOrder, pos_id],
+  const { data } = useAPIWithToken(
+    ['posHistoryDiff', { langId, posOrder, posId: pos_id }],
     posAPI.getPosHistoryDiff,
     { enabled: isOpen, staleTime: Infinity }
   );
@@ -125,14 +126,14 @@ function Log({ langId, posOrder, pos, index }: LogProps) {
         <>
           <Diff
             title="품사 이름"
-            prev={data?.pos[1]?.pos_name ?? ''}
-            cur={data?.pos[0]?.pos_name ?? ''}
+            prev={data?.pos?.[1]?.pos_name ?? ''}
+            cur={data?.pos?.[0]?.pos_name ?? ''}
             index={index}
           />
           <Diff
             title="품사 설명"
-            prev={data?.pos[1]?.pos_text ?? ''}
-            cur={data?.pos[0]?.pos_text ?? ''}
+            prev={data?.pos?.[1]?.pos_text ?? ''}
+            cur={data?.pos?.[0]?.pos_text ?? ''}
             index={index}
           />
         </>

@@ -5,13 +5,13 @@ import { dictFormPrevState, dictFormState } from '@recoil/dict';
 import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
 import useLogin from '@hooks/api/useLogin';
-import useAPI from '@hooks/api/useAPI';
 import useRedirect from '@hooks/useRedirect';
+import usePOSSubmit from '@hooks/api/usePOSSubmit';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import DictContentContainer from '@components/common/DictContentContainer';
 import History from '@components/Main/Dictionary/POS/POSEdit/History';
-import Form from '../../Form';
 import SubmitButton from '@components/common/SubmitButton';
-import usePOSSubmit from '@hooks/api/usePOSSubmit';
+import Form from '../../Form';
 
 interface POSEditProps {
   isCreate?: boolean;
@@ -19,12 +19,12 @@ interface POSEditProps {
 
 function POSEdit({ isCreate }: POSEditProps) {
   const { langId, langName } = useLanguage();
-  const isAllowed = useLogin(-1);
+  const isLoggedIn = useLogin(-1);
   const { posOrder } = useParams();
   const redirect = useRedirect(false, {
     path: -1,
     onBefore: () => {
-      alert('존재하지 않는 데이터입니다!');
+      alert('존재하지 않는 페이지입니다!');
     }
   });
   const setPosName = useSetRecoilState(dictFormState(`${langId}-pos-name`));
@@ -36,12 +36,10 @@ function POSEdit({ isCreate }: POSEditProps) {
     dictFormPrevState(`${langId}-pos-text`)
   );
 
-  const { data } = useAPI(
-    ['posByLangAndName', langId, posOrder],
+  const { data } = useAPIWithToken(
+    ['posByLangAndName', { langId, posOrder }],
     posAPI.getPosByLangAndName,
-    {
-      enabled: isAllowed && !isCreate
-    }
+    { enabled: !isCreate }
   );
 
   useEffect(() => {
@@ -57,13 +55,13 @@ function POSEdit({ isCreate }: POSEditProps) {
         setPosText(posText as string);
         setPrevPosName(posName as string);
         setPrevPosText(posText as string);
-      } else {
+      } else if (!data?.refreshAccessToken) {
         redirect();
       }
     }
   }, [data]);
 
-  if (!isAllowed) {
+  if (!isLoggedIn) {
     return null;
   }
 

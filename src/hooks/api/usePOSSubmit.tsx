@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
 import useLanguage from '../useLanguage';
 import useMutationAPI from './useMutationAPI';
+import useMutationOnSuccess from './useMutationOnSuccess';
 
 interface UsePOSSumbitProps {
   isCreate?: boolean;
@@ -37,8 +38,11 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
   const { langId } = useLanguage();
   const { posOrder } = useParams();
   const navigate = useNavigate();
+  const onSuccess = useMutationOnSuccess<Model.POSTable>();
 
-  const { mutate: createPOS } = useMutationAPI(posAPI.createPos);
+  const { mutate: createPOS, mutateAsync: createPOSAsync } = useMutationAPI(
+    posAPI.createPos
+  );
 
   const handleClick = useRecoilCallback(
     ({ snapshot, reset }) =>
@@ -72,14 +76,13 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
         createPOS(
           { body },
           {
-            onSuccess: (data) => {
-              if (!data) {
-                return;
-              }
-              reset(posNameState);
-              reset(posTextState);
-              alert('정상적으로 제출되었습니다!');
-              navigate(`/${langId}/pos`);
+            onSuccess: async (data, variables) => {
+              await onSuccess(data, variables, createPOSAsync, () => {
+                reset(posNameState);
+                reset(posTextState);
+                alert('정상적으로 제출되었습니다!');
+                navigate(`/${langId}/pos`);
+              });
             }
           }
         );
