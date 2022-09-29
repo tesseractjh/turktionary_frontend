@@ -1,7 +1,11 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import POSEdit from './POSEdit';
-import POSList from './POSList';
-import POSReport from './POSReport';
+
+const POSList = lazy(() => import('@components/Main/Dictionary/POS/POSList'));
+const POSEdit = lazy(() => import('@components/Main/Dictionary/POS/POSEdit'));
+const POSReport = lazy(
+  () => import('@components/Main/Dictionary/POS/POSReport')
+);
 
 function POS() {
   return (
