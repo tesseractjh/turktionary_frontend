@@ -13,6 +13,7 @@ import { emailValidation } from '@utils/validation';
 import JoinButton from './JoinButton';
 import JoinCheckbox from './JoinCheckbox';
 import JoinText from './JoinText';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Container = styled.div`
   position: relative;
@@ -58,8 +59,9 @@ const Title = styled.h2`
 function NickNameInput() {
   const nickname = useRecoilValue(joinTextState('nickname'));
   const [timerId, setTimerId] = useRecoilState(joinInputTimerId);
+  const queryClient = useQueryClient();
   const { refetch } = useAPI(
-    ['getHasUserName', { nickname }],
+    ['hasUserName', { nickname }],
     userAPI.getHasUserName,
     { enabled: false }
   );
@@ -91,6 +93,9 @@ function NickNameInput() {
           setValidation(false);
           return;
         }
+
+        setStatus('NONE');
+        setValidation(false);
 
         debounce(
           timerId,
@@ -128,7 +133,7 @@ function NickNameInput() {
 
 function EmailInput() {
   const [email, setEmail] = useState('');
-  const { data } = useAPI(['getUserEmail'], userAPI.getUserEmail);
+  const { data } = useAPI(['userEmail'], userAPI.getUserEmail);
 
   useEffect(() => {
     if (data) {
