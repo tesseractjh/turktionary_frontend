@@ -13,7 +13,6 @@ import { emailValidation } from '@utils/validation';
 import JoinButton from './JoinButton';
 import JoinCheckbox from './JoinCheckbox';
 import JoinText from './JoinText';
-import { useQueryClient } from '@tanstack/react-query';
 
 const Container = styled.div`
   position: relative;
@@ -59,7 +58,6 @@ const Title = styled.h2`
 function NickNameInput() {
   const nickname = useRecoilValue(joinTextState('nickname'));
   const [timerId, setTimerId] = useRecoilState(joinInputTimerId);
-  const queryClient = useQueryClient();
   const { refetch } = useAPI(
     ['hasUserName', { nickname }],
     userAPI.getHasUserName,
