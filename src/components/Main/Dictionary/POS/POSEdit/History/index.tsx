@@ -6,7 +6,7 @@ import useLanguage from '@hooks/useLanguage';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Log from './Log';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
-import Deferred from '@components/common/Defered';
+import Deferred from '@components/common/Deferred';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 function History() {

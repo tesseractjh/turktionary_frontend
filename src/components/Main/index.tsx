@@ -6,7 +6,7 @@ import { joinResultState } from '@recoil/join';
 import pxToRem from '@utils/pxToRem';
 import useAccessToken from '@hooks/api/useAccessToken';
 import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
-import Deferred from '@components/common/Defered';
+import Deferred from '@components/common/Deferred';
 import Fallback from '@components/common/Fallback';
 import Header from './Header';
 import MenuList from './MenuList';
