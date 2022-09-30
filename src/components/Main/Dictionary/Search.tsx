@@ -10,7 +10,7 @@ interface SearchProps {
   type: DictionaryType;
 }
 
-const SearchContainer = styled.section`
+const SearchContainer = styled.section<{ isSearch: boolean }>`
   padding-top: ${pxToRem(20)};
   padding-bottom: ${pxToRem(80)};
   border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
@@ -23,9 +23,20 @@ const SearchContainer = styled.section`
   @media ${({ theme }) => theme.media.mobile} {
     padding-bottom: ${pxToRem(40)};
   }
+
+  ${({ isSearch, theme }) =>
+    isSearch
+      ? `
+      padding: ${pxToRem(10)};
+
+      @media ${theme.media.tablet} {
+        padding: ${pxToRem(10)};
+      }
+    `
+      : ''}
 `;
 
-const TopMenu = styled.nav`
+const TopMenu = styled.nav<{ isSearch?: boolean }>`
   ${flex('flex-end')}
   gap: ${pxToRem(10)};
   height: ${pxToRem(30)};
@@ -33,6 +44,8 @@ const TopMenu = styled.nav`
   font-weight: 700;
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.color.BROWN};
+
+  ${({ isSearch }) => (isSearch ? `margin-bottom: ${pxToRem(10)};` : '')}
 `;
 
 const TopMenuButton = styled(Link)<{ isSelected: boolean }>`
@@ -67,6 +80,7 @@ const SearchBarContainer = styled.div`
 `;
 
 const Title = styled.h2`
+  position: relative;
   font-weight: 700;
   font-size: ${({ theme }) => theme.fontSize.custom('lg', 4)};
   text-align: center;
@@ -87,21 +101,27 @@ const Title = styled.h2`
   }
 `;
 
-const SearchBarWrapper = styled.div`
+const SearchBarWrapper = styled.div<{ isSearch: boolean }>`
   min-width: ${pxToRem(240)};
   max-width: ${pxToRem(550)};
   width: 100%;
   margin-top: ${pxToRem(20)};
+
+  ${({ isSearch }) => (isSearch ? `margin-top: ${pxToRem(10)};` : '')}
 `;
+
+const searchPaths = ['search', 'voca'];
 
 function Search({ type }: SearchProps) {
   const { pathname } = useLocation();
   const lastPath = pathname.split('/').reverse()[0];
+  const isSearch = searchPaths.includes(lastPath);
   const isAll = type === 'ALL';
+
   return (
-    <SearchContainer>
+    <SearchContainer isSearch={isSearch}>
       <InnerContainer>
-        <TopMenu>
+        <TopMenu isSearch={isSearch}>
           {isAll ? null : (
             <>
               <TopMenuButton to="edit" isSelected={lastPath === 'edit'}>
@@ -119,7 +139,7 @@ function Search({ type }: SearchProps) {
             {LANG[type].name}
             <span>{isAll ? ' 통합사전' : ' 사전'}</span>
           </Title>
-          <SearchBarWrapper>
+          <SearchBarWrapper isSearch={isSearch}>
             <SearchBar id="search-dictionary" />
           </SearchBarWrapper>
         </SearchBarContainer>
