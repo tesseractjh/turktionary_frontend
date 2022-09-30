@@ -1,15 +1,16 @@
-import { Color, css } from '@emotion/react';
+import { Color } from '@emotion/react';
 import styled from '@emotion/styled';
-import { border, flex } from '@styles/minxin';
+import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import Deferred from './Deferred';
 import Spinner from './Spinner';
 
 interface DictContentContainerProps extends Props {
-  title: string;
+  title?: string;
   buttons?: React.ReactNode | React.ReactNode[];
   headerColor?: keyof Color;
   isLoading?: boolean;
+  hideHeader?: boolean;
 }
 
 const Container = styled.div`
@@ -74,14 +75,17 @@ function DictContentContainer({
   buttons,
   headerColor,
   isLoading,
+  hideHeader,
   children
 }: DictContentContainerProps) {
   return (
     <Container>
-      <Header headerColor={headerColor}>
-        <Title>{title}</Title>
-        {buttons ?? null}
-      </Header>
+      {hideHeader ? null : (
+        <Header headerColor={headerColor}>
+          <Title>{title ?? ''}</Title>
+          {buttons ?? null}
+        </Header>
+      )}
       <Content isLoading={isLoading}>
         {isLoading ? (
           <Deferred delay={200}>
