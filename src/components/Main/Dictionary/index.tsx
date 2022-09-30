@@ -87,8 +87,14 @@ const SearchBarWrapper = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  ${flex()};
+  flex: 1;
   padding: ${pxToRem(10, 0)};
   background-color: ${({ theme }) => theme.color.GRAY_LIGHT};
+
+  & > * {
+    width: 100%;
+  }
 `;
 
 function Dictionary({ type }: DictionaryProps) {

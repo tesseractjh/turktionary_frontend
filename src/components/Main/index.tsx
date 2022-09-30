@@ -11,8 +11,11 @@ import Fallback from '@components/common/Fallback';
 import Header from './Header';
 import MenuList from './MenuList';
 import Footer from './Footer';
+import { flex } from '@styles/minxin';
 
 const Container = styled.div`
+  ${flex('flex-start', 'stretch')}
+  flex-direction: column;
   min-height: calc(100vh - ${pxToRem(100)});
 `;
 
