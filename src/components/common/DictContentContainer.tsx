@@ -19,6 +19,11 @@ const Container = styled.div`
   border-radius: ${pxToRem(8)};
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0 5px 16px rgb(0 0 0 / 17%);
+
+  @media ${({ theme }) => theme.media.mobile} {
+    margin: ${pxToRem(0, 0, 10, 0)};
+    border-radius: 0;
+  }
 `;
 
 const Header = styled.div<{ headerColor?: keyof Color }>`

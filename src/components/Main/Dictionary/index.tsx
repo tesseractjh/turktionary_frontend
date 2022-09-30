@@ -95,6 +95,10 @@ const ContentContainer = styled.section`
   & > * {
     width: 100%;
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+  }
 `;
 
 function Dictionary({ type }: DictionaryProps) {
@@ -126,7 +130,7 @@ function Dictionary({ type }: DictionaryProps) {
         </InnerContainer>
       </SearchContainer>
       <ContentContainer>
-        <InnerContainer>
+        <InnerContainer mobileNoPadding>
           <Routes>
             <Route index element={<VocaCounter pathname={pathname} />} />
             <Route path="pos/*" element={<POS />} />
