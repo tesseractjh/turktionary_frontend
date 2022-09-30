@@ -10,6 +10,11 @@ import Deferred from '@components/common/Deferred';
 import Fallback from '@components/common/Fallback';
 import Header from './Header';
 import MenuList from './MenuList';
+import Footer from './Footer';
+
+const Container = styled.div`
+  min-height: calc(100vh - ${pxToRem(100)});
+`;
 
 const Fixed = styled.header`
   position: relative;
@@ -31,11 +36,14 @@ function Main() {
 
   return (
     <>
-      <Fixed id="header">
-        <Header />
-        <MenuList />
-      </Fixed>
-      <Outlet />
+      <Container>
+        <Fixed id="header">
+          <Header />
+          <MenuList />
+        </Fixed>
+        <Outlet />
+      </Container>
+      <Footer />
     </>
   );
 }

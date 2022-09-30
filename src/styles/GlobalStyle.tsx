@@ -1,11 +1,12 @@
 import { Global, css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
-import { media } from './theme';
+import { lightColor, media } from './theme';
 
 const resetStyle = css`
   ${emotionReset}
 
   html {
+    background-color: ${lightColor.GRAY_LIGHT};
     font-family: Pretendard Variable, -apple-system, BlinkMacSystemFont,
       system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
       'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',

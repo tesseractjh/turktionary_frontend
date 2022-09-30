@@ -16,6 +16,7 @@ const SearchContainer = styled.section`
   padding-top: ${pxToRem(20)};
   padding-bottom: ${pxToRem(80)};
   border-bottom: ${border()} ${({ theme }) => theme.color.BORDER};
+  background-color: ${({ theme }) => theme.color.WHITE};
 
   @media ${({ theme }) => theme.media.tablet} {
     padding-bottom: ${pxToRem(60)};
