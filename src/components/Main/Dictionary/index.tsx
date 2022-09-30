@@ -37,14 +37,24 @@ const TopMenu = styled.nav`
   color: ${({ theme }) => theme.color.BROWN};
 `;
 
-const TopMenuButton = styled(Link)`
+const TopMenuButton = styled(Link)<{ isSelected: boolean }>`
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.color.BLACK};
 
   &:hover {
+    font-weight: 500;
     color: ${({ theme }) => theme.color.BROWN_DARK};
+    text-decoration: underline;
   }
+
+  ${({ isSelected, theme }) =>
+    isSelected
+      ? `
+        font-weight: 500;
+        color: ${theme.color.BROWN_DARK};
+      `
+      : ''}
 
   @media ${({ theme }) => theme.media.mobile} {
     font-size: ${({ theme }) => theme.fontSize.xs};
@@ -103,6 +113,7 @@ const ContentContainer = styled.section`
 
 function Dictionary({ type }: DictionaryProps) {
   const { pathname } = useLocation();
+  const lastPath = pathname.split('/').reverse()[0];
   const isAll = type === 'ALL';
 
   return (
@@ -112,8 +123,13 @@ function Dictionary({ type }: DictionaryProps) {
           <TopMenu>
             {isAll ? null : (
               <>
-                <TopMenuButton to="edit">단어 추가</TopMenuButton>|
-                <TopMenuButton to="pos">품사 목록</TopMenuButton>
+                <TopMenuButton to="edit" isSelected={lastPath === 'edit'}>
+                  단어 추가
+                </TopMenuButton>
+                |
+                <TopMenuButton to="pos" isSelected={lastPath === 'pos'}>
+                  품사 목록
+                </TopMenuButton>
               </>
             )}
           </TopMenu>
