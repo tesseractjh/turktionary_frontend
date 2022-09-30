@@ -86,7 +86,7 @@ const SearchBarWrapper = styled.div`
   margin-top: ${pxToRem(20)};
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.section`
   ${flex()};
   flex: 1;
   padding: ${pxToRem(10, 0)};
