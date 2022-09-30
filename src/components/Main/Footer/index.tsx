@@ -1,8 +1,8 @@
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import pxToRem from '@utils/pxToRem';
-import LicenseIcon from '@assets/images/by-nc-sa.svg';
 import { border, flex } from '@styles/minxin';
-import { Link } from 'react-router-dom';
+import LicenseIcon from '@assets/images/by-sa.svg';
 import Logo from '@components/common/Logo';
 
 const Container = styled.footer`
@@ -68,7 +68,7 @@ function Footer() {
       </LinkList>
       <Bottom>
         <Logo />
-        <LicenseLink href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.ko">
+        <LicenseLink href="https://creativecommons.org/licenses/by-sa/3.0/deed.ko">
           <LicenseIcon viewBox="0 0 120 42" />
         </LicenseLink>
       </Bottom>
