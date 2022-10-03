@@ -12,7 +12,7 @@ function POS() {
     <Routes>
       <Route index element={<POSList />} />
       <Route path="create" element={<POSEdit isCreate />} />
-      <Route path="edit/:posOrder" element={<POSEdit />} />
+      <Route path="edit/:posName" element={<POSEdit />} />
       <Route path="report/:posId" element={<POSReport />} />
     </Routes>
   );

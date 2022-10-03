@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/api/useAPI';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import getDateString from '@utils/getDateString';
 import getLevelAndExp from '@utils/getLevelAndExp';
 import pxToRem from '@utils/pxToRem';
 import Diff from './Diff';
-import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 interface LogProps {
   langId: string;
-  posOrder: string;
-  pos: Model.POSHistoryList['pos'][number];
+  posLog: Model.POSLog & Model.History;
   index: number;
 }
 
@@ -94,12 +92,12 @@ const UserName = styled(Link)`
   color: ${({ theme }) => theme.color.TEAL_DARK};
 `;
 
-function Log({ langId, posOrder, pos, index }: LogProps) {
-  const { user_exp, user_name, pos_id, created_time } = pos;
+function Log({ posLog, index }: LogProps) {
+  const { user_exp, user_name, pos_id, pos_log_id, created_time } = posLog;
   const [isOpen, setIsOpen] = useState(false);
 
   const { data } = useAPIWithToken(
-    ['posHistoryDiff', { langId, posOrder, posId: pos_id }],
+    ['posHistoryDiff', { posId: pos_id, posLogId: pos_log_id }],
     posAPI.getPosHistoryDiff,
     { enabled: isOpen, staleTime: Infinity }
   );
@@ -126,14 +124,14 @@ function Log({ langId, posOrder, pos, index }: LogProps) {
         <>
           <Diff
             title="품사 이름"
-            prev={data?.pos?.[1]?.pos_name ?? ''}
-            cur={data?.pos?.[0]?.pos_name ?? ''}
+            prev={data?.[1]?.pos_name ?? ''}
+            cur={data?.[0]?.pos_name ?? ''}
             index={index}
           />
           <Diff
             title="품사 설명"
-            prev={data?.pos?.[1]?.pos_text ?? ''}
-            cur={data?.pos?.[0]?.pos_text ?? ''}
+            prev={data?.[1]?.pos_text ?? ''}
+            cur={data?.[0]?.pos_text ?? ''}
             index={index}
           />
         </>

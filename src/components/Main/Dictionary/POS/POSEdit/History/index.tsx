@@ -11,24 +11,19 @@ import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 function History() {
   const { langId } = useLanguage();
-  const { posOrder } = useParams();
+  const { posName } = useParams();
 
   const { data } = useAPIWithToken(
-    ['posHistory', { langId, posOrder }],
+    ['posHistory', { langId, posName }],
     posAPI.getPosHistory
   );
 
   return (
     <DictContentContainer title="최근 편집 기록" headerColor="BEIGE">
-      {data?.pos?.map((pos, index) => {
+      {data?.map((posLog, index) => {
         return (
-          <Suspense key={pos.pos_id}>
-            <Log
-              langId={langId}
-              posOrder={posOrder as string}
-              pos={pos}
-              index={index}
-            />
+          <Suspense key={posLog.pos_log_id}>
+            <Log langId={langId} posLog={posLog} index={index} />
           </Suspense>
         );
       })}

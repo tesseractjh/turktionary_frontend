@@ -41,13 +41,13 @@ function VocaCounter({ pathname }: { pathname: string }) {
 
   const lang = pathname.split('/')[1];
   const count =
-    data?.count.reduce(
+    data?.reduce(
       (acc, { lang_name, count }) => {
         acc[lang_name] = count;
         return acc;
       },
       {
-        '': data?.count.reduce((acc, { count }) => acc + count, 0) ?? 0
+        '': data?.reduce((acc, { count }) => acc + count, 0) ?? 0
       } as Record<string, number>
     ) ?? {};
 

@@ -18,7 +18,7 @@ function usePOSReportSubmit() {
   const { langId } = useLanguage();
   const { posId } = useParams();
   const navigate = useNavigate();
-  const onSuccess = useMutationOnSuccess<Model.POSTable>();
+  const onSuccess = useMutationOnSuccess<Model.POS[]>();
 
   const { mutate: createPOSReport, mutateAsync: createPOSReportAsync } =
     useMutationAPI(posAPI.createPosReport);

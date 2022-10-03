@@ -25,28 +25,18 @@ function POSList() {
       title={`${langName} 품사`}
       buttons={<HeaderButton to="create">품사 추가</HeaderButton>}
     >
-      {data?.map(
-        ({
-          pos_name,
-          pos_id,
-          pos_text,
-          pos_order,
-          examples,
-          example_orders
-        }) => {
-          return (
-            <POSItem
-              key={`${langId}-pos-${pos_order}`}
-              id={pos_id}
-              title={pos_name}
-              text={pos_text}
-              order={pos_order}
-              examples={examples.filter(Boolean) as string[]}
-              exampleOrders={example_orders.filter(Boolean) as number[]}
-            />
-          );
-        }
-      )}
+      {data?.map(({ pos_name, pos_id, pos_text, examples, example_orders }) => {
+        return (
+          <POSItem
+            key={`${langId}-pos-${pos_name}`}
+            id={pos_id}
+            title={pos_name}
+            text={pos_text}
+            examples={examples.filter(Boolean) as string[]}
+            exampleOrders={example_orders.filter(Boolean) as number[]}
+          />
+        );
+      })}
     </DictContentContainer>
   );
 }

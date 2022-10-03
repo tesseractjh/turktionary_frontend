@@ -20,7 +20,7 @@ interface POSEditProps {
 function POSEdit({ isCreate }: POSEditProps) {
   const { langId, langName } = useLanguage();
   const isLoggedIn = useLogin(-1);
-  const { posOrder } = useParams();
+  const { posName } = useParams();
   const redirect = useRedirect(false, {
     path: -1,
     onBefore: () => {
@@ -29,6 +29,7 @@ function POSEdit({ isCreate }: POSEditProps) {
   });
   const setPosName = useSetRecoilState(dictFormState(`${langId}-pos-name`));
   const setPosText = useSetRecoilState(dictFormState(`${langId}-pos-text`));
+  const setPrevPosId = useSetRecoilState(dictFormPrevState(`${langId}-pos-id`));
   const setPrevPosName = useSetRecoilState(
     dictFormPrevState(`${langId}-pos-name`)
   );
@@ -37,7 +38,7 @@ function POSEdit({ isCreate }: POSEditProps) {
   );
 
   const { data } = useAPIWithToken(
-    ['posByLangAndName', { langId, posOrder }],
+    ['posByLangAndName', { langId, posName }],
     posAPI.getPosByLangAndName,
     { enabled: !isCreate }
   );
@@ -46,13 +47,19 @@ function POSEdit({ isCreate }: POSEditProps) {
     if (isCreate) {
       setPosName('');
       setPosText('');
+      setPrevPosId('');
       setPrevPosName('');
       setPrevPosText('');
     } else {
-      const { pos_name: posName, pos_text: posText } = data?.pos ?? {};
-      if (posName) {
+      const {
+        pos_name: posName,
+        pos_text: posText,
+        pos_id: posId
+      } = data ?? {};
+      if (posId) {
         setPosName(posName as string);
         setPosText(posText as string);
+        setPrevPosId(posId.toString());
         setPrevPosName(posName as string);
         setPrevPosText(posText as string);
       } else if (!data?.refreshAccessToken) {

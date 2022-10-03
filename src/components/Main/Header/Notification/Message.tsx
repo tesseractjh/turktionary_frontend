@@ -9,7 +9,7 @@ import elpasedTime from '@utils/elpasedTime';
 import parseMarkdown from '@utils/parseMarkdown';
 
 interface MessageProps extends Props {
-  notification: Model.NotificationTable;
+  notification: Model.Notification;
   index: number;
 }
 

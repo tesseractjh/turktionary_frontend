@@ -12,7 +12,7 @@ import userAPI from '@api/user';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface UserMenuProps {
-  user: Model.UserTable;
+  user: Model.User;
   handleDocumentClick: (event: MouseEvent) => void;
   hidden: boolean;
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;

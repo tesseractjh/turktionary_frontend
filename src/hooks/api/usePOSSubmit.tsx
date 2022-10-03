@@ -36,12 +36,15 @@ const validateForm = (
 
 function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
   const { langId } = useLanguage();
-  const { posOrder } = useParams();
   const navigate = useNavigate();
-  const onSuccess = useMutationOnSuccess<Model.POSTable>();
+  const onSuccess = useMutationOnSuccess<Model.POS[]>();
 
   const { mutate: createPOS, mutateAsync: createPOSAsync } = useMutationAPI(
     posAPI.createPos
+  );
+
+  const { mutate: updatePOS, mutateAsync: updatePOSAsync } = useMutationAPI(
+    posAPI.updatePos
   );
 
   const handleClick = useRecoilCallback(
@@ -49,15 +52,17 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
       async () => {
         const posNameState = dictFormState(`${langId}-pos-name`);
         const posTextState = dictFormState(`${langId}-pos-text`);
+        const prevPosIdState = dictFormPrevState(`${langId}-pos-id`);
         const prevPosNameState = dictFormPrevState(`${langId}-pos-name`);
         const prevPosTextState = dictFormPrevState(`${langId}-pos-text`);
 
         const unsafePosName = await snapshot.getPromise(posNameState);
         const unsafePosText = await snapshot.getPromise(posTextState);
+        const prevPosId = await snapshot.getPromise(prevPosIdState);
         const prevPosName = await snapshot.getPromise(prevPosNameState);
         const prevPosText = await snapshot.getPromise(prevPosTextState);
 
-        const [isValid, errorMsg, posName, posText] = validateForm(
+        const [isValid, errorMsg, newPosName, newPosText] = validateForm(
           unsafePosName,
           unsafePosText,
           prevPosName,
@@ -69,23 +74,41 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
           return;
         }
 
-        const body = isCreate
-          ? { langId, posName, posText }
-          : { langId, posName, posText, posOrder };
-
-        createPOS(
-          { body },
-          {
-            onSuccess: async (data, variables) => {
-              await onSuccess(data, variables, createPOSAsync, () => {
-                reset(posNameState);
-                reset(posTextState);
-                alert('정상적으로 제출되었습니다!');
-                navigate(`/${langId}/pos`);
-              });
+        if (isCreate) {
+          createPOS(
+            { body: { langId, posName: newPosName, posText: newPosText } },
+            {
+              onSuccess: async (data, variables) => {
+                await onSuccess(data, variables, createPOSAsync, () => {
+                  reset(posNameState);
+                  reset(posTextState);
+                  alert('정상적으로 제출되었습니다!');
+                  navigate(`/${langId}/pos`);
+                });
+              }
             }
-          }
-        );
+          );
+        } else {
+          updatePOS(
+            {
+              body: {
+                posId: prevPosId,
+                posName: newPosName,
+                posText: newPosText
+              }
+            },
+            {
+              onSuccess: async (data, variables) => {
+                await onSuccess(data, variables, updatePOSAsync, () => {
+                  reset(posNameState);
+                  reset(posTextState);
+                  alert('정상적으로 제출되었습니다!');
+                  navigate(`/${langId}/pos`);
+                });
+              }
+            }
+          );
+        }
       },
     [isCreate]
   );
