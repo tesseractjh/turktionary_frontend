@@ -9,7 +9,6 @@ interface POSItemProps {
   id: number;
   title: string;
   text: string;
-  order: number;
   examples: string[];
   exampleOrders: number[];
 }
@@ -78,14 +77,7 @@ const Example = styled(Link)`
   }
 `;
 
-function POSItem({
-  id,
-  title,
-  text,
-  order,
-  examples,
-  exampleOrders
-}: POSItemProps) {
+function POSItem({ id, title, text, examples, exampleOrders }: POSItemProps) {
   const { langId } = useLanguage();
 
   return (
@@ -113,7 +105,7 @@ function POSItem({
           </ExampleList>
         ) : null}
       </Content>
-      <EllipsisMenu id={id} order={order} />
+      <EllipsisMenu id={id} name={title} />
     </Container>
   );
 }

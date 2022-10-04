@@ -3,55 +3,69 @@ import axios from 'axios';
 interface POSParams extends MutationParams {
   langId: string;
   posId: number;
-  posOrder: number;
+  posName: string;
+  posLogId: number;
 }
 
 const posAPI = {
-  async getPos(params: POSParams) {
+  async getPosById(params: POSParams) {
     const { posId } = params;
-    const { data } = await axios.get<Model.POSHistory>(`/pos?id=${posId}`);
+    const { data } = await axios.get<Model.POS & Model.History>(
+      `/pos?id=${posId}`
+    );
     return data;
   },
 
   async getPosList(params: POSParams) {
     const { langId } = params;
-    const { data } = await axios.get<Model.POSList[]>(`/pos/list/${langId}`);
+    const { data } = await axios.get<
+      (Model.POS & {
+        examples: (string | null)[];
+        example_orders: (number | null)[];
+      })[]
+    >(`/pos/list/${langId}`);
     return data;
   },
 
   async getPosByLangAndName(params: POSParams) {
-    const { langId, posOrder } = params;
+    const { langId, posName } = params;
     const { data } = await axios.get<Model.POS>(
-      `/pos?lang=${langId}&order=${posOrder}`
+      `/pos?lang=${langId}&name=${posName}`
     );
     return data;
   },
 
   async getPosHistory(params: POSParams) {
-    const { langId, posOrder } = params;
-    const { data } = await axios.get<Model.POSHistoryList>(
-      `/pos/history?lang=${langId}&order=${posOrder}`
+    const { langId, posName } = params;
+    const { data } = await axios.get<(Model.POSLog & Model.History)[]>(
+      `/pos/history?lang=${langId}&name=${posName}`
     );
     return data;
   },
 
   async getPosHistoryDiff(params: POSParams) {
-    const { langId, posOrder, posId } = params;
-    const { data } = await axios.get<{ pos: Model.POSTable[] }>(
-      `/pos/history/diff?lang=${langId}&order=${posOrder}&id=${posId}`
+    const { posId, posLogId } = params;
+    const { data } = await axios.get<Model.POSLog[]>(
+      `/pos/history/diff?id=${posId}&log_id=${posLogId}`
     );
     return data;
   },
 
   async createPos(params: POSParams) {
     const { body } = params;
-    const { data } = await axios.post<Model.POSTable>('/pos', body);
+    const { data } = await axios.post('/pos', body);
     return data;
   },
 
   async createPosReport(params: POSParams) {
     const { body } = params;
-    const { data } = await axios.post<Model.POSTable>('/pos/report', body);
+    const { data } = await axios.post('/pos/report', body);
+    return data;
+  },
+
+  async updatePos(params: POSParams) {
+    const { body } = params;
+    const { data } = await axios.patch('/pos', body);
     return data;
   }
 };

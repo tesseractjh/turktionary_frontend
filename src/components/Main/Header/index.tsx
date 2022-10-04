@@ -152,7 +152,7 @@ function HeaderMenu() {
 
   return (
     <Menu role="menu">
-      {user?.user?.user_name ? (
+      {user?.user_name ? (
         <>
           {searchBarPosition === 'header' ? (
             <MenuButton
@@ -176,7 +176,7 @@ function HeaderMenu() {
             aria-controls="popup-notification"
           >
             <BellIcon />
-            <NotiCount count={notification?.notification?.length ?? 0} />
+            <NotiCount count={notification?.length ?? 0} />
           </MenuButton>
           <MenuButton
             id="btn-user-popup"
@@ -194,13 +194,13 @@ function HeaderMenu() {
             setHidden={setIsLangHidden}
           />
           <Notification
-            notifications={notification?.notification ?? []}
+            notifications={notification ?? []}
             handleDocumentClick={handleNotiClose}
             hidden={isNotiHidden}
             setHidden={setIsNotiHidden}
           />
           <UserMenu
-            user={user?.user}
+            user={user}
             handleDocumentClick={handleUserClose}
             hidden={isUserHidden}
             setHidden={setIsUserHidden}

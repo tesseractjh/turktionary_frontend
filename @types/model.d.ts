@@ -1,17 +1,14 @@
 declare namespace Model {
-  type History = { user_exp: number; user_name: string };
-  type User = { user: UserTable };
-  type Notification = { notification: NotificationTable[] };
-  type VocaCount = { count: (VocaTable & { count: number })[] };
-  type POSList = POSTable & {
-    examples: (string | null)[];
-    example_orders: (number | null)[];
-  };
-  type POSHistory = { pos: POSTable & History };
-  type POSHistoryList = { pos: (POSTable & History)[] };
-  type POS = { pos: POSTable };
+  interface Log {
+    created_time: string;
+  }
 
-  interface UserTable {
+  interface History extends Log {
+    user_exp: number;
+    user_name: string;
+  }
+
+  interface User extends Log {
     user_id: number;
     auth_id: string;
     auth_provider: string;
@@ -20,35 +17,34 @@ declare namespace Model {
     introduction: string | null;
     email: string | null;
     refresh_token: string | null;
-    created_time: string;
   }
 
-  interface NotificationTable {
+  interface Notification extends Log {
     notification_id: number;
     user_id: number;
     notification_type: string;
     notification_title: string;
     notification_text: string;
     notification_link: string;
-    created_time: string;
   }
 
-  interface VocaTable {
+  interface Voca {
     voca_id: number;
     user_id: number;
     lang_name: string;
-    word: string;
+    headword: string;
     word_order: number;
-    created_time: string;
   }
 
-  interface POSTable {
+  interface POS {
     pos_id: number;
     user_id: number;
     lang_name: string;
     pos_name: string;
     pos_text: string;
-    pos_order: number;
-    created_time: Date;
+  }
+
+  interface POSLog extends POS, Log {
+    pos_log_id: number;
   }
 }

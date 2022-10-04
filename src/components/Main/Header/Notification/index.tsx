@@ -10,7 +10,7 @@ import Message from './Message';
 import useMutationOnSuccess from '@hooks/api/useMutationOnSuccess';
 
 interface NotificationProps {
-  notifications: Model.NotificationTable[];
+  notifications: Model.Notification[];
   handleDocumentClick: (event: MouseEvent) => void;
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;
   hidden: boolean;
