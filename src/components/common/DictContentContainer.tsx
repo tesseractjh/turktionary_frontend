@@ -51,6 +51,7 @@ const Title = styled.h3`
 const Content = styled.div<{ isLoading?: boolean }>`
   padding: ${pxToRem(20)};
   font-size: ${({ theme }) => theme.fontSize.sm};
+  line-height: 1.2;
   ${({ isLoading }) => (isLoading ? flex() : '')}
   ${({ isLoading, theme }) =>
     isLoading

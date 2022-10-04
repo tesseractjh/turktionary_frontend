@@ -26,12 +26,12 @@ const Content = styled.div`
 `;
 
 const Title = styled.h4`
-  margin-bottom: ${pxToRem(20)};
+  margin-bottom: ${pxToRem(16)};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSize.lg};
 
   @media ${({ theme }) => theme.media.mobile} {
-    margin-bottom: ${pxToRem(16)};
+    margin-bottom: ${pxToRem(12)};
     font-size: ${({ theme }) => theme.fontSize.md};
   }
 `;
@@ -48,15 +48,15 @@ const ExampleList = styled.ul`
   ${flex('flex-start')}
   flex-wrap: wrap;
   gap: ${pxToRem(16)};
-  margin-top: ${pxToRem(20)};
+  margin-top: ${pxToRem(16)};
 
   @media ${({ theme }) => theme.media.mobile} {
-    margin-top: ${pxToRem(16)};
+    margin-top: ${pxToRem(12)};
   }
 `;
 
 const Example = styled(Link)`
-  padding: ${pxToRem(4, 6)};
+  padding: ${pxToRem(2, 6)};
   border-radius: ${pxToRem(4)};
   background-color: ${({ theme }) => theme.color.BROWN_DARK};
   font-weight: 500;
