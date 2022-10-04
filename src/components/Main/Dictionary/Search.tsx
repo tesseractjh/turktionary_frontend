@@ -48,7 +48,7 @@ const TopMenu = styled.nav<{ isSearch?: boolean }>`
   ${({ isSearch }) => (isSearch ? `margin-bottom: ${pxToRem(10)};` : '')}
 `;
 
-const TopMenuButton = styled(Link)<{ isSelected: boolean }>`
+const TopMenuButton = styled(Link)`
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.color.BLACK};
@@ -59,6 +59,12 @@ const TopMenuButton = styled(Link)<{ isSelected: boolean }>`
     text-decoration: underline;
   }
 
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+`;
+
+const MenuButtonText = styled.strong<{ isSelected: boolean }>`
   ${({ isSelected, theme }) =>
     isSelected
       ? `
@@ -66,10 +72,6 @@ const TopMenuButton = styled(Link)<{ isSelected: boolean }>`
         color: ${theme.color.BROWN_DARK};
       `
       : ''}
-
-  @media ${({ theme }) => theme.media.mobile} {
-    font-size: ${({ theme }) => theme.fontSize.xs};
-  }
 `;
 
 const SearchBarContainer = styled.div`
@@ -124,12 +126,16 @@ function Search({ type }: SearchProps) {
         <TopMenu isSearch={isSearch}>
           {isAll ? null : (
             <>
-              <TopMenuButton to="edit" isSelected={lastPath === 'edit'}>
-                단어 추가
+              <TopMenuButton to="edit">
+                <MenuButtonText isSelected={lastPath === 'edit'}>
+                  단어 추가
+                </MenuButtonText>
               </TopMenuButton>
               |
-              <TopMenuButton to="pos" isSelected={lastPath === 'pos'}>
-                품사 목록
+              <TopMenuButton to="pos">
+                <MenuButtonText isSelected={lastPath === 'pos'}>
+                  품사 목록
+                </MenuButtonText>
               </TopMenuButton>
             </>
           )}
