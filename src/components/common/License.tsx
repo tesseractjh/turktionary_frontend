@@ -18,6 +18,10 @@ const Sentence = styled.p`
   &:last-of-type {
     margin: 0;
   }
+
+  @media ${({ theme }) => theme.media.mobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 function License() {
