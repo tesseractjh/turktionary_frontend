@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
+import { flex } from '@styles/minxin';
 import vocaAPI from '@api/voca';
 import useAPI from '@hooks/api/useAPI';
 import pxToRem from '@utils/pxToRem';
 
 const TotalCountContainer = styled.p`
+  ${flex()}
+  height: 100%;
   padding: ${pxToRem(70, 0)};
   font-weight: 500;
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -54,10 +57,10 @@ function VocaCounter({ pathname }: { pathname: string }) {
   return (
     <TotalCountContainer>
       {
-        <>
+        <p>
           지금까지 총 <strong>{(count[lang] ?? 0).toLocaleString()}</strong>
           개의 어휘가 등록되었습니다.
-        </>
+        </p>
       }
     </TotalCountContainer>
   );

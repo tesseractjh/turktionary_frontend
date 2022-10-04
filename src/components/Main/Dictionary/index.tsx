@@ -13,7 +13,7 @@ interface DictionaryProps {
 }
 
 const ContentContainer = styled.section`
-  ${flex()};
+  ${flex('center', 'stretch')};
   flex: 1;
   padding: ${pxToRem(10, 0)};
   background-color: ${({ theme }) => theme.color.GRAY_LIGHT};
