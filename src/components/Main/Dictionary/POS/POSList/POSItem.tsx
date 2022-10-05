@@ -68,6 +68,10 @@ const Example = styled(Link)`
     vertical-align: super;
   }
 
+  &:hover {
+    background-color: ${({ theme }) => theme.color.BROWN};
+  }
+
   @media ${({ theme }) => theme.media.mobile} {
     font-size: ${({ theme }) => theme.fontSize.xs};
 
