@@ -6,7 +6,9 @@ interface MeaningListProps {
   meaningList: Model.MeaningList;
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: ${pxToRem(20)};
+`;
 
 const POS = styled.strong`
   display: inline-block;
