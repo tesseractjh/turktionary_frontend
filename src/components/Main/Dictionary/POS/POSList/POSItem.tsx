@@ -88,17 +88,18 @@ function POSItem({ id, title, text, examples, exampleOrders }: POSItemProps) {
         {examples.length ? (
           <ExampleList>
             {examples.map((example, index) => {
-              const order =
-                (exampleOrders[index] ?? 0) > 1 ? exampleOrders[index] : '';
+              const order = exampleOrders[index];
               return (
                 <Example
-                  key={example + order}
-                  to={`/${langId}/dict?keyword=${encodeURIComponent(
-                    example + order
-                  )}`}
+                  key={`${langId}-pos-example-${example}-${order}`}
+                  to={`/${langId}/voca?word=${example}&order=${order}`}
                 >
                   {example}
-                  <sup>{order}</sup>
+                  <sup>
+                    {(exampleOrders[index] ?? 0) > 1
+                      ? exampleOrders[index]
+                      : ''}
+                  </sup>
                 </Example>
               );
             })}
