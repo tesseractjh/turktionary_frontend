@@ -92,6 +92,13 @@ declare namespace Model {
     voca2_id: number;
   }
 
+  interface Etymology extends Log {
+    etymology_id: number;
+    user_id: number;
+    voca_id: number;
+    etymology_text: string;
+  }
+
   interface VocaInfo {
     voca_id: number;
     is_unique: boolean;
@@ -99,5 +106,6 @@ declare namespace Model {
     cognates: Model.Voca[];
     synonyms: Model.Voca[];
     antonyms: Model.Voca[];
+    etymology: Model.Etymology;
   }
 }

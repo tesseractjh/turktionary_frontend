@@ -4,6 +4,7 @@ import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
 import useQueryParams from '@hooks/useQueryParams';
 import CoreInfo from './CoreInfo';
+import Etymology from './Etymology';
 import Meanings from './Meanings';
 
 function Voca() {
@@ -29,7 +30,8 @@ function Voca() {
         vocaOrder={Number(vocaOrder)}
         vocaInfo={data}
       />
-      <Meanings meanings={data.meanings} />
+      {data.meanings ? <Meanings meanings={data.meanings} /> : null}
+      {data.etymology ? <Etymology etymology={data.etymology} /> : null}
     </>
   );
 }
