@@ -4,7 +4,7 @@ import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
 import useQueryParams from '@hooks/useQueryParams';
 import CoreInfo from './CoreInfo';
-import MeaningList from './MeaningList';
+import Meanings from './Meanings';
 
 function Voca() {
   const { langId } = useLanguage();
@@ -29,14 +29,7 @@ function Voca() {
         vocaOrder={Number(vocaOrder)}
         vocaInfo={data}
       />
-      <DictContentContainer hideHeader>
-        {data.meanings?.map((meaningList) => (
-          <MeaningList
-            key={`meaning-pos-${meaningList.pos_name}`}
-            meaningList={meaningList}
-          />
-        ))}
-      </DictContentContainer>
+      <Meanings meanings={data.meanings} />
     </>
   );
 }
