@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 100%;
   min-height: ${pxToRem(100)};
   padding: ${pxToRem(20)};
-  margin-bottom: ${pxToRem(10, 0)};
+  margin: ${pxToRem(10, 0)};
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0 5px 16px rgb(0 0 0 / 17%);
 `;
@@ -94,7 +94,9 @@ function CoreInfo({ headword, vocaOrder, vocaInfo }: CoreInfoProps) {
       </Top>
       <Meaning>
         {meanings.map(({ meanings }, index) => (
-          <span>{`${index + 1}. ${meanings[0].meaning_text}`}</span>
+          <span key={`meaning-summary-${index}`}>{`${index + 1}. ${
+            meanings[0].meaning_text
+          }`}</span>
         ))}
       </Meaning>
       <Bottom>
@@ -104,7 +106,7 @@ function CoreInfo({ headword, vocaOrder, vocaInfo }: CoreInfoProps) {
             <VocaWrapper>
               {synonyms?.map(({ voca_id, headword, voca_order }) => (
                 <Voca
-                  key={`cognate-${voca_id}`}
+                  key={`synonym-${voca_id}`}
                   to={`/${langId}/voca?word=${headword}&order=${voca_order}`}
                 >
                   {headword}
@@ -119,7 +121,7 @@ function CoreInfo({ headword, vocaOrder, vocaInfo }: CoreInfoProps) {
             <VocaWrapper>
               {antonyms?.map(({ voca_id, headword, voca_order }) => (
                 <Voca
-                  key={`cognate-${voca_id}`}
+                  key={`antonym-${voca_id}`}
                   to={`/${langId}/voca?word=${headword}&order=${voca_order}`}
                 >
                   {headword}
