@@ -3,8 +3,8 @@ import DictContentContainer from '@components/common/DictContentContainer';
 import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
 import useQueryParams from '@hooks/useQueryParams';
-import { useSearchParams } from 'react-router-dom';
 import CoreInfo from './CoreInfo';
+import MeaningList from './MeaningList';
 
 function Voca() {
   const { langId } = useLanguage();
@@ -29,7 +29,14 @@ function Voca() {
         vocaOrder={Number(vocaOrder)}
         vocaInfo={data}
       />
-      <DictContentContainer hideHeader></DictContentContainer>
+      <DictContentContainer hideHeader>
+        {data.meanings?.map((meaningList) => (
+          <MeaningList
+            key={`meaning-pos-${meaningList.pos_name}`}
+            meaningList={meaningList}
+          />
+        ))}
+      </DictContentContainer>
     </>
   );
 }
