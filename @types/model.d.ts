@@ -33,7 +33,7 @@ declare namespace Model {
     user_id: number;
     lang_name: string;
     headword: string;
-    word_order: number;
+    voca_order: number;
   }
 
   interface POS {
@@ -46,5 +46,58 @@ declare namespace Model {
 
   interface POSLog extends POS, Log {
     pos_log_id: number;
+  }
+
+  interface Meaning {
+    meaning_id: number;
+    user_id: number;
+    voca_id: number;
+    pos_id: number;
+    meaning_order: number;
+    meaning_text: string;
+  }
+
+  interface Example {
+    example_id: number;
+    user_id: number;
+    meaning_id: number;
+    example_order: number;
+    example_text: string;
+    example_translation: string;
+  }
+
+  interface MeaningList {
+    pos_name: string | null;
+    meanings: (Meaning & { examples: Example[] | null })[];
+  }
+
+  interface Cognate {
+    cognate_id: number;
+    user_id: number;
+    voca1_id: number;
+    voca2_id: number;
+  }
+
+  interface Synonym {
+    synonym_id: number;
+    user_id: number;
+    voca1_id: number;
+    voca2_id: number;
+  }
+
+  interface Antonym {
+    antonym_id: number;
+    user_id: number;
+    voca1_id: number;
+    voca2_id: number;
+  }
+
+  interface VocaInfo {
+    voca_id: number;
+    is_unique: boolean;
+    meanings: Model.MeaningList[];
+    cognates: Model.Voca[];
+    synonyms: Model.Voca[];
+    antonyms: Model.Voca[];
   }
 }
