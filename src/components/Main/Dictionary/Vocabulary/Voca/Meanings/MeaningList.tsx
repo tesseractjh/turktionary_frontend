@@ -8,6 +8,10 @@ interface MeaningListProps {
 
 const Container = styled.div`
   margin-bottom: ${pxToRem(20)};
+
+  &:last-of-type {
+    margin: 0;
+  }
 `;
 
 const POS = styled.strong`
@@ -23,15 +27,17 @@ function MeaningList({ meaningList }: MeaningListProps) {
   return (
     <Container>
       <POS>{pos_name}</POS>
-      <ol>
-        {meanings.map((meaning, index) => (
-          <Meaning
-            key={`meaning-${meaning.meaning_id}`}
-            index={index + 1}
-            meaning={meaning}
-          />
-        ))}
-      </ol>
+      {meanings ? (
+        <ol>
+          {meanings.map((meaning, index) => (
+            <Meaning
+              key={`meaning-${meaning.meaning_id}`}
+              index={index + 1}
+              meaning={meaning}
+            />
+          ))}
+        </ol>
+      ) : null}
     </Container>
   );
 }

@@ -19,11 +19,13 @@ function Meaning({ index, meaning }: MeaningProps) {
   return (
     <Container>
       <MeaningText>{`${index}. ${meaning_text}`}</MeaningText>
-      <ol>
-        {examples?.map((example) => (
-          <Example key={`example-${example}`} example={example} />
-        ))}
-      </ol>
+      {examples ? (
+        <ol>
+          {examples?.map((example) => (
+            <Example key={`example-${example}`} example={example} />
+          ))}
+        </ol>
+      ) : null}
     </Container>
   );
 }

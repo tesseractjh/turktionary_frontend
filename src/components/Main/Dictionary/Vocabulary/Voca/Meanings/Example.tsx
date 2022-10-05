@@ -11,6 +11,10 @@ const Container = styled.li`
   margin: ${pxToRem(0, 0, 20, 20)};
   border-left: ${border(4)} ${({ theme }) => theme.color.BEIGE};
   color: ${({ theme }) => theme.color.GRAY_DARK};
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 const Text = styled.p`
