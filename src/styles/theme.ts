@@ -15,7 +15,8 @@ export const lightColor = {
   KAKAO_YELLOW: '#fee500',
   GRAY_LIGHT: '#f2f2f2',
   TEAL_DARK: '#5ca862',
-  BROWN_DARK: '#ad7833'
+  BROWN_DARK: '#ad7833',
+  GRAY_DARK: '#606060'
 };
 
 export const darkColor = {
@@ -32,7 +33,8 @@ export const darkColor = {
   KAKAO_YELLOW: '#fee500',
   GRAY_LIGHT: '#f2f2f2',
   TEAL_DARK: '#5ca862',
-  BROWN_DARK: '#ad7833'
+  BROWN_DARK: '#ad7833',
+  GRAY_DARK: '#606060'
 };
 
 export const media = {
