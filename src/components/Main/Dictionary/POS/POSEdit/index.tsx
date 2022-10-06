@@ -6,7 +6,7 @@ import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
 import useLogin from '@hooks/api/useLogin';
 import useRedirect from '@hooks/useRedirect';
-import usePOSSubmit from '@hooks/api/usePOSSubmit';
+import usePOSSubmit from '@hooks/api/submit/usePOSSubmit';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import DictContentContainer from '@components/common/DictContentContainer';
 import History from '@components/Main/Dictionary/POS/POSEdit/History';

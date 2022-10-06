@@ -4,7 +4,7 @@ import { flex } from '@styles/minxin';
 import posAPI from '@api/pos';
 import useLanguage from '@hooks/useLanguage';
 import useLogin from '@hooks/api/useLogin';
-import usePOSReportSubmit from '@hooks/api/usePOSReportSubmit';
+import usePOSReportSubmit from '@hooks/api/submit/usePOSReportSubmit';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import pxToRem from '@utils/pxToRem';
 import DictContentContainer from '@components/common/DictContentContainer';
