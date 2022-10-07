@@ -4,6 +4,7 @@ import { border, flex } from '@styles/minxin';
 import useLanguage from '@hooks/useLanguage';
 import pxToRem from '@utils/pxToRem';
 import EllipsisMenu from '../../../../common/EllipsisMenu';
+import VocaLink from '@components/common/VocaLink';
 
 interface POSItemProps {
   id: number;
@@ -94,17 +95,12 @@ function POSItem({ id, title, text, examples, exampleOrders }: POSItemProps) {
             {examples.map((example, index) => {
               const order = exampleOrders[index];
               return (
-                <Example
+                <VocaLink
                   key={`${langId}-pos-example-${example}-${order}`}
-                  to={`/${langId}/voca?word=${example}&order=${order}`}
-                >
-                  {example}
-                  <sup>
-                    {(exampleOrders[index] ?? 0) > 1
-                      ? exampleOrders[index]
-                      : ''}
-                  </sup>
-                </Example>
+                  langId={langId}
+                  headword={example}
+                  vocaOrder={order}
+                />
               );
             })}
           </ExampleList>
