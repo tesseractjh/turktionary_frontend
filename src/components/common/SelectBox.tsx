@@ -1,4 +1,9 @@
-import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState
+} from 'react';
 import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
@@ -7,11 +12,10 @@ import pxToRem from '@utils/pxToRem';
 
 interface SelectBoxProps {
   id: string;
-  placeholder: string;
   selectionList: string[];
+  placeholder?: string;
   handleChange?: (selected: string) => void;
 }
-
 const Container = styled.div`
   position: relative;
   user-select: none;
@@ -95,12 +99,21 @@ function SelectBox({
   const [state, setState] = useRecoilState(dictFormState(id));
   const itemClassName = `${id}-item`;
 
+  const handleClick = useCallback(() => {
+    if (hidden) {
+      setHidden(false);
+      document.addEventListener('click', handleDocumentClick);
+    } else {
+      setHidden(true);
+      document.removeEventListener('click', handleDocumentClick);
+    }
+  }, [hidden]);
+
   const handleDocumentClick = useCallback<MouseEventHandler<HTMLDivElement>>(
     ({ target }) => {
       const targetElement = target as HTMLElement;
 
-      if (hidden && targetElement.id === id) {
-        setHidden(false);
+      if (targetElement.id === id) {
         return;
       }
 
@@ -113,18 +126,14 @@ function SelectBox({
       }
 
       setHidden(true);
+      document.removeEventListener('click', handleDocumentClick);
     },
     [hidden]
   ) as () => void;
 
   useEffect(() => {
-    document.addEventListener('click', handleDocumentClick);
-    return () => document.removeEventListener('click', handleDocumentClick);
-  }, [hidden]);
-
-  useEffect(() => {
     if (!state) {
-      setState(placeholder);
+      setState(placeholder ?? '');
     }
   }, [state]);
 
@@ -136,10 +145,12 @@ function SelectBox({
         role="combobox"
         aria-expanded={!hidden}
         aria-haspopup="listbox"
+        onClick={handleClick}
       >
         {state}
         <Arrow>{hidden ? '▼' : '▲'}</Arrow>
       </Selected>
+
       {hidden ? null : (
         <SelectionList role="listbox">
           {selectionList.map((selection) => (
