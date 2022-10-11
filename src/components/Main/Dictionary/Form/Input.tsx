@@ -19,10 +19,13 @@ const Container = styled.div`
   margin: ${pxToRem(10, 0)};
 `;
 
-const StyledInput = styled.input<{ formColor?: [keyof Color, keyof Color] }>`
+const StyledInput = styled.input<{
+  formColor?: [keyof Color, keyof Color];
+  showLength?: boolean;
+}>`
   display: inline-block;
   width: 100%;
-  padding: ${pxToRem(10, 64, 10, 10)};
+  padding: ${({ showLength }) => pxToRem(10, showLength ? 72 : 10, 10, 10)};
   border: ${({ formColor, theme }) =>
     border() + theme.color[formColor?.[0] ?? 'BROWN']};
   border-radius: ${pxToRem(6)};
@@ -74,6 +77,7 @@ function Input({ id, maxLength, color, placeholder, showLength }: InputProps) {
         spellCheck={false}
         value={state}
         onChange={handleChange}
+        showLength={showLength}
       />
       {showLength ? <Length>{`${state.length}/${maxLength}`}</Length> : null}
     </Container>
