@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
@@ -160,6 +160,10 @@ function VocaSelection({ id, label, findAll }: VocaSelectionProps) {
       },
     []
   );
+
+  useEffect(() => {
+    setSearchedVocaListState([]);
+  }, []);
 
   return (
     <Container>
