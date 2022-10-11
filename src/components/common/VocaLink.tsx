@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Color } from '@emotion/react';
+import { flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
+import CircleXMarkIcon from '@assets/images/circle-xmark-regular.svg';
 
 interface VocaLinkProps {
   langId: string;
@@ -9,12 +11,20 @@ interface VocaLinkProps {
   vocaOrder: number;
   backgroundColor?: keyof Color;
   hoverBackgroundColor?: keyof Color;
+  useDeleteButton?: boolean;
+  handleDelete?: (voca: Model.Voca) => () => void;
 }
+
+const Container = styled.span`
+  ${flex('normal', 'center', true)}
+  height: ${pxToRem(30)};
+`;
 
 const Wrapper = styled.span<{
   backgroundColor?: keyof Color;
   hoverBackgroundColor?: keyof Color;
 }>`
+  ${flex('normal', 'center', true)}
   padding: ${pxToRem(4, 6)};
   border-radius: ${pxToRem(4)};
   background-color: ${({ backgroundColor, theme }) =>
@@ -42,23 +52,51 @@ const Wrapper = styled.span<{
   }
 `;
 
+const DeleteButton = styled.button`
+  width: ${pxToRem(16)};
+  height: ${pxToRem(16)};
+  margin-left: ${pxToRem(8)};
+
+  & svg {
+    width: 100%;
+    height: 100%;
+    fill: ${({ theme }) => theme.color.WHITE};
+  }
+`;
+
 function VocaLink({
   langId,
   headword,
   vocaOrder,
   backgroundColor,
-  hoverBackgroundColor
+  hoverBackgroundColor,
+  useDeleteButton,
+  handleDelete
 }: VocaLinkProps) {
   return (
-    <Link to={`/${langId}/voca?word=${headword}&order=${vocaOrder}`}>
+    <Container>
       <Wrapper
         backgroundColor={backgroundColor}
         hoverBackgroundColor={hoverBackgroundColor}
       >
-        {headword}
-        {vocaOrder > 1 ? <sup>{vocaOrder}</sup> : null}
+        <Link to={`/${langId}/voca?word=${headword}&order=${vocaOrder}`}>
+          {headword}
+          {vocaOrder > 1 ? <sup>{vocaOrder}</sup> : null}
+        </Link>
+        {useDeleteButton ? (
+          <DeleteButton
+            type="button"
+            onClick={handleDelete?.({
+              lang_name: langId,
+              headword,
+              voca_order: vocaOrder
+            } as Model.Voca)}
+          >
+            <CircleXMarkIcon />
+          </DeleteButton>
+        ) : null}
       </Wrapper>
-    </Link>
+    </Container>
   );
 }
 
