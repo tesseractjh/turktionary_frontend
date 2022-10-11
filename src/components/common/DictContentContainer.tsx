@@ -29,7 +29,7 @@ const Container = styled.div`
 
 const Header = styled.div<{ headerColor?: keyof Color }>`
   ${flex('space-between')}
-  padding: ${pxToRem(10, 20)};
+  padding: ${pxToRem(15, 20)};
   background-color: ${({ headerColor, theme }) =>
     theme.color[headerColor ?? 'BROWN']};
 
