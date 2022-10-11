@@ -16,7 +16,7 @@ const posAPI = {
     return data;
   },
 
-  async getPosList(params: POSParams) {
+  async getPosInfoList(params: POSParams) {
     const { langId } = params;
     const { data } = await axios.get<
       (Model.POS & {

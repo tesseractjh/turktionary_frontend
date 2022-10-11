@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import posAPI from '@api/pos';
 import useAPI from '@hooks/api/useAPI';
 import DictContentContainer from '@components/common/DictContentContainer';
@@ -18,7 +18,7 @@ const HeaderButton = styled(Link)`
 
 function POSList() {
   const { langId, langName } = useLanguage();
-  const { data } = useAPI(['posList', { langId }], posAPI.getPosList);
+  const { data } = useAPI(['posList', { langId }], posAPI.getPosInfoList);
 
   return (
     <DictContentContainer
