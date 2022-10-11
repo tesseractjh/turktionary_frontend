@@ -1,20 +1,17 @@
-import {
-  ChangeEvent,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { border } from '@styles/minxin';
 import { dictFormListState } from '@recoil/dict';
 import pxToRem from '@utils/pxToRem';
-import { LANG_MAP } from '@constants/language';
 
 interface ComboBoxProps {
   id: string;
   selectionList: any[];
+  selectionListCallback: (
+    ItemComponent: (props: any) => JSX.Element,
+    props?: Record<string, any>
+  ) => (selection: any) => React.ReactNode;
   disabled?: boolean;
   placeholder?: string;
   handleChange?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -97,6 +94,7 @@ const SelectionItem = styled.li`
 function ComboBox({
   id,
   selectionList,
+  selectionListCallback,
   disabled,
   placeholder,
   handleChange
@@ -181,20 +179,12 @@ function ComboBox({
       {hidden ? null : (
         <SelectionList role="listbox">
           {(selectionList as Model.Voca[]).map(
-            ({ voca_id, lang_name, headword, voca_order }) => (
-              <SelectionItem
-                key={voca_id}
-                className={itemClassName}
-                role="option"
-                onClick={handleItemClick({
-                  lang_name,
-                  headword,
-                  voca_order
-                } as Model.Voca)}
-              >
-                {`[${LANG_MAP[lang_name]}] ${headword}`}
-                {voca_order > 1 ? <sup>{voca_order}</sup> : null}
-              </SelectionItem>
+            selectionListCallback(
+              SelectionItem as (props: any) => JSX.Element,
+              {
+                className: itemClassName,
+                handleClick: handleItemClick
+              }
             )
           )}
         </SelectionList>
