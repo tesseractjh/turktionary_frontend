@@ -4,7 +4,7 @@ import vocaAPI from '@api/voca';
 import useAPI from '@hooks/api/useAPI';
 import pxToRem from '@utils/pxToRem';
 
-const TotalCountContainer = styled.p`
+const TotalCountContainer = styled.div`
   ${flex()}
   height: 100%;
   padding: ${pxToRem(70, 0)};
