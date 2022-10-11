@@ -4,6 +4,8 @@ interface VocaParams extends MutationParams {
   langId: string;
   headword: string;
   vocaOrder: number;
+  keyword: string;
+  isLangExcluded?: boolean;
 }
 
 const vocaAPI = {
@@ -18,6 +20,24 @@ const vocaAPI = {
     const { langId, headword, vocaOrder } = params;
     const { data } = await axios.get<Model.VocaInfo>(
       `/voca?lang=${langId}&headword=${headword}&order=${vocaOrder}`
+    );
+    return data;
+  },
+
+  async getVocaList(params: VocaParams) {
+    const { langId, keyword, isLangExcluded } = params;
+    if (!keyword) {
+      return [];
+    }
+
+    const { data } = await axios.get<Model.Voca[]>(
+      `/voca/list?keyword=${keyword}${
+        langId
+          ? isLangExcluded
+            ? `&excluded_lang=${langId}`
+            : `&lang=${langId}`
+          : ''
+      }`
     );
     return data;
   }

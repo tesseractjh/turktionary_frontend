@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
-import { border } from '@styles/minxin';
+import { border, flex } from '@styles/minxin';
 import { dictFormListState } from '@recoil/dict';
 import pxToRem from '@utils/pxToRem';
 
@@ -68,6 +68,7 @@ const SelectionList = styled.ul`
 `;
 
 const SelectionItem = styled.li`
+  ${flex('flex-start', 'center')}
   padding: ${pxToRem(10)};
   background-color: ${({ theme }) => theme.color.WHITE};
   font-size: ${({ theme }) => theme.fontSize.sm};

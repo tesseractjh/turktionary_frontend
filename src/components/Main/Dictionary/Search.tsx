@@ -116,7 +116,8 @@ const searchPaths = ['search', 'voca'];
 
 function Search({ type }: SearchProps) {
   const { pathname } = useLocation();
-  const lastPath = pathname.split('/').reverse()[0];
+  const reversedPaths = pathname.split('/').reverse();
+  const lastPath = reversedPaths[0];
   const isSearch = searchPaths.includes(lastPath);
   const isAll = type === 'ALL';
 
@@ -126,8 +127,12 @@ function Search({ type }: SearchProps) {
         <TopMenu isSearch={isSearch}>
           {isAll ? null : (
             <>
-              <TopMenuButton to="edit">
-                <MenuButtonText isSelected={lastPath === 'edit'}>
+              <TopMenuButton to="voca/create">
+                <MenuButtonText
+                  isSelected={
+                    lastPath === 'create' && reversedPaths[1] === 'voca'
+                  }
+                >
                   단어 추가
                 </MenuButtonText>
               </TopMenuButton>
