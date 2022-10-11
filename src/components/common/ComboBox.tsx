@@ -42,12 +42,13 @@ const Input = styled.input`
 const SelectionList = styled.ul`
   overflow-y: auto;
   position: absolute;
-  top: calc(100% + ${pxToRem(10)});
+  top: calc(100% + ${pxToRem(8)});
   left: 0;
   z-index: 10;
   width: 100%;
   max-height: ${pxToRem(150)};
-  box-shadow: 0 5px 16px rgb(0 0 0 / 17%);
+  border: ${border()} ${({ theme }) => theme.color.BROWN};
+  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -60,10 +61,6 @@ const SelectionList = styled.ul`
 
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.color.BORDER};
-  }
-
-  @media ${({ theme }) => theme.media.tablet} {
-    width: ${pxToRem(120)};
   }
 `;
 
@@ -177,7 +174,7 @@ function ComboBox({
         onClick={handleInputClick}
         onChange={handleChange}
       />
-      {hidden ? null : (
+      {hidden || !selectionList.length ? null : (
         <SelectionList role="listbox">
           {(selectionList as Model.Voca[]).map(
             selectionListCallback(
