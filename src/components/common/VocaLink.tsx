@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Color } from '@emotion/react';
-import { flex } from '@styles/minxin';
+import { border, flex } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
 import CircleXMarkIcon from '@assets/images/circle-xmark-regular.svg';
+import Flag from './Flag';
+import { LANG_MAP } from '@constants/language';
 
 interface VocaLinkProps {
   langId: string;
@@ -11,6 +13,7 @@ interface VocaLinkProps {
   vocaOrder: number;
   backgroundColor?: keyof Color;
   hoverBackgroundColor?: keyof Color;
+  useFlag?: boolean;
   useDeleteButton?: boolean;
   handleDelete?: (voca: Model.Voca) => () => void;
 }
@@ -52,6 +55,18 @@ const Wrapper = styled.span<{
   }
 `;
 
+const FlagWrapper = styled.span`
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const DeleteButton = styled.button`
   width: ${pxToRem(16)};
   height: ${pxToRem(16)};
@@ -70,6 +85,7 @@ function VocaLink({
   vocaOrder,
   backgroundColor,
   hoverBackgroundColor,
+  useFlag,
   useDeleteButton,
   handleDelete
 }: VocaLinkProps) {
@@ -79,6 +95,11 @@ function VocaLink({
         backgroundColor={backgroundColor}
         hoverBackgroundColor={hoverBackgroundColor}
       >
+        {useFlag ? (
+          <FlagWrapper>
+            <Flag nation={LANG_MAP[langId].type} />
+          </FlagWrapper>
+        ) : null}
         <Link to={`/${langId}/voca?word=${headword}&order=${vocaOrder}`}>
           {headword}
           {vocaOrder > 1 ? <sup>{vocaOrder}</sup> : null}
