@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
-import { dictFormListState } from '@recoil/dict';
+import { dictFormListState, dictFormState } from '@recoil/dict';
 import pxToRem from '@utils/pxToRem';
 
 interface ComboBoxProps {
   id: string;
+  inputState: string;
   selectionList: any[];
   selectionListCallback: (
     ItemComponent: (props: any) => JSX.Element,
@@ -91,6 +92,7 @@ const SelectionItem = styled.li`
 
 function ComboBox({
   id,
+  inputState,
   selectionList,
   selectionListCallback,
   disabled,
@@ -99,6 +101,7 @@ function ComboBox({
 }: ComboBoxProps) {
   const [hidden, setHidden] = useState(true);
   const setState = useSetRecoilState(dictFormListState(id));
+  const setInputState = useSetRecoilState(dictFormState(id));
   const itemClassName = `${id}-item`;
 
   const handleInputClick = () => {
@@ -131,6 +134,7 @@ function ComboBox({
         }
         return [...state, { lang_name, headword, voca_order }];
       });
+      setInputState('');
     };
 
   const handleDocumentClick = useCallback<(evt: MouseEvent) => void>(
@@ -171,6 +175,7 @@ function ComboBox({
         aria-expanded={!hidden}
         aria-haspopup="listbox"
         disabled={disabled}
+        value={inputState}
         onClick={handleInputClick}
         onChange={handleChange}
       />

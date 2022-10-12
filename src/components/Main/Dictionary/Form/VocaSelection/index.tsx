@@ -171,6 +171,7 @@ function VocaSelection({ id, label, findAll }: VocaSelectionProps) {
       <SelectionWrapper>
         <ComboBox
           id={inputId}
+          inputState={inputState}
           selectionList={searchedVocaListState}
           selectionListCallback={selectionListCallback}
           placeholder="표제어 검색"
