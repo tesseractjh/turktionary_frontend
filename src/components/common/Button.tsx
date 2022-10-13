@@ -17,12 +17,14 @@ interface StyledButtonProps {
   buttonType: ButtonSize;
   stretchWidth?: boolean;
   border?: [number, keyof Color];
+  borderHover?: [number, keyof Color];
   borderRadius?: number | string;
   backgroundColor?: keyof Color;
   color?: keyof Color;
   backgroundColorHover?: keyof Color;
   colorHover?: keyof Color;
   href?: string;
+  disabled?: boolean;
 }
 
 interface ButtonProps extends Props, Omit<StyledButtonProps, 'buttonType'> {
@@ -37,9 +39,14 @@ const buttons: Record<
 > = {
   xs: {
     desktop: {
-      width: pxToRem(200),
-      height: pxToRem(48),
-      fontSize: 'md'
+      width: pxToRem(120),
+      height: pxToRem(30),
+      fontSize: 'sm'
+    },
+    tablet: {
+      width: pxToRem(90),
+      height: pxToRem(30),
+      fontSize: 'xs'
     }
   },
   sm: {
@@ -93,11 +100,13 @@ const StyledButton = styled.button<StyledButtonProps>`
     buttonType: type,
     stretchWidth,
     border,
+    borderHover,
     borderRadius,
     backgroundColor,
     color,
     backgroundColorHover,
     colorHover,
+    disabled,
     theme
   }) => `
     width: ${stretchWidth ? '100%' : buttons[type].desktop.width};
@@ -117,7 +126,25 @@ const StyledButton = styled.button<StyledButtonProps>`
     color: ${theme.color[color ?? 'WHITE']};
     text-align: center;
 
-    &:hover {
+    &:disabled {
+      ${
+        disabled
+          ? `
+        background-color: ${theme.color.GRAY};
+        cursor: not-allowed;
+      `
+          : ''
+      }
+    }
+
+    &:not(:disabled):hover {
+      ${
+        borderHover
+          ? `border: ${pxToRem(borderHover[0])} solid ${
+              theme.color[borderHover[1]]
+            };`
+          : ''
+      }
       ${
         backgroundColorHover
           ? `background-color: ${theme.color[backgroundColorHover]};`
@@ -148,6 +175,7 @@ function Button({
   type,
   stretchWidth,
   border,
+  borderHover,
   borderRadius,
   backgroundColor,
   color,
@@ -155,6 +183,7 @@ function Button({
   colorHover,
   onClick,
   href,
+  disabled,
   useAnchor,
   children
 }: ButtonProps) {
@@ -166,12 +195,14 @@ function Button({
       buttonType={type}
       stretchWidth={stretchWidth}
       border={border}
+      borderHover={borderHover}
       borderRadius={borderRadius}
       color={color}
       backgroundColor={backgroundColor}
       colorHover={colorHover}
       backgroundColorHover={backgroundColorHover}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
