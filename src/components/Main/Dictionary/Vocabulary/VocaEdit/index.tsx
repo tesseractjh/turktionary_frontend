@@ -47,7 +47,16 @@ function VocaEdit({ isCreate }: VocaEditProps) {
       <Wrapper>
         <Meanings />
       </Wrapper>
-      <div style={{ height: 600 }}></div>
+      <Wrapper>
+        <Form
+          id={`${langId}-voca-etymology`}
+          label="어원"
+          maxLength={255}
+          placeholder="표제어의 어원에 대한 설명을 입력해주세요."
+          isTextarea
+          showLength
+        />
+      </Wrapper>
     </DictContentContainer>
   );
 }
