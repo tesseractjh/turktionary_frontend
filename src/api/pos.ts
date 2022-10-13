@@ -67,6 +67,12 @@ const posAPI = {
     const { body } = params;
     const { data } = await axios.patch('/pos', body);
     return data;
+  },
+
+  async getPosList(params: POSParams) {
+    const { langId } = params;
+    const { data } = await axios.get<Model.POS[]>(`/pos/list?lang=${langId}`);
+    return data;
   }
 };
 
