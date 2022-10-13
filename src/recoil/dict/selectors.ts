@@ -24,7 +24,7 @@ export const meaningListState = selectorFamily<any[], string>({
               const meaning = get(dictFormState(meaningId));
 
               const deletedExampleCount = get(
-                dictFormState(`${id}-meaning-${i}`)
+                dictFormCountState(`${id}-meaning-${i}`)
               );
               // 삭제된 meaning의 모든 example 초기화
               for (let j = 1; j <= deletedExampleCount; j++) {
