@@ -1,11 +1,12 @@
-import DictContentContainer from '@components/common/DictContentContainer';
 import styled from '@emotion/styled';
+import { border } from '@styles/minxin';
 import useLogin from '@hooks/api/useLogin';
 import useLanguage from '@hooks/useLanguage';
-import { border } from '@styles/minxin';
 import pxToRem from '@utils/pxToRem';
+import DictContentContainer from '@components/common/DictContentContainer';
 import Form from '../../Form';
 import VocaSelection from '../../Form/VocaSelection';
+import Meanings from './Meanings';
 
 interface VocaEditProps {
   isCreate?: boolean;
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
   &:not(:last-of-type) {
     padding-bottom: ${pxToRem(20)};
     margin-bottom: ${pxToRem(20)};
-    border-bottom: ${border()} ${({ theme }) => theme.color.GRAY_LIGHT};
+    border-bottom: ${border()} ${({ theme }) => theme.color.GRAY};
   }
 `;
 
@@ -35,13 +36,18 @@ function VocaEdit({ isCreate }: VocaEditProps) {
         <Form
           id={`${langId}-voca-headword`}
           label="표제어"
-          maxLength={255}
+          maxLength={50}
           placeholder="사전에 등재될 표제어를 입력해주세요."
+          showLength
         />
         <VocaSelection id="synonym" label="유의어" />
         <VocaSelection id="antonym" label="반의어" />
         <VocaSelection id="cognate" label="동원어" findAll />
       </Wrapper>
+      <Wrapper>
+        <Meanings />
+      </Wrapper>
+      <div style={{ height: 600 }}></div>
     </DictContentContainer>
   );
 }
