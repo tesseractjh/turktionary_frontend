@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { SetterOrUpdater, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import { dictFormListState, dictFormState } from '@recoil/dict';
@@ -185,6 +185,7 @@ function ComboBox({
             selectionListCallback(
               SelectionItem as (props: any) => JSX.Element,
               {
+                role: 'option',
                 className: itemClassName,
                 handleClick: handleItemClick
               }
