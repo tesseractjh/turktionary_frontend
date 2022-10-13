@@ -1,20 +1,19 @@
-import React, {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
 import { dictFormState } from '@recoil/dict';
 import pxToRem from '@utils/pxToRem';
+import ArrowIcon from '@assets/images/angle-up-solid.svg';
 
 interface SelectBoxProps {
   id: string;
-  selectionList: string[];
+  selectionList: any[];
+  selectionListCallback: (
+    ItemComponent: (props: any) => JSX.Element,
+    props?: Record<string, any>
+  ) => (selection: any) => React.ReactNode;
   placeholder?: string;
-  handleChange?: (selected: string) => void;
 }
 const Container = styled.div`
   position: relative;
@@ -25,7 +24,6 @@ const Selected = styled.button`
   ${flex('space-between')}
   min-width: ${pxToRem(200)};
   padding: ${pxToRem(10)};
-  margin-right: ${pxToRem(10)};
   border: ${border()} ${({ theme }) => theme.color.BROWN};
   background-color: ${({ theme }) => theme.color.WHITE};
   border-radius: ${pxToRem(6)};
@@ -41,9 +39,19 @@ const Selected = styled.button`
   }
 `;
 
-const Arrow = styled.span`
+const Arrow = styled.span<{ isHidden: boolean }>`
+  display: inline-block;
+  width: ${pxToRem(12)};
+  height: ${pxToRem(12)};
   margin-left: ${pxToRem(10)};
   font-size: ${({ theme }) => theme.fontSize.custom('xs', -4)};
+  pointer-events: none;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(${({ isHidden }) => (isHidden ? '180deg' : 0)});
+  }
 `;
 
 const SelectionList = styled.ul`
@@ -93,13 +101,14 @@ function SelectBox({
   id,
   placeholder,
   selectionList,
-  handleChange
+  selectionListCallback
 }: SelectBoxProps) {
   const [hidden, setHidden] = useState(true);
-  const [state, setState] = useRecoilState(dictFormState(id));
+  const [selectedText, setSelectedText] = useState(placeholder);
+  const state = useRecoilValue<Model.POS>(dictFormState(id));
   const itemClassName = `${id}-item`;
 
-  const handleClick = useCallback(() => {
+  const handleSelectedClick = () => {
     if (hidden) {
       setHidden(false);
       document.addEventListener('click', handleDocumentClick);
@@ -107,34 +116,27 @@ function SelectBox({
       setHidden(true);
       document.removeEventListener('click', handleDocumentClick);
     }
-  }, [hidden]);
+  };
 
-  const handleDocumentClick = useCallback<MouseEventHandler<HTMLDivElement>>(
+  const handleDocumentClick = useCallback<(evt: MouseEvent) => void>(
     ({ target }) => {
-      const targetElement = target as HTMLElement;
-
-      if (targetElement.id === id) {
+      if ((target as HTMLElement).id === id) {
         return;
       }
-
-      if (targetElement.classList.contains(itemClassName)) {
-        const { textContent } = targetElement;
-        setState(textContent ?? '');
-        if (handleChange) {
-          handleChange(textContent ?? '');
-        }
-      }
-
       setHidden(true);
       document.removeEventListener('click', handleDocumentClick);
     },
     [hidden]
-  ) as () => void;
+  );
 
   useEffect(() => {
-    if (!state) {
-      setState(placeholder ?? '');
+    if (!selectionList.length) {
+      setHidden(true);
     }
+  }, [selectionList]);
+
+  useEffect(() => {
+    setSelectedText(state?.pos_name ?? placeholder);
   }, [state]);
 
   return (
@@ -145,23 +147,25 @@ function SelectBox({
         role="combobox"
         aria-expanded={!hidden}
         aria-haspopup="listbox"
-        onClick={handleClick}
+        onClick={handleSelectedClick}
       >
-        {state}
-        <Arrow>{hidden ? '▼' : '▲'}</Arrow>
+        {selectedText}
+        <Arrow isHidden={hidden}>
+          <ArrowIcon />
+        </Arrow>
       </Selected>
 
       {hidden ? null : (
         <SelectionList role="listbox">
-          {selectionList.map((selection) => (
-            <SelectionItem
-              key={selection}
-              className={itemClassName}
-              role="option"
-            >
-              {selection}
-            </SelectionItem>
-          ))}
+          {selectionList.map(
+            selectionListCallback(
+              SelectionItem as (props: any) => JSX.Element,
+              {
+                role: 'option',
+                className: itemClassName
+              }
+            )
+          )}
         </SelectionList>
       )}
     </Container>
