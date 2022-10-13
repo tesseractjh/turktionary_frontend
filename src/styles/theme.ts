@@ -14,6 +14,7 @@ export const lightColor = {
   KAKAO_BLACK: '#000000d9',
   KAKAO_YELLOW: '#fee500',
   GRAY_LIGHT: '#f2f2f2',
+  BROWN_LIGHT: '#f2cfa2',
   TEAL_DARK: '#5ca862',
   BROWN_DARK: '#ad7833',
   GRAY_DARK: '#606060'
@@ -32,6 +33,7 @@ export const darkColor = {
   KAKAO_BLACK: '#000000d9',
   KAKAO_YELLOW: '#fee500',
   GRAY_LIGHT: '#f2f2f2',
+  BROWN_LIGHT: '#f2cfa2',
   TEAL_DARK: '#5ca862',
   BROWN_DARK: '#ad7833',
   GRAY_DARK: '#606060'
