@@ -1,11 +1,11 @@
 import { atomFamily } from 'recoil';
 
-export const dictFormState = atomFamily<string, string>({
+export const dictFormState = atomFamily<any, string>({
   key: 'dictFormState',
   default: ''
 });
 
-export const dictFormPrevState = atomFamily<string, string>({
+export const dictFormPrevState = atomFamily<any, string>({
   key: 'dictFormPrevState',
   default: ''
 });
