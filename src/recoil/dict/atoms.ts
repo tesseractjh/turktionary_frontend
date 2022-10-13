@@ -19,3 +19,8 @@ export const dictFormTimerIdState = atomFamily<number, string>({
   key: 'dictFormTimerIdState',
   default: 0
 });
+
+export const dictFormCountState = atomFamily<number, string>({
+  key: 'dictFormCountState',
+  default: 0
+});
