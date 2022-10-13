@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { RecoilState, useRecoilState } from 'recoil';
 import { Color } from '@emotion/react';
 import styled from '@emotion/styled';
 import { dictFormState } from '@recoil/dict';
@@ -10,13 +10,14 @@ interface InputProps {
   id: string;
   maxLength: number;
   color?: [keyof Color, keyof Color];
+  noPadding?: boolean;
   placeholder?: string;
   showLength?: boolean;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ noPadding?: boolean }>`
   position: relative;
-  margin: ${pxToRem(10, 0)};
+  margin: ${({ noPadding }) => (noPadding ? 0 : pxToRem(10, 0))};
 `;
 
 const StyledInput = styled.input<{
@@ -56,7 +57,14 @@ const Length = styled.span`
   color: ${({ theme }) => theme.color.BROWN};
 `;
 
-function Input({ id, maxLength, color, placeholder, showLength }: InputProps) {
+function Input({
+  id,
+  maxLength,
+  color,
+  noPadding,
+  placeholder,
+  showLength
+}: InputProps) {
   const [state, setState] = useRecoilState(dictFormState(id));
 
   const handleChange = useCallback(
@@ -67,7 +75,7 @@ function Input({ id, maxLength, color, placeholder, showLength }: InputProps) {
   );
 
   return (
-    <Container>
+    <Container noPadding={noPadding}>
       <StyledInput
         id={id}
         type="text"
@@ -75,6 +83,7 @@ function Input({ id, maxLength, color, placeholder, showLength }: InputProps) {
         maxLength={maxLength}
         placeholder={placeholder}
         spellCheck={false}
+        autoComplete="off"
         value={state}
         onChange={handleChange}
         showLength={showLength}

@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
+import { RecoilState, useRecoilState } from 'recoil';
 import { Color } from '@emotion/react';
 import styled from '@emotion/styled';
 import { dictFormState } from '@recoil/dict';
@@ -10,13 +10,14 @@ interface TextareaProps {
   id: string;
   maxLength: number;
   color?: [keyof Color, keyof Color];
+  noPadding?: boolean;
   placeholder?: string;
   showLength?: boolean;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ noPadding?: boolean }>`
   position: relative;
-  margin: ${pxToRem(10, 0)};
+  margin: ${({ noPadding }) => (noPadding ? 0 : pxToRem(10, 0))};
 `;
 
 const StyledTextarea = styled.textarea<{
@@ -60,6 +61,7 @@ function Textarea({
   id,
   maxLength,
   color,
+  noPadding,
   placeholder,
   showLength
 }: TextareaProps) {
@@ -85,7 +87,7 @@ function Textarea({
   }, [ref]);
 
   return (
-    <Container>
+    <Container noPadding={noPadding}>
       <StyledTextarea
         ref={ref}
         id={id}
@@ -93,6 +95,7 @@ function Textarea({
         maxLength={maxLength}
         placeholder={placeholder}
         spellCheck={false}
+        autoComplete="off"
         value={state}
         onChange={handleChange}
       />

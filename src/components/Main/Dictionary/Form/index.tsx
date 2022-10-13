@@ -1,50 +1,67 @@
-import { Color } from '@emotion/react';
+import { Color, Size } from '@emotion/react';
 import styled from '@emotion/styled';
 import pxToRem from '@utils/pxToRem';
+import { RecoilState } from 'recoil';
 import Input from './Input';
 import Textarea from './Textarea';
 
 interface InputProps {
   id: string;
-  label: string;
   maxLength: number;
+  label?: string;
+  labelFontSize?: Size;
+  labelFontSizeMobile?: Size;
   isTextarea?: boolean;
   color?: [keyof Color, keyof Color];
+  noPadding?: boolean;
   placeholder?: string;
   showLength?: boolean;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ noPadding?: boolean }>`
   position: relative;
-  padding: ${pxToRem(10)};
+  padding: ${({ noPadding }) => (noPadding ? 0 : pxToRem(10))};
 `;
 
-const Label = styled.label`
+export const Label = styled.label<{ fontSize?: Size; fontSizeMobile?: Size }>`
   font-weight: 600;
-  font-size: ${({ theme }) => theme.fontSize.md};
+  font-size: ${({ fontSize, theme }) => theme.fontSize[fontSize ?? 'md']};
 
   @media ${({ theme }) => theme.media.mobile} {
-    font-size: ${({ theme }) => theme.fontSize.sm};
+    font-size: ${({ fontSizeMobile, theme }) =>
+      theme.fontSize[fontSizeMobile ?? 'sm']};
   }
 `;
 
 function Form({
   id,
   label,
+  labelFontSize,
+  labelFontSizeMobile,
   isTextarea,
   color,
   maxLength,
+  noPadding,
   placeholder,
   showLength = false
 }: InputProps) {
   return (
-    <Container>
-      <Label htmlFor={id}>{label}</Label>
+    <Container noPadding={noPadding}>
+      {label ? (
+        <Label
+          htmlFor={id}
+          fontSize={labelFontSize}
+          fontSizeMobile={labelFontSizeMobile}
+        >
+          {label}
+        </Label>
+      ) : null}
       {isTextarea ? (
         <Textarea
           id={id}
           color={color}
           maxLength={maxLength}
+          noPadding={noPadding}
           placeholder={placeholder}
           showLength={showLength}
         />
@@ -53,6 +70,7 @@ function Form({
           id={id}
           color={color}
           maxLength={maxLength}
+          noPadding={noPadding}
           placeholder={placeholder}
           showLength={showLength}
         />
