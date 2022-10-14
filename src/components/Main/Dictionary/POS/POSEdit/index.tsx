@@ -9,7 +9,7 @@ import useRedirect from '@hooks/useRedirect';
 import usePOSSubmit from '@hooks/api/submit/usePOSSubmit';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import DictContentContainer from '@components/common/DictContentContainer';
-import History from '@components/Main/Dictionary/POS/POSEdit/History';
+import History from '@components/common/History';
 import SubmitButton from '@components/common/SubmitButton';
 import Form from '../../Form';
 

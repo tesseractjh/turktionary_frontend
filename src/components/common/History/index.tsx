@@ -1,13 +1,11 @@
 import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import posAPI from '@api/pos';
-import useAPI from '@hooks/api/useAPI';
 import useLanguage from '@hooks/useLanguage';
+import useAPIWithToken from '@hooks/api/useAPIWithToken';
+import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
 import DictContentContainer from '@components/common/DictContentContainer';
 import Log from './Log';
-import withAsyncBoundary from '@hoc/withErrorBoundaryAndSuspense';
-import Deferred from '@components/common/Deferred';
-import useAPIWithToken from '@hooks/api/useAPIWithToken';
 
 function History() {
   const { langId } = useLanguage();
