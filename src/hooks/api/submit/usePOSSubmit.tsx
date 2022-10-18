@@ -1,5 +1,6 @@
 import posAPI from '@api/pos';
 import { dictFormPrevState, dictFormState } from '@recoil/dict';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilCallback } from 'recoil';
 import useLanguage from '../../useLanguage';
@@ -37,6 +38,7 @@ const validateForm = (
 function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
   const { langId } = useLanguage();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const onSuccess = useMutationOnSuccess<Model.POS[]>();
 
   const { mutate: createPOS, mutateAsync: createPOSAsync } = useMutationAPI(
@@ -82,6 +84,8 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
                 await onSuccess(data, variables, createPOSAsync, () => {
                   reset(posNameState);
                   reset(posTextState);
+                  queryClient.invalidateQueries(['posHistory']);
+                  queryClient.invalidateQueries(['posHistoryDiff']);
                   alert('정상적으로 제출되었습니다!');
                   navigate(`/${langId}/pos`);
                 });
@@ -102,6 +106,8 @@ function usePOSSubmit({ isCreate }: UsePOSSumbitProps) {
                 await onSuccess(data, variables, updatePOSAsync, () => {
                   reset(posNameState);
                   reset(posTextState);
+                  queryClient.invalidateQueries(['posHistory']);
+                  queryClient.invalidateQueries(['posHistoryDiff']);
                   alert('정상적으로 제출되었습니다!');
                   navigate(`/${langId}/pos`);
                 });
