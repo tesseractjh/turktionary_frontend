@@ -45,6 +45,7 @@ const resetStyle = css`
   input,
   textarea {
     border: none;
+    margin: 0;
 
     &:focus {
       outline: none;
