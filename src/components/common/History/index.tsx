@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { QueryKey } from '@tanstack/react-query';
 import styled from '@emotion/styled';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
@@ -48,8 +48,7 @@ function History({
         )
     )
   );
-
-  const isCategory = historyStyle === 'category';
+  const [isCategory, setIsCategory] = useState(historyStyle === 'cagetory');
 
   const { data } = useAPIWithToken(
     isCategory
@@ -77,6 +76,10 @@ function History({
       JSON.stringify(selectedCategories)
     );
   }, [selectedCategories]);
+
+  useLayoutEffect(() => {
+    setIsCategory(historyStyle === 'category');
+  }, [historyStyle]);
 
   return (
     <DictContentContainer title={title} headerColor="BEIGE">
