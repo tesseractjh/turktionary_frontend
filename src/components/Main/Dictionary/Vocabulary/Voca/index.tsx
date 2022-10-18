@@ -12,7 +12,8 @@ function Voca() {
   const { word: headword, order: vocaOrder } = useQueryParams();
   const { data } = useAPI(
     ['vocaInfo', { langId, headword, vocaOrder: Number(vocaOrder) }],
-    vocaAPI.getVocaInfo
+    vocaAPI.getVocaInfo,
+    { keepPreviousData: false }
   );
 
   if (!data) {

@@ -14,6 +14,7 @@ function useAPI<T>(
   });
 
   return useQuery<ResultData<T>>(queryKey, queryFn, {
+    keepPreviousData: true,
     ...options,
     onError
   });
