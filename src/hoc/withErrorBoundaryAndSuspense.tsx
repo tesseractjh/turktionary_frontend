@@ -17,46 +17,58 @@ type WithErrorBoundaryAndSuspenseProps = ErrorBoundaryProps & {
         string | React.FunctionComponent | typeof React.Component
       >
     | null;
-  SuspenseFallback: React.ReactNode | React.ReactNode[];
+  SuspenseFallback:
+    | React.ReactNode
+    | React.ReactNode[]
+    | ((props: any) => JSX.Element);
 };
 
-function withAsyncBoundary(
-  Component: React.FC,
+function withAsyncBoundary<T>(
+  Component: (props: T) => JSX.Element,
   {
     ErrorFallback,
     SuspenseFallback,
     ...restErrorBoundaryProps
   }: WithErrorBoundaryAndSuspenseProps
-) {
-  const component = SuspenseFallback ? (
-    <Suspense fallback={SuspenseFallback}>
-      <Component />
-    </Suspense>
-  ) : (
-    <Component />
-  );
+): (props: T) => JSX.Element {
+  const ComponentWithSuspense = (props: any) =>
+    SuspenseFallback ? (
+      <Suspense
+        fallback={
+          typeof SuspenseFallback === 'function' ? (
+            <SuspenseFallback {...props} />
+          ) : (
+            SuspenseFallback
+          )
+        }
+      >
+        <Component {...props} />
+      </Suspense>
+    ) : (
+      <Component {...props} />
+    );
 
   if (ErrorBoundary) {
     if (typeof ErrorFallback === 'function') {
-      return () => (
+      return (props: any) => (
         <ErrorBoundary
           FallbackComponent={ErrorFallback}
           {...restErrorBoundaryProps}
         >
-          {component}
+          <ComponentWithSuspense {...props} />
         </ErrorBoundary>
       );
     } else if (ErrorFallback instanceof React.Component) {
-      return () => (
+      return (props: any) => (
         <ErrorBoundary fallback={ErrorFallback} {...restErrorBoundaryProps}>
-          {component}
+          <ComponentWithSuspense {...props} />
         </ErrorBoundary>
       );
     }
-    return () => component;
+    return ComponentWithSuspense;
   }
 
-  return () => component;
+  return ComponentWithSuspense;
 }
 
 export default withAsyncBoundary;
