@@ -1,10 +1,13 @@
+import queryString from '@utils/queryString';
 import axios from 'axios';
 
 interface POSParams extends MutationParams {
   langId: string;
   posId: number;
   posName: string;
-  posLogId: number;
+  logId: number;
+  categoryLogId: number;
+  categories: Record<string, any>;
 }
 
 const posAPI = {
@@ -36,17 +39,19 @@ const posAPI = {
   },
 
   async getPosHistory(params: POSParams) {
-    const { langId, posName } = params;
+    const { posId, categories } = params;
+    const { pos_name, pos_text } = categories ?? {};
+
     const { data } = await axios.get<(Model.POSLog & Model.History)[]>(
-      `/pos/history?lang=${langId}&name=${posName}`
+      `/pos/history?${queryString({ id: posId, pos_name, pos_text })}`
     );
     return data;
   },
 
   async getPosHistoryDiff(params: POSParams) {
-    const { posId, posLogId } = params;
+    const { logId, categoryLogId } = params;
     const { data } = await axios.get<Model.POSLog[]>(
-      `/pos/history/diff?id=${posId}&log_id=${posLogId}`
+      `/pos/history/diff?id=${categoryLogId}&log_id=${logId}`
     );
     return data;
   },

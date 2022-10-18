@@ -7,7 +7,7 @@ interface DiffProps {
   title: string;
   prev: string;
   cur: string;
-  index: number;
+  index?: number;
 }
 
 const Compare = styled.p`
@@ -23,7 +23,8 @@ const Added = styled.span`
 
 const Removed = styled.span`
   background-color: ${({ theme }) => theme.color.RED};
-  color: ${({ theme }) => theme.color.GRAY};
+  color: ${({ theme }) => theme.color.GRAY_DARK};
+  text-decoration: line-through ${({ theme }) => theme.color.GRAY};
 `;
 
 const Title = styled.span`
@@ -34,7 +35,7 @@ const Title = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
 `;
 
-function Diff({ title, prev, cur, index }: DiffProps) {
+function Diff({ title, prev, cur, index = 0 }: DiffProps) {
   const result = diff(prev, cur);
 
   if (result.every(([compare]) => compare === diff.EQUAL)) {

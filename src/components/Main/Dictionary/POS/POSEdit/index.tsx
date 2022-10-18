@@ -17,6 +17,28 @@ interface POSEditProps {
   isCreate?: boolean;
 }
 
+const dataNormalizer = (data: any[], isCategory?: boolean): Model.History[] => {
+  const histories = data as Awaited<ReturnType<typeof posAPI.getPosHistory>>;
+
+  if (!isCategory) {
+    return histories;
+  }
+
+  const logs: Model.History[] = [];
+  histories.forEach((history) => {
+    logs.push({
+      ...history,
+      log_name: 'pos_name'
+    });
+    logs.push({
+      ...history,
+      log_name: 'pos_text'
+    });
+  });
+
+  return logs;
+};
+
 function POSEdit({ isCreate }: POSEditProps) {
   const { langId, langName } = useLanguage();
   const isLoggedIn = useLogin(-1);
@@ -94,7 +116,17 @@ function POSEdit({ isCreate }: POSEditProps) {
         />
         <SubmitButton useClickHandler={usePOSSubmit} isCreate={!!isCreate} />
       </DictContentContainer>
-      {isCreate ? null : <History />}
+      {isCreate ? null : (
+        <History
+          title="최근 편집 기록"
+          historyQueryKeys={['posHistory', { posId: data?.pos_id }]}
+          diffQueryKey="posHistoryDiff"
+          historyApi={posAPI.getPosHistory}
+          diffApi={posAPI.getPosHistoryDiff}
+          dataNormalizer={dataNormalizer}
+          categoryTitles={{ pos_name: '품사 이름', pos_text: '품사 설명' }}
+        />
+      )}
     </>
   );
 }

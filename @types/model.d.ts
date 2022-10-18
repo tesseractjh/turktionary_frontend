@@ -1,11 +1,22 @@
 declare namespace Model {
   interface Log {
+    log_id: number;
+    user_id: number;
     created_time: string;
   }
 
-  interface History extends Log {
+  interface HistorySummary {
     user_exp: number;
     user_name: string;
+    log_id: number;
+    category_log_id: number;
+    created_time: string;
+  }
+
+  interface History extends HistorySummary {
+    log_name: string;
+    log: string;
+    prev_log: string;
   }
 
   interface User extends Log {
@@ -30,10 +41,11 @@ declare namespace Model {
 
   interface Voca {
     voca_id: number;
-    user_id: number;
+    edit_log_id: number;
     lang_name: string;
     headword: string;
     voca_order: number;
+    etymology: string;
   }
 
   interface POS {
@@ -50,7 +62,7 @@ declare namespace Model {
 
   interface Meaning {
     meaning_id: number;
-    user_id: number;
+    edit_log_id: number;
     voca_id: number;
     pos_id: number;
     meaning_order: number;
@@ -59,7 +71,7 @@ declare namespace Model {
 
   interface Example {
     example_id: number;
-    user_id: number;
+    edit_log_id: number;
     meaning_id: number;
     example_order: number;
     example_text: string;
@@ -73,30 +85,23 @@ declare namespace Model {
 
   interface Cognate {
     cognate_id: number;
-    user_id: number;
+    edit_log_id: number;
     voca1_id: number;
     voca2_id: number;
   }
 
   interface Synonym {
     synonym_id: number;
-    user_id: number;
+    edit_log_id: number;
     voca1_id: number;
     voca2_id: number;
   }
 
   interface Antonym {
     antonym_id: number;
-    user_id: number;
+    edit_log_id: number;
     voca1_id: number;
     voca2_id: number;
-  }
-
-  interface Etymology extends Log {
-    etymology_id: number;
-    user_id: number;
-    voca_id: number;
-    etymology_text: string;
   }
 
   interface VocaInfo {
@@ -106,6 +111,6 @@ declare namespace Model {
     cognates: Model.Voca[];
     synonyms: Model.Voca[];
     antonyms: Model.Voca[];
-    etymology: Model.Etymology;
+    etymology: string;
   }
 }

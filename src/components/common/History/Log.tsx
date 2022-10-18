@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { border, flex } from '@styles/minxin';
@@ -10,9 +10,12 @@ import pxToRem from '@utils/pxToRem';
 import Diff from './Diff';
 
 interface LogProps {
-  langId: string;
-  posLog: Model.POSLog & Model.History;
+  log: Model.History;
+  categoryTitles: Record<string, any>;
+  diffQueryKey: string;
+  diffApi: (...args: any) => Promise<ResultData<any>>;
   index: number;
+  isCategory?: boolean;
 }
 
 const Container = styled.div``;
@@ -92,15 +95,22 @@ const UserName = styled(Link)`
   color: ${({ theme }) => theme.color.TEAL_DARK};
 `;
 
-function Log({ posLog, index }: LogProps) {
-  const { user_exp, user_name, pos_id, pos_log_id, created_time } = posLog;
+function Log({
+  log,
+  categoryTitles,
+  diffQueryKey,
+  diffApi,
+  index,
+  isCategory
+}: LogProps) {
+  const { log_id, category_log_id, user_exp, user_name, created_time } = log;
   const [isOpen, setIsOpen] = useState(false);
+  const params = { logId: log_id, categoryLogId: category_log_id };
 
-  const { data } = useAPIWithToken(
-    ['posHistoryDiff', { posId: pos_id, posLogId: pos_log_id }],
-    posAPI.getPosHistoryDiff,
-    { enabled: isOpen, staleTime: Infinity }
-  );
+  const { data } = useAPIWithToken([diffQueryKey, params], diffApi, {
+    enabled: isOpen && !isCategory,
+    staleTime: Infinity
+  });
 
   const handleClick = useCallback(() => {
     setIsOpen((state) => !state);
@@ -120,21 +130,24 @@ function Log({ posLog, index }: LogProps) {
           <UserName to={`/mypage?user=${user_name}`}>{user_name}</UserName>
         </User>
       </LogText>
-      {isOpen && data ? (
-        <>
+      {isOpen ? (
+        isCategory ? (
           <Diff
-            title="품사 이름"
-            prev={data?.[1]?.pos_name ?? ''}
-            cur={data?.[0]?.pos_name ?? ''}
-            index={index}
+            title={categoryTitles[log.log_name]}
+            prev={log.prev_log ?? ''}
+            cur={log.log ?? ''}
           />
-          <Diff
-            title="품사 설명"
-            prev={data?.[1]?.pos_text ?? ''}
-            cur={data?.[0]?.pos_text ?? ''}
-            index={index}
-          />
-        </>
+        ) : (
+          Object.entries(categoryTitles).map(([key, value]) => (
+            <Diff
+              key={key}
+              title={value}
+              prev={(data?.[1]?.[key as keyof typeof data[1]] as string) ?? ''}
+              cur={(data?.[0]?.[key as keyof typeof data[0]] as string) ?? ''}
+              index={index}
+            />
+          ))
+        )
       ) : null}
     </Container>
   );
