@@ -3,6 +3,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import { dictFormCountState, meaningListState } from '@recoil/dict';
+import useLanguage from '@hooks/useLanguage';
 import pxToRem from '@utils/pxToRem';
 import Button from '@components/common/Button';
 import { Label } from '../../../Form';
@@ -46,7 +47,8 @@ const ButtonWrapper = styled.div`
 
 function POS({ pos }: POSProps) {
   const { pos_id, pos_name } = pos;
-  const id = `voca-pos-${pos_id}`;
+  const { langId } = useLanguage();
+  const id = `${langId}-voca-pos-${pos_id}`;
   const [meaningCount, setMeaningCount] = useRecoilState(
     dictFormCountState(id)
   );
@@ -59,14 +61,14 @@ function POS({ pos }: POSProps) {
 
   const handleDelete = useCallback(
     (order: number) => () => {
-      setMeaningList(['DELETE', order]);
+      setMeaningList(['DELETE', order, langId]);
     },
     []
   );
 
   const handleSwitch = useCallback(
     (order: number) => () => {
-      setMeaningList(['SWITCH', order]);
+      setMeaningList(['SWITCH', order, langId]);
     },
     []
   );

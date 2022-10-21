@@ -4,7 +4,12 @@ interface VocaParams extends MutationParams {
   langId: string;
   headword: string;
   vocaOrder: number;
+  etymology: string;
   keyword: string;
+  // synonyms: number[];
+  // antonyms: number[];
+  // cognates: number[];
+  // meanings: (Model.Meaning & { examples: Model.Example[] })[];
   isLangExcluded?: boolean;
 }
 
@@ -39,6 +44,12 @@ const vocaAPI = {
           : ''
       }`
     );
+    return data;
+  },
+
+  async createVoca(params: VocaParams) {
+    const { body } = params;
+    const { data } = await axios.post('/voca', body);
     return data;
   }
 };

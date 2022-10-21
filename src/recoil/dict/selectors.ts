@@ -14,7 +14,7 @@ export const meaningListState = selectorFamily<any[], string>({
   set:
     (id) =>
     ({ get, set, reset }, value) => {
-      const [action, order] = value as [string, number];
+      const [action, order, langId] = value as [string, number, string];
       const count = get(dictFormCountState(id));
       switch (action) {
         case 'DELETE':
@@ -61,14 +61,16 @@ export const meaningListState = selectorFamily<any[], string>({
               reset(dictFormState(meaningId));
             }
             if (count === 1) {
-              const posId = Number(id.split('-')[2]);
-              const posList = get(dictFormListState('voca-pos'));
+              const posId = Number(id.split('-')[3]);
+              const posList = get(
+                dictFormListState(`${langId}-voca-selected-pos`)
+              );
               const newPosList = [
                 ...posList
                   .filter(({ pos_id }) => pos_id !== posId)
                   .map((pos) => ({ ...pos }))
               ];
-              set(dictFormListState('voca-pos'), newPosList);
+              set(dictFormListState(`${langId}-voca-selected-pos`), newPosList);
             }
             set(dictFormCountState(id), (state) => (state > 1 ? state - 1 : 1));
           }

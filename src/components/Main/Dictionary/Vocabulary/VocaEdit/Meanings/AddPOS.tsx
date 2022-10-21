@@ -2,6 +2,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { flex } from '@styles/minxin';
 import { dictFormListState, dictFormState } from '@recoil/dict';
+import useLanguage from '@hooks/useLanguage';
 import pxToRem from '@utils/pxToRem';
 import Button from '@components/common/Button';
 import { Label } from '../../../Form';
@@ -18,7 +19,8 @@ const FormContainer = styled.div`
 `;
 
 function AddPOS() {
-  const id = 'voca-pos';
+  const { langId } = useLanguage();
+  const id = `${langId}-voca-selected-pos`;
   const [selectedPOS, setSelectedPOS] = useRecoilState<Model.POS | null>(
     dictFormState(id)
   );

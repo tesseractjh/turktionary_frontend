@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { dictFormState } from '@recoil/dict';
+import { dictFormListState, dictFormState } from '@recoil/dict';
 import useLanguage from '@hooks/useLanguage';
 import useAPIWithToken from '@hooks/api/useAPIWithToken';
 import posAPI from '@api/pos';
@@ -14,6 +14,7 @@ function POSSelection({ id }: POSSelectionProps) {
   const { langId } = useLanguage();
   const placeholder = '품사 선택';
   const setSelectedPOS = useSetRecoilState<Model.POS>(dictFormState(id));
+  const setPosList = useSetRecoilState(dictFormListState(`${langId}-voca-pos`));
 
   const { data } = useAPIWithToken(
     ['posSelection', { langId }],
@@ -36,6 +37,12 @@ function POSSelection({ id }: POSSelectionProps) {
       },
     []
   );
+
+  useEffect(() => {
+    if (data) {
+      setPosList(data.map(({ pos_id }) => pos_id));
+    }
+  }, [data]);
 
   return (
     <SelectBox
