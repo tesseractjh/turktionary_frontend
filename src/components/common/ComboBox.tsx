@@ -115,24 +115,13 @@ function ComboBox({
   };
 
   const handleItemClick =
-    ({ lang_name, headword, voca_order }: Model.Voca) =>
+    ({ voca_id, lang_name, headword, voca_order }: Model.Voca) =>
     () => {
       setState((state) => {
-        if (
-          state.find(
-            ({
-              lang_name: prevLangName,
-              headword: prevHeadword,
-              voca_order: prevVocaOrder
-            }) =>
-              lang_name === prevLangName &&
-              headword === prevHeadword &&
-              voca_order === prevVocaOrder
-          )
-        ) {
+        if (state.find(({ voca_id: prevVocaId }) => voca_id === prevVocaId)) {
           return state;
         }
-        return [...state, { lang_name, headword, voca_order }];
+        return [...state, { voca_id, lang_name, headword, voca_order }];
       });
       setInputState('');
     };

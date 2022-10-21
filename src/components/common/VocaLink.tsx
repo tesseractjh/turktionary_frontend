@@ -11,6 +11,7 @@ interface VocaLinkProps {
   langId: string;
   headword: string;
   vocaOrder: number;
+  vocaId?: number;
   backgroundColor?: keyof Color;
   hoverBackgroundColor?: keyof Color;
   useFlag?: boolean;
@@ -83,6 +84,7 @@ function VocaLink({
   langId,
   headword,
   vocaOrder,
+  vocaId,
   backgroundColor,
   hoverBackgroundColor,
   useFlag,
@@ -108,6 +110,7 @@ function VocaLink({
           <DeleteButton
             type="button"
             onClick={handleDelete?.({
+              voca_id: vocaId,
               lang_name: langId,
               headword,
               voca_order: vocaOrder

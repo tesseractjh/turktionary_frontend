@@ -120,7 +120,12 @@ function VocaSelection({ id, label, findAll }: VocaSelectionProps) {
           <Item
             {...props}
             key={voca_id}
-            onClick={props?.handleClick?.({ lang_name, headword, voca_order })}
+            onClick={props?.handleClick?.({
+              voca_id,
+              lang_name,
+              headword,
+              voca_order
+            })}
           >
             <FlagWrapper>
               <Flag nation={LANG_MAP[lang_name].type} />
@@ -135,18 +140,11 @@ function VocaSelection({ id, label, findAll }: VocaSelectionProps) {
   );
 
   const handleDelete = useCallback(
-    ({ lang_name, headword, voca_order }: Model.Voca) =>
+    ({ voca_id }: Model.Voca) =>
       () => {
         setVocaListState((state) => {
           const index = state.findIndex(
-            ({
-              lang_name: prevLangName,
-              headword: prevHeadword,
-              voca_order: prevVocaOrder
-            }) =>
-              lang_name === prevLangName &&
-              headword === prevHeadword &&
-              voca_order === prevVocaOrder
+            ({ voca_id: prevVocaId }) => voca_id === prevVocaId
           );
 
           if (index >= 0) {
@@ -182,7 +180,8 @@ function VocaSelection({ id, label, findAll }: VocaSelectionProps) {
         <SelectedVocaList>
           {vocaListState.map((voca) => (
             <VocaLink
-              key={`selected-voca-${voca.lang_name}-${voca.headword}-${voca.voca_order}`}
+              key={`selected-voca-${voca.voca_id}`}
+              vocaId={voca.voca_id}
               langId={voca.lang_name}
               headword={voca.headword}
               vocaOrder={voca.voca_order}
